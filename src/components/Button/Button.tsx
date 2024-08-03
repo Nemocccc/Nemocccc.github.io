@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import styles from './button.module.css';
+import styles from '/@components/Button/Button.module.css';
 
 export default function Button({ text, url} : {text: string, url: string}) {
     return (
