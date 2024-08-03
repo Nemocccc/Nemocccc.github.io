@@ -28,7 +28,7 @@ const  Footer = () => {
                 {contact.map((contact) => (
                     <Link key={contact.id} href={contact.url} className={Styles.link}>
                         <div className={Styles.img}>
-                          <Image src={contact.img} layout="fill" alt={contact.title} />
+                          <Image src={contact.img} fill={true} alt={contact.title} />
                         </div>
                     </Link>
                 ))}
