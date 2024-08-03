@@ -1,0 +1,47 @@
+.container {
+    display:flex;
+    align-items: center;
+    gap: 50px;
+    height: 100%;
+    width: 100%;
+}
+
+.imgContainer {
+    flex: 1 1 auto;
+    width: 30%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+    /* padding: 20px; */
+    aspect-ratio: 1; /* 1:1 aspect ratio */
+}
+
+.textbox {
+    flex: 1 1 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;;
+}
+
+
+.title {
+    font-size: 72px;
+    background: linear-gradient(
+    to bottom,
+    black,  /* 完全不透明的颜色开始 */
+    rgba(247, 124, 9, 0)  /* 渐变到完全透明 */
+    ) red;  /* 背景颜色设置为白色，确保字体可读性 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* 使文本颜色透明，以显示背景 */
+  }
+
+.description {
+    font-size: 24px;
+    color: black;
+    font-weight: bold;
+}
+

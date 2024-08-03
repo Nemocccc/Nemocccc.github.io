@@ -1,0 +1,16 @@
+.container {
+    cursor: pointer;
+    padding: 20px; 
+    background-color: bisque;
+    border: none;
+    border-radius: 10px;
+    width: max-content;
+    height: max-content;
+    justify-content: center;
+    align-items: center;
+    color: green;
+}
+
+.link {
+    color: green;
+}

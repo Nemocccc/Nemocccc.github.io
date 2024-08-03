@@ -1,0 +1,33 @@
+.container {
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 0;
+}
+
+.leftcontent {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 20px;
+}
+
+.rightcontent {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.img {
+    width: 64px;
+    height: 36px;
+    position: relative;
+}
+
+/* 
+.link {
+
+} */
