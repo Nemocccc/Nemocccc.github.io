@@ -1,11 +1,6 @@
 html, body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  margin: 0;
+  padding: 0;
 }
 
 html, body{
@@ -19,16 +14,54 @@ Link, a {
   color: black;
 }
 
-.container {
+.container-light {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
 
-.children {
+.theme-light {
   /* min-height: 83vh; */
-  background-color: #22ffda;
+  background-color: hsl(177, 76%, 56%);
+  color: black;
+  -webkit-text-fill-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 0px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding: 20px;
+  flex-grow: 1;
+  /* margin-bottom: 0px; */
+}
+
+.container-dark {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom,
+    #585827,  /* 完全不透明的颜色开始 */
+    rgb(58, 56, 23)  /* 渐变到完全透明 */
+    ) hsl(0, 67%, 20%);  /* 背景颜色设置为白色，确保字体可读性 */
+}
+
+.theme-dark {
+  /* min-height: 83vh; */
+  background-color: black;
+  color: white;
+  -webkit-text-fill-color: gold;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

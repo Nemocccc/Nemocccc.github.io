@@ -1,8 +1,10 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import Styles from './navbar.module.css';
 import Image from "next/image";
 import nemo from "../../../public/image/nemo.png"
+import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 
 
 const links = [
@@ -35,6 +37,7 @@ const links = [
 
 
 const  Navbar = () => {
+
     return (
         <div className={Styles.container}>
             <Link href="/" className={Styles.logo}>
@@ -42,6 +45,7 @@ const  Navbar = () => {
                 Nemo
             </Link>
             <div className={Styles.links}>
+                <DarkModeToggle />
                 {links.map((links) => (
                     <Link key={links.id} href={links.url} className={Styles.link}>
                         {links.title}
