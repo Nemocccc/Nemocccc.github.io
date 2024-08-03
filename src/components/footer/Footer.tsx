@@ -6,7 +6,7 @@ import { url } from 'inspector';
 import Image from 'next/image';
 
 const  Footer = () => {
-    console.log('hello,Footer')
+    // console.log('hello,Footer')
 
 
     const contact = [
