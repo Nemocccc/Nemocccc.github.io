@@ -25,7 +25,7 @@
 const nextConfig = {
     // basePath: "/nextjs-blog",
     // assetPrefix: "/nextjs-blog/",
-    output: "export",
+    // output: "export",
   };
 
 export default nextConfig;
