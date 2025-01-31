@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// import Navbar from "@/components/navbar/Navbar"
-// import Footer from "@/components/footer/Footer";
-import Head from "@/components/Head/Head";
-import React from "react";
-import { ThemeProvider } from "../../context/themeContext";
 
+import StoreProvider from "@/store/storeProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: "Nemo",
-  description: "Nemo's personal website",
+  title: "nemo",
+  description: "chasing dream",
 };
-
 
 export default function RootLayout({
   children,
@@ -23,11 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head />
-      <body className={inter.className}>
-        <ThemeProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark: bg-github-dark`}
+      >
+        <StoreProvider>
           {children}
-        </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );
