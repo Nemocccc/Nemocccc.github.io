@@ -7,6 +7,9 @@ import CommentSection from "@/components/CommentSection";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { type BlogPost } from "@/lib/blogs";
 import { formatDate, readingTime } from "@/lib/utils";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
@@ -68,7 +71,12 @@ export default function BlogArticleClient({
         <article className="markdown-body">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
+            rehypePlugins={[
+              rehypeRaw,
+              rehypeHighlight,
+              rehypeSlug,
+              [rehypeAutolinkHeadings, { behavior: "wrap" }],
+            ]}
           >
             {post.content}
           </ReactMarkdown>

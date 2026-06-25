@@ -107,9 +107,52 @@ body {
   --tw-prose-th-bg: var(--muted);
 }
 
+/* ===== Syntax Highlighting (One Dark Pro theme) ===== */
+.hljs {
+  color: #abb2bf;
+  background: transparent;
+}
+.hljs-comment,
+.hljs-quote { color: #5c6370; font-style: italic; }
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula { color: #c678dd; }
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst { color: #e06c75; }
+.hljs-literal { color: #56b6c2; }
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string { color: #98c379; }
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number { color: #d19a66; }
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title { color: #61aeee; }
+.hljs-built_in,
+.hljs-title.class_,
+.hljs-class .hljs-title { color: #e5c07b; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: bold; }
+.hljs-link { text-decoration: underline; }
+
+/* ===== Markdown Body ===== */
 .markdown-body {
   color: var(--fg);
-  line-height: 1.75;
+  line-height: 1.8;
   font-size: 0.9375rem;
 }
 
@@ -120,74 +163,171 @@ body {
   color: var(--fg);
   font-weight: 700;
   scroll-margin-top: 5rem;
+  position: relative;
+}
+.markdown-body h1 .anchor,
+.markdown-body h2 .anchor,
+.markdown-body h3 .anchor,
+.markdown-body h4 .anchor {
+  text-decoration: none;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.2s;
+  position: absolute;
+  left: -1.2em;
+  width: 1.2em;
+  text-align: center;
+}
+.markdown-body h1:hover .anchor,
+.markdown-body h2:hover .anchor,
+.markdown-body h3:hover .anchor,
+.markdown-body h4:hover .anchor {
+  opacity: 1;
 }
 
-.markdown-body h1 { font-size: clamp(1.5rem, 4vw, 1.875rem); margin: 2rem 0 1rem; }
+.markdown-body h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid var(--accent);
+  border-image: linear-gradient(90deg, var(--accent), transparent) 1;
+}
 .markdown-body h2 {
   font-size: clamp(1.25rem, 3vw, 1.5rem);
-  margin: 1.5rem 0 0.75rem;
-  padding-bottom: 0.5rem;
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.4rem;
   border-bottom: 1px solid var(--border);
 }
-.markdown-body h3 { font-size: clamp(1.125rem, 2.5vw, 1.25rem); margin: 1.25rem 0 0.5rem; }
+.markdown-body h3 {
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+  margin: 1.5rem 0 0.5rem;
+}
 
-.markdown-body p { margin: 0.75rem 0; line-height: 1.75; }
-.markdown-body ul, .markdown-body ol { margin: 0.75rem 0; padding-left: 1.5rem; }
-.markdown-body li { margin: 0.25rem 0; }
+.markdown-body p {
+  margin: 0.85rem 0;
+  line-height: 1.8;
+  color: var(--fg);
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+.markdown-body ul { list-style-type: disc; }
+.markdown-body ol { list-style-type: decimal; }
+.markdown-body li { margin: 0.3rem 0; }
+.markdown-body li > p { margin: 0.3rem 0; }
 
 .markdown-body a {
   color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.2s;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  transition: border-color 0.2s;
 }
-.markdown-body a:hover { color: var(--accent2); }
+.markdown-body a:hover {
+  border-bottom-color: var(--accent);
+}
 
 .markdown-body blockquote {
-  border-left: 4px solid color-mix(in oklab, var(--accent) 30%, transparent);
-  padding: 0.5rem 1rem;
-  margin: 1rem 0;
-  background-color: color-mix(in oklab, var(--muted) 50%, transparent);
-  border-radius: 0 0.5rem 0.5rem 0;
-  font-style: italic;
+  border-left: 4px solid var(--accent);
+  padding: 0.75rem 1.25rem;
+  margin: 1.25rem 0;
+  background: color-mix(in oklab, var(--muted) 50%, transparent);
+  border-radius: 0 0.75rem 0.75rem 0;
   color: var(--muted-fg);
 }
+.markdown-body blockquote p:first-child { margin-top: 0; }
+.markdown-body blockquote p:last-child { margin-bottom: 0; }
 
-.markdown-body code {
+.markdown-body code:not(pre code) {
   font-family: var(--font-mono);
-  font-size: 0.85em;
-  padding: 0.15em 0.4em;
-  background-color: var(--muted);
+  font-size: 0.82em;
+  padding: 0.15em 0.45em;
+  background: color-mix(in oklab, var(--muted) 70%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
   border-radius: 0.375rem;
+  color: var(--accent);
+  word-break: break-word;
 }
 
 .markdown-body pre {
-  background-color: var(--muted);
-  padding: 1rem 1.25rem;
+  background: #282c34 !important;
+  padding: 1.25rem 1.5rem;
   border-radius: 0.75rem;
   overflow-x: auto;
-  margin: 1rem 0;
-  border: 1px solid var(--border);
-  font-size: 0.825rem;
+  margin: 1.25rem 0;
+  font-size: 0.8125rem;
   line-height: 1.6;
+  border: 1px solid var(--border);
+  position: relative;
 }
 .markdown-body pre code {
-  background: none;
+  background: none !important;
   padding: 0;
   font-size: inherit;
+  color: inherit;
+  border: none;
 }
 
-.markdown-body img { border-radius: 0.75rem; margin: 1.5rem 0; max-width: 100%; }
+.markdown-body img {
+  border-radius: 0.75rem;
+  max-width: 100%;
+  margin: 1.5rem auto;
+  display: block;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
 
-.markdown-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.875rem; }
-.markdown-body th, .markdown-body td {
+.markdown-body table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.25rem 0;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
   border: 1px solid var(--border);
-  padding: 0.5rem 0.75rem;
-  text-align: left;
 }
-.markdown-body th { background-color: var(--muted); font-weight: 600; }
+.markdown-body th,
+.markdown-body td {
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.markdown-body thead th {
+  background: color-mix(in oklab, var(--muted) 60%, transparent);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted-fg);
+}
+.markdown-body tbody tr:last-child td {
+  border-bottom: none;
+}
+.markdown-body tbody tr:hover {
+  background: color-mix(in oklab, var(--muted) 30%, transparent);
+}
 
-.markdown-body hr { margin: 2rem 0; border-color: var(--border); }
+.markdown-body hr {
+  margin: 2rem 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.markdown-body ul.contains-task-list {
+  list-style: none;
+  padding-left: 0;
+}
+.markdown-body .task-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.markdown-body .task-list-item input[type="checkbox"] {
+  accent-color: var(--accent);
+}
 
 /* ===== Custom Utilities ===== */
 @utility gradient-text {
