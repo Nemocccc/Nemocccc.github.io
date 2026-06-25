@@ -383,7 +383,7 @@ clean:
 however, this can be totally different in windows system.
 
 so, lets join Cmake.
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"make_learning","title":"...other commands","date":"2026-06-25T00:00:00.000Z","tags":["make","learning"],"category":"devops","description":"for C/C++, u define commands in ``Makefile``, like ``Dockerfile``","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"_luDRK3FHCi1ZAtQtvzys"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"make_learning","title":"...other commands","date":"2026-06-25T00:00:00.000Z","tags":["make","learning"],"category":"devops","description":"for C/C++, u define commands in ``Makefile``, like ``Dockerfile``","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ab-t6TfSEo832gIIxQe52"}
 4:["$","script","script-0",{"src":"/_next/static/chunks/3zo6056xuvsb1.js","async":true}]
 5:["$","script","script-1",{"src":"/_next/static/chunks/2c9lkvph-ta0n.js","async":true}]
 6:["$","script","script-2",{"src":"/_next/static/chunks/3jf8q_9-ia3no.js","async":true}]

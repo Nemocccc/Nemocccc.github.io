@@ -287,7 +287,7 @@
          ``COPY ../package.json /app`` and ``COPY /opt/xxxx /app`` can't work.
          for more, see [[使用 Dockerfile 定制镜像 | Docker — 从入门到实践 (gitbook.io)](https://yeasy.gitbook.io/docker_practice/image/build)]
 
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"docker_learning","title":"***docker***","date":"2026-06-25T00:00:00.000Z","tags":["docker","learning"],"category":"devops","description":"- > windows desktop version","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"_luDRK3FHCi1ZAtQtvzys"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"docker_learning","title":"***docker***","date":"2026-06-25T00:00:00.000Z","tags":["docker","learning"],"category":"devops","description":"- > windows desktop version","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ab-t6TfSEo832gIIxQe52"}
 4:["$","script","script-0",{"src":"/_next/static/chunks/3zo6056xuvsb1.js","async":true}]
 5:["$","script","script-1",{"src":"/_next/static/chunks/2c9lkvph-ta0n.js","async":true}]
 6:["$","script","script-2",{"src":"/_next/static/chunks/3jf8q_9-ia3no.js","async":true}]
