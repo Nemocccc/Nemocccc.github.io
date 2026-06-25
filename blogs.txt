@@ -1,0 +1,4321 @@
+1:"$Sreact.fragment"
+2:I[59919,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"ThemeProvider"]
+3:I[88343,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"I18nProvider"]
+4:I[68463,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"default"]
+5:I[57986,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"default"]
+6:"$Sreact.suspense"
+7:I[84439,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js","/_next/static/chunks/2h_2mq1uhpalj.js","/_next/static/chunks/0a9exhvd9af8q.js"],"default"]
+1e:I[60199,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"default",1]
+:HL["/_next/static/chunks/04d54dkerqjcg.css","style"]
+:HL["/_next/static/media/797e433ab948586e-s.p.0r6juujl39pe6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+8:T22e9,
+### cmake-learn-by-doing
+
+##### source-link: [CMake 入门实战 | HaHack](https://www.hahack.com/codes/cmake)
+
+
+
+#### introduction
+
+cmake is a system independent automatic construct tool.
+
+use cmake generating Makefile in linux:
+
+1. write `CMakeLists.txt`
+2. `cmake PATH` or `ccmake PATH`, the differences is that ccmake provide an interactive UI.
+3. use `make PATH` to compile.
+
+
+
+#### single-source-file
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+add_executable(hello main.cpp)
+```
+
+than:
+
+```bash
+make
+
+./hello
+```
+
+
+
+#### mutiple-source-files
+
+file tree:
+
+```
+./t1
+	|
+	+--- main.cpp
+	|
+	+--- math.cpp
+	|
+	+--- math.h
+```
+
+then change `CMakeLists.txt`:
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+add_executable(hello main.cpp math.cpp)
+```
+
+if too much source files, use
+
+```cmake
+aux_source_directory(<dir> <variable>)# clollect address of all source files and save the infomation to variable, without filter, which means these files could include suffixless files like makefile and CMakeLists.txt itself.
+```
+
+CMakeLists.txt:
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+aux_source_directory(. DIR_SRCS)
+
+add_executable(hello main.cpp math.cpp)
+```
+
+to directly collect files with appointed suffix use file(GLOB) or file(GLOB_RECURSE):
+```cmake
+file(GLOB <variable> <globbing-expression>) #search files in current dir that matches globbing-expression.
+file(GLOB_RECURSE <variable> <globbing-expression>) #also search child-dir resursively.
+```
+
+
+
+#### multiple-directories-and-multiple-source-files
+
+```
+./t1
+	|
+	+--- main.cpp
+	|
+	+-- /math
+        |
+        +--- math.cpp
+        |
+        +--- math.h
+```
+
+in this case, we need to write CMakeLists.txt for both root dir and math dir:
+
+root dir:
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+aux_source_directory(. DIR_SRCS)
+
+add_executable(hello main.cpp math.cpp)
+
+add_subdirectory(math) #add sublibraries so that CMakeLists.txt in sublibrarities can also be processed
+
+target_link_libraries(hello MathFunctions)#tell cmake that main should have to link a library named MathFunctions
+```
+
+sub dir:
+
+```cmake
+aux_source_directory(. DIR_MATH_SRCS)
+
+# compile the source files in the src directory into a static link library
+add_library(MathFunctions ${DIR_MATH_SRCS})
+```
+
+
+
+####  customize-compilation-options
+
+`configure-file`:
+
+```
+configure_file(
+    "${SOURCE_FILE}"  # source files address
+    "${DESTINATION_FILE}"  # target files address
+    [COPYONLY]  # selectable, if selected, cmake simply copy files, without variable substitution
+)
+```
+
+`option`:
+
+```
+option(<OPTION_NAME> "<help description>" <VALUE>)
+```
+
+
+
+root CMakeList.txt:
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+# add a configure header, to process cmake settings toward source code, so that we can 
+configure_file(
+    "${PROJECT_SOURCE_DIR}/config.h.in" #${PROJECT_SOURCE_DIR} is an auto variable regarding source address.
+    "${PROJECT_BINARY_DIR}/config.h"
+)
+
+#define weather to use our self-define mathfunction library
+option(
+    USE_MYMATH
+    "Use provided math implementtation" ON
+)
+
+# weather to add mathfunctions library
+if (USE_MYMATH)
+    include_directories("${PROJECT_SOURCE_DIR}/math")
+    add_subdirectory(math)
+    set(EXTRA_LIBS ${EXTRA_LIBS} MathFunctions)
+endif(USE_MYMATH)
+
+aux_source_directory(. DIR_SRCS)
+
+add_executable(hello main.cpp)
+
+target_link_libraries(hello ${EXTRA_LIBS})#tell cmake that main should have to link a library named MathFunctions
+```
+
+in `main.cpp`:
+
+```cpp
+// main.cpp
+
+#include<iostream>
+#include"config.h" //auto-generate by cmake from config.h.in, if not include, `#ifdef` always false
+
+#ifdef USE_MYMATH
+    #include "math/math.h"
+#else 
+    #include <math.h>
+#endif
+
+int main(){
+    std::cout << "hello world" << std::endl;
+    
+#ifdef USE_MYMATH
+    math();
+#else 
+    std::cout << "im standard math lib" << std::endl;
+#endif
+
+    return 0;
+}
+```
+
+in `config.h.in`:
+
+```
+#cmakedefine USE_MYMATH
+```
+
+then on bash:
+
+`cmake .` or `cmake -USE_MYMATH OFF` default value is ON.
+
+
+
+#### install-and-test
+
+install() in cmake use to appoint files, libraries and executable files that should be copied to the system installation directory during the build process. 
+
+add the following to math/CMakeLists.txt:
+
+```cmake
+#specify math library's installing address
+install (TARGETS math DESTINATION bin)
+install (FILES math.h DESTINATION include)
+```
+
+add the following to the ending of root CMakeLists.txt:
+
+```cmake
+install (TARGETS hello DESTINATION bin)
+install (FILES "${PROJECT_BINARY_DIR}/config.h" DESTINATION include)
+```
+
+then hello and libmath.o that generated will be copied to /usr/local/bin, and math.h and config.h will be copied to /usr/local/include. /usr/local is the default installing root address,we can modify variable CMAKE_INSTALL_PREFIX to appoint the target address.
+
+---
+
+cmake provide a tool named CTest ,  if we want our project has a test function, what we need to do is to  add `add_test` in our `CMakeList.txt`.
+
+```cmake
+add_test(NAME <test_name>
+          COMMAND <command> [<arg1> <arg2> ...]
+          [CONFIGURATIONS <config1> [<config2>...]]
+          [WORKING_DIRECTORY <dir>]
+          [COMPILE_DEFINITIONS <def1> [<def2>...]])
+```
+
+in CMakeLists.txt:
+
+```cmake
+enable_testing()
+
+# test weather testing program can run successfully
+add_test (test_run hello) #if hello need parameter, use add_test (test_run hello <pm1> ...)
+
+#test weather help-info can prompt normally
+add_test (test_usage hello)
+set_tests_properties (test_usage
+	PROPERTIES PASS_REGULAR_EXPRESSION "Usage: .* base exponent") #`PASS_REGULAR_EXPRESSION`: check if the output contians the string "Usage: .* base exponent"
+	
+#add_test (test_case_1 hello pm1 pm2)
+#set_tests_properties (test_case_1
+#	PROPERTIES PASS_REGULAR_EXPRESSION "xxx")
+#
+#add_test
+#......
+```
+
+auto-test: **write macro**
+
+:star:example:star:
+
+```cmake
+macro (do_test arg1 arg2 result)#numbers of args depend on your function.
+  add_test (test_${arg1}_${arg2} Demo ${arg1} ${arg2})
+  set_tests_properties (test_${arg1}_${arg2}
+    PROPERTIES PASS_REGULAR_EXPRESSION ${result})
+endmacro (do_test)
+
+#do_test（arg1 arg2 "part of target")
+```
+
+
+
+#### support-gdb
+
+active `-g` option in debug mode.
+
+```cmake
+#setup compile options for different build type
+set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -00 -Wall -g -ggdb")
+set(CMAKE_CXXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -03 -Wall")
+```
+
+then you can construct your project in Debug mode:
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Debug .
+make
+```
+
+start your executable files:
+
+```bash
+gdb ./your exectable
+```
+
+
+
+#### adding-environment-detection
+
+excample: when we need to use pow() function, first we need to check weather system contains pow()
+
+`check_function_exists(<function_name> <variable>)` if function exists, the value of variable will be TRUE.
+
+- add CheckFunctionExists.cmake macro at root CMakeLists.txt before `configure_file`
+  ```cmake
+  #check if system support pow() function
+  include (${CMAKE_ROOT}/Modules/CheckFunctionExists.cmake)
+  check_function_exists (pow HAVE_POW)
+  ```
+
+- modify config.h.in:
+  ```cmake
+  #cmakedefine HAVE_POW
+  ```
+
+- use macro and function in main.cpp, like:
+  ```c++
+  #ifdef HAVE_POW
+  	std::cout << "now we use standard function" << std::endl;
+  #else
+  	std::cout << "user define function" << std::endl;
+  #endif
+  ```
+
+  
+
+#### adding-version-number
+
+- ```cmake
+  project(<project name> VERSION x.x.x)
+  ```
+
+- ```cmake
+  #condition version
+  if (condition1)
+  	set(PROJECT_VERSION "1.0.0")
+  else()
+  	set(PROJECT_VERSION "1.0.0")
+  endif()
+  ```
+
+- ```cmake
+  set(<project name>_VERISON_MAJOR 1)
+  set(<project name>_VERSION_MINOR 0)
+  ```
+
+- ```cmake
+  #when store the version number in a single file
+  file(READ "version.txt" PROJECT_VERSION)
+  ```
+
+get version number in source code, for excample, cpp:
+
+```c++
+//config.h.in
+#define hello_VERSION_MAJOR @hello_VERSION_MAJOR@
+#define hellp_VERSION_MINOR @hello_VERSION_MINOR@
+```
+
+do not forget to add `#include "config.h"` in cpp file.
+
+
+
+#### generate-installer
+
+at the endding of root CMakeLists.txt, add:
+
+```cmake
+#build a CPack installer
+include (InstallRequiredSystemLibraries)
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_PACKAGE_NAME "hello")
+set(CPACK_RESOURCE_FILE_LICENSE
+	"${CMAKE_CURRENT_SOURCE_DIR}/License,txt")#ser license
+set(CPACK_PACKAGE_VERSION "${VERSION}")
+#set(CPACK_PACKAGE_VERSION_MAJOR "${hello_VERSION_MAJOR}")#some CPack variable
+#set(CPACK_PACKAGE_VERSION_MINOR "${hello_VERSION_MINOR}")
+set(CPACK_PACKAGE_CONTACT "Nemo 1774747097@qq.com")
+include(CPack)
+```
+
+generate binary installer:
+
+```bash
+cpack -C CPackConfig.cmake
+```
+
+generate source code installer:(need compile and install by yourself)
+
+```bash
+cpack -C CPackSourceConfig.cmake
+```
+
+
+
+#### *migrate-projects-from-other-platforms-to-CMake*
+
+- autotools
+- qmake
+- ...
+9:T529,
+> ***sudo apt install Cmake***
+
+### Cmake
+
+***[CMake Tutorial — Mastering CMake](https://cmake.org/cmake/help/book/mastering-cmake/cmake/Help/guide/tutorial/index.html#introduction)***
+
+
+
+### `CMakeLists.txt`
+
+`cmake_minimum_required()`: Run Cmake function with a compatible version od Cmake.
+
+> - ```cmake
+>   cmake_minimum_required(VERSION <min>[...<policy_max>] [FATAL_ERROR])
+>   ```
+
+`project()`: start a project and set the name, other project level info. 
+
+`add_executable()`: create an executable file using the specified source code files.
+
+
+
+#### step1:  basic starting point
+
+most simple CMakeLists.txt:
+
+```cmake
+cmake_minimum_required(VERSION 3.10)
+
+#set the project name
+project(Tutorial)  #you can also use PROJECT, cmake is case insensitive
+
+#add the executable
+add_executable(Tutorial tutorial.cxx)
+```
+
+
+
+#### adding a version number and configured header file
+
+set version number:
+
+```cmake
+project(tutorial VERSION 1.0)
+```
+
+configure a header file to pass version number to source code:
+
+```cmake
+configure_file(TutorialConfig.h.in TutorialConfig.h)
+```
+
+the config file will be written into the binary tree. add that directory to the list of paths to search for include  files. add the following:
+
+```cmake
+target_include_directories(Tutorial PUBLIC 
+							"${PROJECT_BINARY_DIR}"
+							)
+```
+
+a:T1998,
+### ***Regex***
+
+[**学习、受启发于deerchao的教程**](https://deerchao.cn/tutorials/regex/regex.htm)
+
+> what is regex? something similer to wildcard, but more complex, more flexible and strong.
+
+**matecharacter**: special character that has special rule to match characters.
+
+> `.`: match anycharacters except `\n`
+>
+> `\w`: match letters, numbers, _ (and chinese), [a-z0-9A-Z_]
+>
+> `\s`: match blank characters include `\n`
+>
+> `\d`: match numbers
+>
+> `\b`: match the beginning or ending of characters, autually, it matches a place that one or both of former and latter character match `\w`
+>
+> `^`: match the beginning of characters
+>
+> `$`: match the ending of characters
+
+examples:
+
+`\bhi\b`: precise match "hi"
+
+`\bhi\b.*\bLucy\b`: match "hi [...] lucy"
+
+`\ba.*\b`: match words start with letter a
+
+`\b\w{6}\b`: match words with 6 characters
+
+`\b\d{5, 12}\b`: match numbers that no less than 5 digits and no more than 12 digits.
+
+`\b\d{5, 12}@qq.com\b`: match QQ mail box
+
+`^\w*@\w{?, ?}.\w{2, ?}$`: match any mail box(i have forgot how many characters a mail boox have).
+
+**meaning-transform**: `\`, transform matecharacter into normal character if you want the matecharacter itself, including `\\`
+
+example: `\($*\).o`: ?
+
+**repetition**: \
+
+> `*`: repeat zero or more times
+>
+> `+`: repeat one or more times
+>
+> `?`: repeat 0 or 1 times
+>
+> `{n}`: repeat n times
+>
+> `{n,}`: repeat n or more times
+>
+> `{n, m}`: repeat no less then n times but no more than m times
+
+example: `^\w+`: match the first words in a sentense.
+
+**character class**: to match none-matecharacters
+
+`[aeiou]`, match a, e, i, o, u
+
+`[.?!]`: match punctuation like ., ?, !
+
+`[0-9]`: equal to `\d`
+
+[a-z0-9A-Z_]: equal to `\w`
+
+`\(?0\d{2}[)-]?\d{8}`: match phonre numbers start with 0
+
+**if-else**: |
+
+`\(?0\d{2}[)-]?\d{8}` actually can match characters (023-32142131, which is the wrong format.
+
+the right answer is `\(0\d{2}\)[- ]?\d{8}|0\d{2}[- ]?\d{8}`
+
+however, you should focus on the order, for example:
+
+`\d{5}-\d{4}|\d{5}` is right, but `\d{5}|\d(5)-\d{4}` is wrong, because what matches `\d{5}-\d{4}` can match `\d{5}`, so it match `\d{5}` and would not think about the other branches. just like if-else conditions in C++ and python.
+
+**group**: mostly for repetition of multi-characters, and auto-distribute group codes for groups, code 0 refer to the whole expression. 
+
+`(\d{1,3}\.){3}\d{1,3}` repeat 3 times for `\d{1, 3}\.` .
+
+`((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)`: matches right ip address. to under stand this expression, understanding `2[0-4]\d|25[0-5]|[01]?\d\d?`id the most important.
+
+**autonymy**: like ! in python and C++
+
+`\W`（capital, follow the same): `!\w`
+
+`\S` , `\D` , `\B`, 
+
+`[^exp]`: matches any characters except e, x, p
+
+**backrefer**
+
+by default, from lest to eight , marked by `(`, the group would automatically get a code from 1 on.
+
+`\b(\w+)\b\s+\1\b` can match repeated words like `go go`. `\1` here is the content that `\w+` matched such as `go`.
+
+`\b(?<Word>\w+)\b\s+\k<Word>\b`: match repeated words and assign the group with code `word`.
+
+- capture: 
+
+  > (exp): match and capture characters **into groups** and auto assign code.
+  >
+  > (?<name>exp): match and capture cahracters and assign the group `name` as code.
+  >
+  > (?:exp): match but not capture characters and also not assign codes.
+
+- assert: match a position but not consume it.
+
+  > (?=exp): matches location before exp, like ^.
+  >
+  > - `\b\w+(?=ing\b)` match characters before ing, such as:singing -> sing, dancing -> danc
+  >
+  > (?<=exp): matches location after exp,. like $.
+  >
+  > - `(?<=\bre)\w+\b` match characters after re, such as: reading -> ading, reset ->set.
+  >
+  > `(?<=\s)\d+(?=\s)`matches numbers that barrier by blank character.
+  >
+  > (?!exp): match a location that not follow by exp
+  >
+  > - `\b\w*q[^u]\w*\b`: matches words that have a q that without a u bellow, however it can also match a word that the q is the last letter of the word, for example, it can match`iraq fighting`. and `\b\w*q(?!u)\w*\b` is what you need because (?!u) would not consume the letter bellow the q.
+  > - `\d{3}(?!\d)` match 3 numbers without a number bellow.
+  > - `\b((?!abc)\w)+\b` match a word that do not contain the `abc`.
+  >
+  > (?<!exp): match a location that not following exp
+  >
+  > - `(?<![a-z])\d{7}` matches 7 numbers without lowercase letter on the front.
+  >
+  > `(?<=<(\w+)>).*(?=<\/\1>)` matches content in simple HTML label without attributes.
+
+**comment**
+
+use (?#comment) to contain comment like (?#这是注释)
+
+active "ignore blank characters in mode" choice is recommended. and so that you can write commend like this:
+```
+(?<=    # 断言要匹配的文本的前缀
+<(\w+)> # 查找尖括号括起来的内容
+        # (即HTML/XML标签)
+)       # 前缀结束
+.*      # 匹配任意文本
+(?=     # 断言要匹配的文本的后缀
+<\/\1>  # 查找尖括号括起来的内容
+        # 查找尖括号括起来的内容
+)       # 后缀结束
+```
+
+**Greed and laziness**
+
+regex always try to match as much as characters, for example, `aabab`, a.*b can match the whole characters but not only `aab`,  chich called greed.
+
+sometimes we need regex match as less as it can. then we can simply add `?` bellow.
+
+a.*?b match `aab`.
+
+`*?`, `+?`, `??`, `{n, m}`, `{n,}`
+
+**processing option**
+
+`IgnoreCase`: ignore differences between capital letters and lowercase letters.
+
+`Multiline`: change `^` and `$` . now they the beginning and ending of one line, not words.
+
+`Singleline(dotAll)`: change `.`, make it can match all characters (including `\n`), and is not limited in one line.
+
+`IgnorePatternWhitespace`: ignore unescaped white space in expression and active comments marked by #.
+
+`ExplicitCapture`: only capture groups that have been explicitly tag.
+
+***recursive matching**
+
+match nesting multi-levels structure. but hard. omit.
+
+``(?`group`)``, ``(?`-group`)``, ``(?(group)yes|no)``, (?!)
+
+example:
+
+```
+<                   #最外层的左括号
+  [^<>]*            #它后面非括号的内容
+  (
+      (
+        (?'Open'<)  #左括号，压入"Open"
+        [^<>]*      #左括号后面的内容
+      )+
+      (
+        (?'-Open'>) #右括号，弹出一个"Open"
+        [^<>]*      #右括号后面的内容
+      )+
+  )*
+  (?(Open)(?!))     #最外层的右括号前检查
+                    #若还有未弹出的"Open"
+                    #则匹配失败
+
+>                #最外层的右括号
+```
+
+### ***others***:
+
+![other grammar](./picture/regex_other_grammar.png)
+
+b:T9f9,
+- #### Monte Carlo
+
+  - Probability approximation
+  - definite integral approximation
+  - Expectation approximation
+  - stochastic gradient
+    - Stochastic gradient allows for faster approximation of results
+
+- ### Basic concepts of reinforcement learning
+
+  - #### markov decision process, MDP
+  
+    - agents interact with the environment
+    - agents makes decisions and actions
+    - environment act as rules in the interaction
+    - state: all the information for one frame
+    - state space: a set of state(limited or infinite countable)
+    - action: agents' s decision base on current state
+    - action space: a set of possible decisions
+    - **reward**: value of the decision, defines by us.
+    - **state transition**:
+      - Deterministic state transfer is a special case of stochastic state transfer
+  
+  - policy: agents make decision base on the state.
+  
+    - > The goal of reinforcement learning is to obtain a strategy function,the strategy can be deterministic or stochastic.
+  
+    - stochastic policy:  input state, output possibility of actions base on the state (probability density function).
+  
+    - deterministic policy: input state, output deterministic action instead of possibility (0-1 density function) - > a little similar to max function.
+  
+    - agent environment interaction: agent make decision base on the possibility, then programs calculate the new state and return a reward for agent.
+  
+  - stochasticity: action and state are the sources of stochasticity.
+  
+    - > markov property: the next state only relevant with the state and action now, and irrelevant with state and action before.
+  
+    - trajectory: all the actions, states, rewards that observable for agent in one episode.
+  
+  - return and discounted return: 
+  
+    > add up rewards in an episode. consist of return and discounted return(more often)
+  
+    - return : discount factor = 1
+    - discounted return : discounted factor < 1
+    - stochasticity : fundamentally because of the stochasticity of action and state.
+    - finite-horizon MDP and infinite-horizon MDP:
+      - finite-horizon MDP has a terminal state of one episode.
+      - infinite-horizon MDP should attach a discounted return that smaller than 1 or its return can go infinite.
+  
+  - value function
+  
+    - > expectation of return, reflecting the  current situation good or bad, the larger it is, the better the current situation
+  
+    - action-value function: the result of Q(action-value function) is the expectation of U(discounted return) in current situation.c:T23c6,
+## ***docker***
+
+- > windows desktop version
+
+- install directly from official website
+
+- or run ` winget install Docker.DockerDesktop ` on powershell
+
+- in this way your docker'root is in windows but not wsl-ubuntu, all your commands should be executed on a windows terminal, for example, ` sudo systemctl restart docker ` on linus should be `Restart-Service docker` on windows or you can just restart it on docker desktop' s UI
+
+- mirror gas pedal
+
+  - docker desktop -> settings ->  Use the wsl2 based engine
+
+  - -> resources -> change dick image location
+
+  - -> docker engine ->
+
+  - ```json
+    {
+        "builder": {
+          "gc": {
+            "defaultKeepStorage": "20GB",
+            "enabled": true
+          }
+        },
+        "experimental": true,
+        "registry-mirrors": [
+          "https://hub-mirror.c.163.com",
+          "https://mirror.baidubce.com",
+          "https://dzoprv55.mirror.aliyuncs.com"
+        ]
+    }
+    ```
+
+  - -> APPLY & RESTART(lower right)
+
+- get image
+
+  - ```bash
+    $ docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签] 
+    ```
+
+  - such as `$ docker pull ubuntu:22.04`
+
+  - for more `$ docker pull --help`
+
+- run
+
+  - ```bash
+    docker run -it --rm ubuntu:22:04 bash # ``--rm`` here means remove docker after exit
+    		  
+    docker run ubuntu:18.04 /bin/echo 'Hello world'
+    		  
+    docker run -t -i ubuntu:18.04 /bin/bash
+    ```
+
+  - `-i`: interactive
+
+  - `-t`: open terminal (pseudo-tty)
+
+  - ```bash
+    $ docker container start # start exited docker
+    		  
+    ps | top # list pocesses
+    ```
+
+  - `-d`:guarded state operation
+
+  - without `-d`:
+
+    - ```bash
+      $ docker run ubuntu:18.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
+      hello world
+      hello world
+      hello world
+      hello world
+      ```
+
+  - with `-d`:
+
+    - ```bash
+      $ docker run -d ubuntu:18.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
+      			  77b2dc01fe0f3f1265df143181e7b9af5e05279a884f4776ee75350ea9d8017a
+      ```
+
+  - to see docker info: `docker container ls`
+
+  - to see output of docker: `docker container log`
+
+  - to go into containers that was running background (start with `-d` parameters)
+
+    - `docker attach` or `docker exec`(recommened)
+
+    - `docker attach` - example:
+
+      - ```bash
+        docker run -d ubuntu
+        				  
+        docker contianer ls
+        				  
+        docker attach xxx
+        root@xxx:/#
+        ```
+
+      - notice: if you exit from this terminal, it could cause the stop of docker container
+
+    - `docker exec` -example:
+
+      - ```bash
+        docker run -d ubuntu
+        				  
+        docker container ls
+        				  
+        docker exec -i xxx bash # start bash shell in interative mode
+        				  
+        docker exec -it xxx bash
+        ```
+
+      - if you exit from this bash, it could not cause the stop of docker container, this is why we recommend `docker exec`.
+
+- stop container
+
+  - ```bash
+    docker container stop # stop a runing container
+    		  
+    exit # stop the terminal
+    		  
+    docker container ls -a # view containers stopped
+    		  
+    docker container restart # stop a container, then restart it.
+    ```
+
+- export docker image && import
+
+  - ```bash
+    docker container ls -a
+    		  
+    docker export [CONTAINER ID] > xxx.tar
+    ```
+
+  - ```bash
+    cat ubuntu.tar | docker import - test/ubuntu:v1.0
+    		  
+    docker image ls
+    		  
+    docker import http://example.com/exampleimage.tgz example/imagerepo # import container from certain URL or dictonary
+    ```
+
+- delete containers
+
+  - ```bash
+    docker container rm xxx
+    		  
+    docker container prune
+    ```
+
+- list docker images
+
+  - ```
+    docker image ls
+    		  
+    dcoker system df
+    		  
+    docker image ls -f dangling=true  # should dangling images
+    		  
+    docker iamge prune # delete dangling image
+    		  
+    # `` docker image ls `` only shows top images, if you want to see all images including middle images, run
+    docker iamge ls -a
+    		  
+    docker iamge ls ubuntu
+    		  
+    docker image ls ubuntu:22.04
+    		  
+    docker image ls -f since=mongo:3.2 # filter since/before
+    		  
+    docker image ls -f label=com.example.version=0.1
+    		  
+    docker iamge ls -q # if you want to delete some iamges
+    		  
+    docker image ls --format "{{.ID}}: {{.Repository}}"
+    		  
+    docker image ls --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}"
+    ```
+
+- docker delete
+
+  - ```bash
+    		  docker image ls
+      		  
+    docker image rm xxx #generally speaking, only the first three characters of IMAGE ID is enough,such as ``docker image rm 501``
+    		  
+    docker image rm centos
+    		  
+    docker image ls --digest
+    docker image rm node@xxx:xxx #xxx:xxx is the digest of image
+    		  
+    docker image rm $(docker image ls -q [repo's name])
+    docker image rm $(docker image ls -q -f before=mongo:3.2)
+    ```
+
+- `docker search` && `docker pull`
+
+- `docker push`
+
+  - ```bash
+    docker tag REPOSITORY:TAG docker-hub-username/REPOSITORY:TAG
+    		  
+    docker image ls
+    		  
+    docker push docker-hub-username/REPOSITORY:TAG
+    		  
+    docker search docker-hub-username
+    ```
+
+- customize images
+
+  - ``git commit``  is not recommended as it can contain a lot of thing that are irrelevant and useless for your image. what's worse, the process you construct the image is invisible for everyone else. the image can go heavier over time. because the result of any modification on image is simply to mark, add, or modify the current layer without altering the previous layer.
+
+  - [x] we recommend to use **Dockerfile**, as a bash, we write every commends needed to construct the image on this file, so that it is visible for everyone to see the construction of the image. thus we can Optimize the construction of images to achieve light-weighting
+
+    - 1. make  a new **empty** dictionary, and name it **Dockerfile**
+         ```bash
+         mkdir [project]
+         cd [project]
+         touch Dockerfile
+         ```
+
+         and in Dockerfile:
+
+      2. ``FROM basic-image`` **important and must be placed at the beginning of file**
+         and particularly, ``FROM scratch`` : scratch is an empty(only with some matedata in it) virtual image, in this image, you first ``RUN`` is the first layer of the image.
+
+      3. ``RUN xxx``:
+         when you execute a ``RUN``, you construct a new layer of image.
+         so the number of ``RUN`` is the fewer the better. for example:
+
+         - use
+           ```bash
+           FROM debian:stretch
+           
+           RUN set -x; buildDeps='gcc libc6-dev make wget' \
+               && apt-get update \
+               && apt-get install -y $buildDeps \
+               && wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz" \
+               && mkdir -p /usr/src/redis \
+               && tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \
+               && make -C /usr/src/redis \
+               && make -C /usr/src/redis install \
+               && rm -rf /var/lib/apt/lists/* \
+               && rm redis.tar.gz \
+               && rm -r /usr/src/redis \
+               && apt-get purge -y --auto-remove $buildDeps
+           ```
+
+         - instead of:
+           ```bash
+           FROM debian:stretch
+           
+           RUN apt-get update
+           RUN apt-get install -y gcc libc6-dev make wget
+           RUN wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz"
+           RUN mkdir -p /usr/src/redis
+           RUN tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1
+           RUN make -C /usr/src/redis
+           RUN make -C /usr/src/redis install
+           ```
+
+         as you can see,  
+
+         - [x] it is without necessity to build a lot of layers.
+         - [x] Getting into the habit of line breaks for different commands
+         - [x] You can also see that at the end of this set of commands the command to clean up your work has been added, removing the software that was needed in order to compile the build, cleaning up all the files that were downloaded and expanded, and also cleaning up the apt cache files. This is a very important step, as we said before, images are stored in multiple tiers, and what is in each tier does not get deleted in the next tier, it stays with the image. So when the image is built, it is important to make sure that each tier only adds what really needs to be added, and anything extraneous should be cleaned up.
+
+      4. In the directory where the **Dockerfile** file is located, execute the:
+         ```bash
+         docker build -t TAGname .  # -t here maens tag
+         ```
+
+      5. the ``.`` at the end of ``docker build`` commend means current dictionary. it aims to Specify Context. after that, some of you commends only go into effect within the context, such as ``COPY``:
+         ``COPY ../package.json /app`` and ``COPY /opt/xxxx /app`` can't work.
+         for more, see [[使用 Dockerfile 定制镜像 | Docker — 从入门到实践 (gitbook.io)](https://yeasy.gitbook.io/docker_practice/image/build)]
+
+d:T2303,
+***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a8166aa)***
+
+
+
+
+
+
+
+``ll [dictionary]``:
+
+ - to see detail information of files in the dictionary
+
+ - example: 
+
+   ```bash
+   root@server-235-a4000:/anything# ll .
+   total 4
+   authority links owner group blocks last-interview
+   drwxrwxrwx 4 1021 1021   47 Jul  5 08:10 ./
+   drwxr-xr-x 1 root root 4096 Jul  6 03:45 ../
+   drwxrwxrwx 2 1021 1021   50 Jul  5 08:10 config/
+   drwxrwxrwx 2 root root   30 Jul  5 07:53 project/
+   ```
+
+ - in the first colume:
+   'd' means "dictionary"
+   'r' means "read"
+   'w' means "write"
+   "x" means "exec"
+   '-' means "no authority"
+
+---
+
+`cd -` : 
+
+ rapid change of work dictionary
+
+---
+
+`echo`
+
+-  `ech o   <string>` : print <string> directly on console.
+
+- `echo <string> > <file>` : overlay write <string> into files. 
+
+> ` >> ` : readdition mode
+
+
+---
+
+`cat`
+
+- `cat <files>` : print the content of files.  mostly use.
+
+- `cat < <files>` : similar to the former, seldom use, when use , mostly combined with  other commands likes `sort < hello.txt | cat`
+
+- `cat < <file1>  > <file2>` : reload input to file1, and reload output to file2, overwrite.
+
+---
+
+**shell script** : `touch ****.sh`
+
+- function:
+
+```bash
+**** () {
+	cd try_something/config/
+	docker exec -it anything_ubuntu22basic_image bash
+	# here, $0 is the name of function, $1~$9...refer to the parameters. 
+}
+```
+
+---
+
+
+```bash
+mkdir test
+cd $_
+```
+
+is equal to:
+
+```bash
+mkdir test
+cd test
+```
+
+`$_` is equal to `$1` (the first parameter) of the former expression.
+
+---
+
+`!!` , will be replaced by the former expression.
+
+for example, if your operation not permitted, you can `sudo !!`.
+
+```bash
+$ rmdir test
+operation not permitted
+$ sudo !! # is equal to sudo rmdir test here.
+```
+
+---
+
+`$?` refers to the exit status of your former commands
+
+```bash
+grep foobar sd.sh
+echo $? #if no foobar in sd.sh, it would be 1, if not, it would be 0.
+```
+
+---
+
+- `$#` :  The number of parameters of the command
+
+- `$$` : process id of the command of what is running.
+
+- `$@` : all  the arguments of the command.
+
+---
+
+`grep`
+
+- `docker-compose ps || grep Up` : find if the output of `docker-compose ps` contains 'Up'.
+
+- `grep <string> <filename>` : find <string> in <file>
+- `grep "pattern" file1 file2 file3` : find same "pattern0" in multiple files.
+- `grep -r "pattern" /path/to/directory` : find "pattern" in dir and subdir.
+- `grep --help`
+
+---
+
+`tail` : 
+
+- `tail --help`
+- `tail <file>` : print the last 10 lines of file(by default) -> in reverse order
+- `tail -n -20 <file>` : in order
+- `tail -f <file>` : always trace the latest content of file.
+
+---
+
+- `> / <` standard reload
+- `>> / <<` add reload
+- `2>` standard error *output* reload (no`2<`, not legal)
+- `&>`  standard *output* reload and standard error *output* reload (by default /dev/null)
+
+---
+
+`ls` : 
+
+- `ls *.sh` : find files with special suffix.
+
+- ```bash
+    mkdir project1 project2
+    mkdir project23
+    ls project?  #project1 project2
+    ls project?*   #project1 project2 project23
+    ```
+
+---
+
+`convert` : image processing
+
+- `convert input.jpg output.png` : change format.
+
+- `convert input.jpg -resize 800x600 output.jpg` : change height and width.
+
+- `convert input.jpg -crop 100x100+50+50 output.jpg` : cut image
+- `convert input.jpg -rotate 90 output.jpg` : rotate the image.
+- `convert input.jpg -colorspace Gray output.jpg` change color.
+- `convert input.jpg watermark.png -gravity south -composite output.jpg` use another iamge as watermark.
+- `convert image1.jpg image2.jpg -append output.jpg` : combine mult image into one.
+
+---
+
+`{}` : 
+
+1. **brace expansion**
+
+- `touch project{1, 2}/src/test/test{1, 2, 3}.py `: this can touch totally 6 files at two different directory.
+
+- `convert input.{png, jpg}` : ?
+- `touch {foo,bar}/{a..j}` : touch foo/a ~ foo/j , bar/a~bar/j
+- ```bash
+  touch foo/s bar/y
+  diff <(ls foo) <(ls bar)
+  ```
+- 
+
+---
+
+`diff` : 
+
+- `diff file1.txt file2.txt` : find the differents of two files.
+- `diff -rq dir1 dir2` : find the differents of files in two directories.
+- `diff --help`
+
+---
+
+`shellcheck` : shell/bash script debug tool
+
+- ```bash
+  sudo apt-get update && sudo apt-get upgrade
+  sudo apt-get install -y shellcheck
+  ```
+
+- `shellcheck script.py`
+
+- `shellcheck script1.sh script2.sh`
+
+- `shellcheck $(find . -name "*.sh")`
+
+- `shellcheck -s bash -e SC2046 script.sh`
+
+- `shellcheck script.sh > check_results.txt`
+
+---
+
+`man` : manual of commands.
+
+- `man ffmpeg` , `man rg` , `man tldr` and so on , run and u will know.
+
+---
+
+`find` :
+
+- `find . -name src -type d` : find dir that named as src in current dir
+
+- `find . -path '**/test/*.py' -type f` 
+- ` find . -mtime -1` : -mtime -> modify time | -1 -> last day.
+- `find . -name "*.tmp" -exec rm {} \` : `{}` -> all files find matched | `\` -> claim the end of `rm` command
+
+- **fd-find** : better then find
+
+---
+
+`$()` : Used for command substitution, that is, to assign the output of a command to a variable
+
+`${}` : Used for variable expansion, that is, inserting the value of a variable into a string.
+
+---
+
+`seq` : to generate a set of numbers.
+
+- `seq <options> <start> <end>`
+- `seq -f "%02g" 0 9`  : "%02g" => numbers is formatted as the smallest two-digit number
+
+---
+
+`sed`: `sed [options] 'command' [file]`
+
+- `s/pattern/replacement/flags`
+
+  ```bash
+  sed 's/oldtest/newtest/g' file.txt #g : global replace , i : ignore case
+  ```
+
+- `sed '/delete the line that match this text/d' file.txt` : yes, the line!
+
+  ```bash
+  zixing.liao@server-235-a4000:/DATACENTER1/zixing.liao/try_something/shellPrac/day3$ cat test.txt
+  hello world
+  llohe wldor
+  sdajkskdhakjd
+  zixing.liao@server-235-a4000:/DATACENTER1/zixing.liao/try_something/shellPrac/day3$ sed '/hello/d' test.txt
+  llohe wldor
+  sdajkskdhakjd
+  ```
+
+- `i\text`: insert text before matched line, `a\text`: insert text after matched line.
+
+  ```bash
+  sed '/match text/a\' #insert a new line after match line
+  ```
+
+- ```bash
+  sed '/match line/p' file.txt # print match words' line in file.txt
+  ```
+
+- `address1,address2 command`: line range
+
+  ```bash
+  sed -n '1,5p' file.txt # print line1~line5
+  ```
+
+- ```bash
+  sed -f script.sed file.txt # read commands from a script and deal file with these commands.
+  ```
+  
+- `df | sed '1d' | grep -v 'tmpfs' | awk '{print $NF}')`
+
+---
+
+`awk` : 
+
+1. To print a specific column:
+   ```bash 
+   awk '{print $column_number}' file
+   ```
+   - For example, print the second column in the file example.txt:
+     ```bash 
+     awk '{print $2}' example.txt
+     ```
+
+2. Number of statistical lines:
+   `awk 'END{print NR}' file`
+   - For example, count the number of lines in the file example.txt:
+     `awk 'END{print NR}' example.txt`
+3. Number of statistical columns:
+   `awk '{print NF}' file`
+   - For example, count the number of columns in the first row of the example.txt file:
+     `awk 'NR==1{print NF}' example.txt`
+4. Filter line:
+   `awk '/pattern/' file`
+   - For example, print the line containing "example" :
+     `awk '/example/' example.txt`
+5. Calculate the sum:
+   `awk '{sum += $column_number} END{print sum}' file`
+   - For example, calculate the sum of the third column in the file example.txt:
+     `awk '{sum += $3} END{print sum}' example.txt`
+6. Condition print:
+   `awk '$column_number > value {print $0}' file`
+   - For example, print the third column greater than 10 in the file example.txt:
+     `awk '$3 > 10 {print $0}' example.txt`
+
+---
+
+`stat` : `stat [options] <file>`
+
+- `stat file.txt`
+- `stat -h file.txt`
+- `stat -f /`
+- `stat --format="%A %n %s %w %u %g\n" file.txt`
+- `stat -c %a $F`
+
+---
+
+`rsync` : `rsync [options] <source> <target>`
+
+- `rsync -avz -e ssh /path/to/source user@remote:/path/to/destination`
+- `rsync -avz -e ssh user@remote:/path/to/source /path/to/destination`
+- `rsync -avu /path/to/source /path/to/destination`
+- `rsync -avz /path/to/source /path/to/destination`
+- `rsync -avhi /path/to/source /path/to/destination`
+- `rsync -avze 'ssh -i /path/to/private_key' /path/to/source user@remote:/path/to/destination`
+- `rsync -av --delete /path/to/source /path/to/destination`
+- `rsync -av --exclude='*.log' --exclude='/tmp/' /path/to/source /path/to/destination`
+
+---
+
+***it is very important to wrapped your shell variable with "" when you need to use it***
+
+1. prevent path expanding: 
+   - if value of variable contains space, tab and \n, it can cause some undefined actions.
+   - for example: if  `variable=your name`, and your command `cd $variable` is expanding to `cd your name`, and you know what will happen next, but `cd "$variable"` go as you want
+   - protect special symbols, see "$1."
+   - if value of variable is none, it can cause something you cannot imagine.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+shell script practice : [shell脚本一天一练-day1_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1ih4y1Y7nh/?spm_id_from=333.788&vd_source=8a614553fd42ac4044499e810a8166aa)
+e:T20e8,
+### make
+
+for C/C++, u define commands in ``Makefile``, like ``Dockerfile``
+
+***when you run ``make``, it will try to find Makefile in current dictionary,and run all commands in Makefile***
+
+***if u just want to run one of the commands, run``make [target]``***
+
+**Rule** : 
+
+```makefile
+target-file: prerequisites-1 prerequisites-1
+	commands
+```
+
+such as:
+
+```makefile
+x.txt: a.txt b.txt
+	cat a.txt b.txt > x.txt #合并a.txt,b.txt作为x.txt
+```
+
+**phony-target**
+
+```makefile
+# ...other commands
+
+clean:
+	rm -f xx.xxx   #ponder: could we run other commands in ``clean`` command?
+	
+# ...
+```
+
+such as:
+
+```makefile
+clean:
+	rm -f a.txt
+	rm -f b.txt
+```
+
+if u had made a ``clean.file`` it can disturb ``make`` recognizing ``clean`` command, or you can explicit declare:
+
+```makefile
+.PHONY: clean #tell make: do not recognize clean as a file
+clean:
+	...
+```
+
+other phony targets: ``install``
+
+**multi-rules**
+
+first, example:
+
+```makefile
+cd:
+	pwd
+	cd ..
+	pwd
+```
+
+result:
+
+```bash
+$ make cd
+pwd
+/home/ubuntu/makefile-tutorial/v1
+cd ..
+pwd
+/home/ubuntu/makefile-tutorial/v1
+```
+
+why the result of ``pwd`` is the same before and after the command ``cd ..``?
+
+because make isolate a shell environment for every commands, command like single `cd ..` would not influence the environment of other commands.
+
+to see right result, you can separate each successive command with `;` like:
+
+```makefile
+cd_ok:
+	pwd; \
+	cd .. ; \
+	pwd
+	echo "right way"
+```
+
+**do not print command(still print execute info)**
+
+add `@` before the target command:
+
+```makefile
+no_output:
+	@echo 'not display'
+	echo 'display'
+```
+
+run `make` and u will see:
+
+```bash
+$ make no_output
+not display
+echo 'will display'
+will display
+```
+
+**control ERROR**
+
+when make is executing commands, if an ERROR occur(return none-zero-value), it will stop working.
+
+such as you delete an not exist file.
+
+---
+
+in some moments, we want to ignore some ERROR and keep executing latter commands, add `-` before the command like:
+
+```makefile
+ignore_error:
+	-rm zzz.xxx
+	echo 'OK'
+```
+
+you can ignore commands that can cause ERROR but not disturb logic.
+
+**make `.cpp` files**
+
+examples:
+
+- `hello.h`:
+
+  ```cpp
+  // hello.h
+  
+  #ifndef HELLO_H
+  #define HELLO_H
+  
+  int hello();
+  
+  #endif
+  ```
+
+- `hello.cpp`:
+
+  ```cpp
+  #include<iostream>
+  #include "hello.h"
+  
+  int hello(){
+  	std::cout << "hello, world" << std::endl;
+      
+      return 0;
+  }
+  ```
+
+- `test.cpp`:
+
+  ```cpp
+  #include<iostream>
+  #include "hello.h"
+  
+  int main(){    //only one main function is allowed
+      std::cout << "preparing" << std:endl;
+      hello():
+      std::cout << "ok" << std::endl;
+      
+      return 0;
+  }
+  ```
+
+- `Makefile`:
+
+  ```makefile
+  test.out: test.o hello.o
+  	g++ -o test.out test.o hello.o    #the first file after `-o` should be the file to be generate
+  	
+  hello.o: hello.h hello.cpp
+  	g++ -c hello.cpp  #not similar to `-o`, the `-c` could automatically generate .o files
+  	
+  test.o: test.cpp hello.h
+  	g++ -c test.cpp
+  	
+  clean:
+  	rm -f *.o #remove all files with `.o` file suffix
+  	rm -f test.out
+  ```
+
+---
+
+similar to `Dockerfile`,  make only build and compile files that had changed(if you had run `make` before),such as:
+
+```bash
+root@server-235-a4000:/anything/project# make
+g++ -c test.cpp
+g++ -c hello.cpp
+g++ -o test.out test.o hello.o
+root@server-235-a4000:/anything/project# make
+make: 'test.out' is up to date.
+```
+
+if u change `hello.cpp`, it only re-compile `g++ -c hello.cpp`.
+
+**implicit rule**:
+
+use the former project as example, if you delete `.o` rules, just run:
+
+```makefile
+test.out: test.o hello.o
+	g++ -o test.out test.o hello.o
+	
+clean:
+	rm -f *.o test.out
+```
+
+it okay and compile successfully:
+
+```bash
+root@server-235-a4000:/anything/project# make
+g++    -c -o test.o test.cpp
+g++    -c -o hello.o hello.cpp
+g++ -o test.out test.o hello.o
+```
+
+it is because make had built-in implicit rules for `c`, `cpp`, `asm`, `fortran` and so on. if commands in makefiles lacks of defines of rules,it will automatically use implicit rules, however not all commands have implicit rules.
+
+such as for `cpp`, if `.o` lacks of rules, it will run:
+
+```makefile
+xxx.o: xxx.cpp
+	g++ -c -o xxx.o xxx.cpp
+```
+
+but for c/cpp, it can cause some problems: if we change the define of `.h`, as implicit rule of .o could not trace the .h files, at last the .o would not re-compile.
+for more, 
+[GNU Make - 内置规则目录](https://runebook.dev/zh/docs/gnu_make/catalogue-of-rule)
+
+[Implicit Rules (GNU make)](https://www.gnu.org/software/make/manual/html_node/Implicit-Rules.html)
+
+**variables**: to solve the repetition problems.
+
+use the former Makefile as example, we can change it to this form:
+
+```makefile
+TARGET = test.out
+
+$(TARGET): test.o hello.o
+	g++ -o $(TARGET) hello.o test.o
+	
+clean:
+	rm -f *.o $(TARGET)
+```
+
+define format: `variable name = value` or `variable name = value`.
+
+usually define variable name with capital letter.
+
+---
+
+automatically generate object list:
+
+```makefile
+# $(wildcard *.cpp)list all files with .cpp cuffix in current dictionary
+# use function patsubst to mode-replace so we can get hello.o and test,o
+OBJS = $(patsubst %.cpp, %.o, $(wildcard *.cpp))
+TARGET = test.out
+
+$(TARGET): $(OBJS)
+	g++ -o $(TARGET) $(OBJS)
+	
+clean:
+	rm -f *.o $(TARGET)
+```
+
+**built-in variables**: ...
+
+**automatic variables**
+
+some variables in makefiles such as `$@` , `$^` and `$<` called automatic variables,they automatically refer to relevant values. for example:
+
+```makefile
+# %@ refer to target files, $^ refer to prerequisites.
+test.out: test.o hello,o
+	$(++) -o $@ $^ #can cause ambiguity
+	# $(++) -o $(@) $(^) #avoid ambiguity
+```
+
+for better debug:
+
+```makefile
+test.out: test.o hello.o
+	@echo '$$@ = $@' //print target files
+	@echo '$$< = $<' //print the first prerequisites
+	@echo '$$^ = $^' // print all prerequisites
+	g++ -o $@ $^
+```
+
+in this case i guess $ in makefile may work like \ in cpp(\n and \\n).
+
+**mode-rule**
+
+> define by yourself, more flexible than implicit rules
+
+```makefile
+OBJS = $(patsubst %.cpp, %.o, $(wildcard *.cpp))
+TARGET = test.out
+
+$(TARGET): $(OBJS)
+	g++ -o $(TARGET) $(OBJS)
+	
+#mode-rules: when make **need** target xxx.o, automatically generate a xxx.o: xxx.c rule
+%.o: %.cpp
+	@echo 'compiling $<...'
+	g++ -c -o $@ $^
+
+clean:
+	rm -f *.o $(TARGET)
+```
+
+however, this still cant solve the problem of changing .h could not make .cpp update
+
+**automatically prerequisites generation**
+
+parameter `-MM` can automatically find out the .h prerequisites of .cpp,with using `g++ -MM test.cpp`
+
+```makefile
+SRC_DIR = ./src
+BUILD_DIR = ./build
+TARGET = $(BUILD_DIR)/test.out
+
+CFLAGS = -Wall
+
+.PHONY: printdir all clean
+
+# ./src/*.cpp
+SRCS = $(shell find $(SRC_DIR) -name '*.cpp')
+# ./src/*.cpp -> ./build/*.o
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
+# ./src/*.cpp -> ./build/*.d
+DEPS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.d, $(SRCS))
+
+# default target
+all: $(TARGET) printdir
+
+printdir: # print current working dir
+	@echo "Current Directory: $(CURDIR)"  
+
+$(BUILD_DIR)/%.d: $(SRC_DIR)/%.cpp # pattern rule, represent that .d files in build/ is built by the corresponding .cpp files in src/
+	@mkdir -p $(dir $@); \ 
+	rm -f $@; \
+	g++ -MM $< > $@.tmp; \
+	sed 's, \($*\)\.o[ :]*, \1.o $@ : , g' < $@.tmp > $@; \
+	rm -f $@.tmp
+	
+# parameter -p ensure that before making target dictionary, its father dir has exist,
+# $(dir $@)is the target file's dictinary, for example, build/ for build/main.default
+# parameter -MM finds out the prerequisites of target files, $< refer to the first prerequisites, > $@.tmp redirect output to target .d file's temporary version
+# sed: stream editor; s: replace mode; g: global
+# \($*\)\.o[ :]*: regex grammar, autonymy `\` here aims to diliver ()  to sed editor accurately without interpreted by shell.
+# 	$*: auto-parameter for makefile, represent the basic name of file(without prefix and suffix)
+# < $@.tmp: set $@.tmp(target.tmp) as input files
+# > $@: write outputs in target file.
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	g++ $(CFLAGS) -c -o $@ $<
+
+$(TARGET): $(OBJS)   #generate test.out
+	@echo "building $@..."
+	@mkdir -p $(dir $@)
+	g++ -o $(TARGET) $(OBJS)
+
+clean:
+	@echo "clean ..."
+	rm -rf $(BUILD_DIR)
+
+-include $(DEPS) # include all the prerequisites in makefile can help make better update(why? i dont know)
+```
+
+however, this can be totally different in windows system.
+
+so, lets join Cmake.
+f:T2f0d,
+# Subagent 化 Skill 优化方法论
+
+## 为什么要用 Subagent 优化 Skill
+
+当 Skill 的步骤链变长时，单 Agent 架构会遇到一个根本性问题：**上下文污染（context pollution）**。
+
+每一步的 tool output、中间推理、临时文件内容都会积累到同一个上下文窗口。当模型需要做最后一步推理时，它要穿过前面 N 步产生的噪音。
+
+```
+单 Agent 的问题：
+┌─────────────────────────────────────────────┐
+│ Step 1: 读取文件 → +5000 token               │
+│ Step 2: 分析结构 → +2000 token               │
+│ Step 3: 运行测试 → +3000 token               │
+│ Step 4: 生成报告 → 要在 10000+ token 噪音    │
+│               中推理，性能急剧下降            │
+└─────────────────────────────────────────────┘
+```
+
+在小模型上（如 Qwen-35b-AWQ-int4、内网部署的量化模型），有效上下文窗口更小，问题更严重，模型直接崩坏或丢弃细节。
+
+**Subagent 的核心解决思路**：把信息利用率低（产生大量数据但后续只需要摘要）的步骤隔离到独立的上下文窗口中执行，主线只拿压缩后的摘要继续。每个 subagent 的上下文在完成时回收。
+
+## 第一步：诊断 —— 上下文账单
+
+画出 Skill 的完整流程，逐步骤填写上下文账单。这是整个优化工作的起点。
+
+### 上下文账单模板
+
+| # | 步骤名 | 操作 | 产生数据量 | 后续真正需要 | 信息利用率 |
+|---|--------|------|-----------|-------------|-----------|
+| 1 | 步骤 A | read_file / LLM / tool | ~N token | 用了哪些字段 | % |
+
+**信息利用率** = 该步骤产生的信息中，后续步骤实际需要引用的比例。
+
+- **> 80%** → 保留在主线（如：用户的原始输入、核心推理决策）
+- **40-80%** → 可拆分也可不拆，取决于数据绝对量
+- **< 40%** → **必须拆分为 subagent**
+
+### 案例：reportDoc
+
+reportDoc 的功能：接受 markdown（内容）+ docx 模板（样式），输出符合模板样式的 docx 文档。模板可以是文件，也可以是描述性文本。
+
+| # | 步骤 | 操作 | 产生量 | 后续需要 | 利用率 | 决策 |
+|---|------|------|--------|---------|-------|------|
+| 1 | 读 markdown | read_file | 全文 | 全文 | ~100% | 主线 |
+| 2 | 解析 docx 模板 | python-docx | ~5000+ token | 只需样式定义(名称/字体/字号/对齐)、表格结构、页眉页脚、占位符、说明行 | ~15% | **Subagent** |
+| 3 | 理解描述性模板 | LLM 解析 | ~500 token | 整段指令 | ~100% | 主线 |
+| 4 | markdown→docx 转换 | LLM 生成 + python-docx | ~2000+ token | 需要完整输出 | ~100% | 主线 |
+| 5 | 验证输出 docx | 检查样式/表格/页眉 | ~2000+ token | 只需 pass/fail + 缺失列表 | ~10% | **Subagent** |
+
+**结论**：步骤 2（模板解析）和步骤 5（结果验证）是优先改造目标。
+
+## 第二步：拆解 —— 确定 Subagent 边界
+
+### 核心原则
+
+**按上下文边界拆分，不按流程角色拆分。**
+
+错误示范（电话游戏）：
+```
+Planner Agent → Implementer Agent → Tester Agent
+每次手都丢失信息，协调成本高，产出失真
+```
+
+正确做法：如果你读一个文件产生 5000 token 但后续只需要 200 token 的摘要，就这个读操作本身做成 subagent。
+
+### 决策树
+
+```
+某一步数据量 > 1000 token 且利用率 < 40%？
+  ├── 是 → 拆成 subagent
+  │     ├── 只依赖主线已有信息 → 可并行
+  │     └── 依赖另一个 subagent → 串行 chain
+  │
+  └── 否 → 保留在主线
+```
+
+### 常用模式
+
+```
+扇出-扇入（并行探索）：
+  Orchestrator → SubAgent A (并行) → 聚合
+               → SubAgent B (并行) → 聚合
+               → SubAgent C (并行) → 聚合
+
+流水线（生成→验证→修正）：
+  SubAgent: 生成 → [Revision Gate] → SubAgent: 修正 → ...
+
+上下文隔离（单一数据密集步骤）：
+  主线只拿摘要，subagent 读原始数据
+```
+
+### 案例：reportDoc 的拆分结构
+
+```
+主线 (Orchestrator) — 持有 markdown 全文 + 模版摘要(~150t) + 生成说明
+  │
+  ├── (并行) SubAgent: docx 模板解析器
+  │   输入: 模版文件路径
+  │   输出: 结构化样式摘要
+  │   压缩比: ~5000t → ~150t
+  │
+  ├── (串行) 主线: 理解模版结构 + 识别说明行
+  │
+  ├── (串行) 主线: 生成 python-docx 转换代码并执行
+  │
+  └── (串行) SubAgent: 结果验证器（Revision Gate 循环）
+       输入: 生成 docx 路径 + 预期检查项
+       输出: {pass, missing_items}
+```
+
+## 第三步：契约 —— Subagent 的输入输出协议
+
+每个 subagent 必须有明确的**结构化输入/输出契约**。输出必须是确定的 JSON 结构，主线直接拿来用，不需要额外推理。
+
+### 契约设计原则
+
+1. **输出必须有固定的 JSON schema** — 不写"返回摘要摘要"，写"返回 `{styles: [{name, font, size, bold}]}`"
+2. **主线不依赖 subagent 的中间推理** — 只依赖输出结构
+3. **单个 subagent 输出去重后 ≤ 300 token** — 超过说明压缩不够
+4. **在派发时给出输出格式示例** — subagent 执行时可直接参考
+
+### 案例：reportDoc 的契约设计
+
+#### SubAgent: docx-template-parser
+
+```python
+# 在 Skill 中用 delegate_task 调用
+delegate_task(
+    goal="解析 docx 模板，抽取样式、表格结构、页眉页脚、占位符、说明行",
+    context=f"""
+    模板文件路径: {template_path}
+    模式: file
+
+    输出必须严格按照以下 JSON 结构返回:
+    {{
+        "styles": [
+            {{"name": str, "font": str, "size": int, "bold": bool, "color": str, "alignment": str}}
+        ],
+        "sections": [
+            {{"type": "header"|"footer", "content": str}}
+        ],
+        "tables": [
+            {{"rows": int, "cols": int, "header_style": str, "body_style": str}}
+        ],
+        "placeholders": [str],
+        "instruction_lines": [int],
+        "mode": "file"
+    }}
+
+    使用 python-docx 读取模板文件，用 lxml 解析样式。
+    只返回 JSON，不要额外解释。
+    """,
+    toolsets=['terminal', 'file']
+)
+```
+
+#### SubAgent: docx-validator
+
+```python
+delegate_task(
+    goal="验证生成的 docx 是否符合模板要求",
+    context=f"""
+    生成的文件路径: {output_path}
+    预期检查项:
+    - 页眉内容是否正确应用
+    - 页脚内容是否正确应用
+    - 表格样式是否正确
+    - 说明行是否已删除
+    - 段落样式是否正确匹配
+
+    输出格式:
+    {{
+        "pass": true|false,
+        "missing": [str],
+        "details": {{"header": "ok"|"missing", "footer": "ok"|"missing", ...}}
+    }}
+    """,
+    toolsets=['terminal', 'file']
+)
+```
+
+## 第四步：门禁 —— 嵌入 Gate 质量控制
+
+在每个关键切换点插入 Gate 检查。共四种类型（源自 Gates Taxonomy）：
+
+| 类型 | 作用 | 失败时行为 |
+|------|------|-----------|
+| **Pre-flight** | 执行前检查前置条件 | 报错终止 |
+| **Revision** | 验证产出质量，最多 3 轮 | 循环修正或升级 |
+| **Escalation** | 超出能力范围，需要人决策 | 暂停等待用户 |
+| **Abort** | 紧急终止保护现场 | 保存当前产出，终止 |
+
+### Revision Gate 循环规则
+
+```
+轮次 1: 验证 → 发现问题 → 修正
+轮次 2: 验证 → 问题减少？ → 是→继续；否（未减少）→ 提前升级
+轮次 3: 验证 → 全部通过？ → 是→完成；否→升级给用户
+```
+
+核心优化：对比轮次 N-1 的问题数，如果没有减少则判定为停滞，直接 Escalation，不做无意义的反复重试。
+
+### 案例：reportDoc 的门禁
+
+```
+┌─ Pre-flight Gate ──────────────────────────
+│ 模版文件存在且可读？ → 否 → 报错
+│ markdown 非空？       → 否 → 报错
+│ python-docx 可用？     → 否 → 报错
+│
+├─ SubAgent: 模板解析
+│
+├─ 主线: 生成转换代码 + 执行
+│
+├─ Revision Gate ────────────────────────────
+│ SubAgent: 验证器检查输出
+│   通过 → ✅ 交付
+│   不通过 → 第 2 轮修正（最多 3 次）
+│     连续两次问题数不减少 → 提前升级
+│
+├─ Escalation Gate ──────────────────────────
+│ "3 轮修正后问题未解决，请人工介入"
+│
+└─ 完成
+```
+
+## 第五步：监控 —— 上下文预算管理
+
+对量化小模型最重要的是主动监控上下文使用率，在崩溃前降级。
+
+### 四级预算阈值（按模型窗口调整）
+
+建议 Qwen-35b-AWQ-int4 这类模型使用更严格的标准（假设有效窗口 ~8K-16K）：
+
+| 等级 | 使用率 | 行为 |
+|------|--------|------|
+| PEAK | 0-20% | 正常操作 |
+| GOOD | 20-30% | 优先读摘要，开始预判式派发 |
+| DEGRADING | 30-50% | 只读摘要，禁止新工具调用，完成当前即止 |
+| POOR | >50% | 紧急 checkpoint，保存中间文件，终止 |
+
+### 估算方法
+
+每完成一步后，用 `字符数 / 4` 粗略估算 token 数（中文更密，可改为字符数 / 2）。如果连续两步都处于 DEGRADING 以上，将后续所有未执行的步骤强制 subagent 化。
+
+### 实现思路
+
+在主流程中增加一个工具函数：
+
+```python
+def check_context_budget(step_name: str) -> str:
+    """
+    返回当前等级: "PEAK" | "GOOD" | "DEGRADING" | "POOR"
+    如果返回 POOR，调用方应立即 checkpoint 并终止。
+    """
+    # 用当前对话的总 token 数（从前几步累计估算）除以模型的有效窗口
+    pass
+```
+
+## 改造后的 Skill 文件组织
+
+```
+skill-name/
+├── SKILL.md              # 顶层流程（Orchestrator 视角，只写调度逻辑）
+├── scripts/
+│   ├── parse_template.py  # SubAgent: 模板解析的独立脚本
+│   └── validate_output.py # SubAgent: 结果验证的独立脚本
+└── references/
+    └── subagent-contracts.md  # 所有 subagent 的契约文档
+```
+
+SKILL.md 顶层只写：
+
+```
+1. [Pre-flight] 检查前置条件
+2. 派发 SubAgent: 模板解析器，等待摘要
+3. 主线: 理解模版结构 + 识别说明行
+4. 主线: 生成 python-docx 转换代码
+5. [Revision Gate] 派发 SubAgent: 验证器
+   └── 最多 3 轮
+6. 交付
+```
+
+## 避坑
+
+| 陷阱 | 说明 |
+|------|------|
+| **过度拆分** | 短步骤（< 3 步、数据量小）拆 subagent 只会增加 token 开销和延迟。Anthropic 实测 subagent 架构比单 agent 多 3-10x token。 |
+| **按角色拆** | Planner→Implementer→Tester 每次手丢失信息。应按上下文边界（信息能否压缩为摘要）拆。 |
+| **摘要幻觉** | Subagent 可能返回"已完成"但实际上什么也没做。验证方法：在契约中要求返回具体证据（文件名、具体值、行号）。 |
+| **契约不稳定** | 输出格式频繁改动 → 主线的解析逻辑要同步改。先定好 schema 再编码。 |
+| **忽略验证** | 没有 Revision Gate 的话，subagent 的错误会直接进入最终产出。每个 subagent 的输出必须有验证环节。 |
+
+## 速查卡
+
+```
+执行以下步骤改造任意 Skill：
+
+□ 1. 画上下文账单
+   标注每一步的数据量和信息利用率
+   标记利用率 < 40% 的候选步骤
+
+□ 2. 确定拆分边界
+   决策树判断：可隔离？可并行？可串行？
+   画拆分结构图
+
+□ 3. 设计契约
+   每个 subagent 写 JSON 输入输出 schema
+   schema 定好后再编码
+
+□ 4. 嵌入 Gate
+   Pre-flight → Revision (≤3轮) → Escalation
+
+□ 5. 设定预算
+   按模型实际窗口设定四档阈值
+   超出时自动 subagent 化或 checkpoint
+```
+10:T3b40,
+<div align="center">
+<h1>📚 技术博客精选</h1>
+<p><code>2026-06-24 18:49</code> · <code>共 43 篇精选</code></p>
+</div>
+
+---
+
+## 🏗️ 架构与设计 / Architecture & Design
+
+📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating-data-ingestion-systems-at-meta-scale/)** `Meta Engineering`
+> *Meta 数据摄入系统迁移实战——从单体管道到分布式数据湖的演进路线，如何处理 PB 级数据迁移的兼容性和回滚。*
+
+📄 **[SilverTorch: Index as Model — A New Retrieval Paradigm for Recommendation Systems](https://engineering.fb.com/2026/05/26/ml-applications/silvertorch-index-as-model-new-retrieval-paradigm-recommendation-systems/)** `Meta Engineering`
+> *Meta 推荐系统新范式 Index as Model——将检索组件统一为单一模型，替代传统多阶段级联架构，性能提升显著。*
+
+📄 **[Modernizing the Facebook Groups Search to Unlock the Power of Community Knowledge](https://engineering.fb.com/2026/04/21/ml-applications/modernizing-the-facebook-groups-search-to-unlock-the-power-of-community-knowledge/)** `Meta Engineering`
+> *FB Groups 搜索现代化改造——从 Elasticsearch 到向量检索+语义理解的混合架构升级，搜索相关度提升显著。*
+
+📄 **[Data Projects: Managing Data Assets at Netflix Scale](https://netflixtechblog.com/data-projects-managing-data-assets-at-netflix-scale-7ca25888591e?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix 数据资产管理体系——从数据发现、血缘追踪到访问控制，如何在超大规模下保障数据治理。*
+
+📄 **[VMAF v1: Good Is Not Good Enough](https://netflixtechblog.com/vmaf-v1-good-is-not-good-enough-60d7e4244ea8?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix VMAF v1 视频质量评估升级——为什么原有的 VMAF 不够好，新版本引入了哪些感知质量指标改进。*
+
+📄 **[Introducing the Cloudflare One stack: agent-powered deployment](https://blog.cloudflare.com/cloudflare-one-stack/)** `Cloudflare Blog`
+> *Cloudflare One 零信任网络架构新方案——用 Agent 驱动的自动化部署替代手动策略配置，SASE 落地实践。*
+
+📄 **[From Silos to Service Topology: Why Netflix Built a Real-Time Service Map](https://netflixtechblog.com/from-silos-to-service-topology-why-netflix-built-a-real-time-service-map-0165ba13a7bc?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix 实时服务拓扑图构建之路——从孤立监控到全链路服务依赖可视化，微服务可观测性的最佳实践。*
+
+📄 **[The Evolution of Cassandra Data Movement at Netflix](https://netflixtechblog.com/the-evolution-of-cassandra-data-movement-at-netflix-6e13329c80a1?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix Cassandra 数据迁移架构演进——从手动搬迁到自动化数据流动，Cassandra 运维的实战经验。*
+
+📄 **[How Netflix Simplified Batch Compute with Kueue](https://netflixtechblog.com/how-netflix-simplified-batch-compute-with-kueue-87860682629c?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix 用 Kueue 简化批处理计算——K8s 原生批处理调度器在大规模 ML 训练场景的实践。*
+
+📄 **[Align your architecture backlog with Tech Roadmap Prioritization (TRP)](https://aws.amazon.com/blogs/architecture/align-your-architecture-backlog-with-tech-roadmap-prioritization-trp/)** `AWS Architecture Blog`
+> *AWS TRP 方法论——如何用技术路线图优先级对齐架构 backlog，避免架构债务无限累积。*
+
+📄 **[Maintainability sensors for coding agents](https://martinfowler.com/articles/sensors-for-coding-agents.html)** `Martin Fowler`
+> *Martin Fowler 提出面向编码 Agent 的可维护性传感器——当 AI 写代码成为常态，如何量化代码的可维护性。*
+
+📄 **[Three Bold Predictions for Distributed Systems in 2026](https://www.axoniq.io/blog/three-bold-predictions-for-distributed-systems-in-2026)** `Axoniq Blog`
+> *分布式系统三大预测：边缘原生服务、AI 驱动编排、更强一致性模型——挑战当前微服务主流范式。*
+
+📄 **[Distributed Systems Patterns Every Backend Engineer Must Know in 2026](https://devstarsj.github.io/2026/03/26/distributed-systems-patterns-guide-2026/)** `DevStars`
+> *2026 后端工程师必知的分布式系统模式大全——一致性哈希、Saga、CQRS、事件溯源，附代码示例和架构对比。*
+
+---
+
+## 🔧 编程语言 / Languages & Runtimes
+
+📄 **[Bliki: Vibe Coding](https://martinfowler.com/bliki/VibeCoding.html)** `Martin Fowler`
+> *Martin Fowler 定义 Vibe Coding——用 LLM Prompt 构建应用的新范式，及其对软件工程质量的影响。*
+
+📄 **[The VibeSec Reckoning](https://martinfowler.com/articles/vibesec-reckoning.html)** `Martin Fowler`
+> *Vibe Coding 时代的安全危机——当代码由 AI 生成时，安全漏洞以新形态涌现，开发者如何应对。*
+
+📄 **[If context is king, architecture is the castle​​​​‌﻿‍﻿​‍​‍‌‍﻿﻿‌﻿​‍‌‍‍‌‌‍‌﻿‌‍‍‌‌‍﻿‍​‍​‍​﻿‍‍​‍​‍‌﻿​﻿‌‍​‌‌‍﻿‍‌‍‍‌‌﻿‌​‌﻿‍‌​‍﻿‍‌‍‍‌‌‍﻿﻿​‍​‍​‍﻿​​‍​‍‌‍‍​‌﻿​‍‌‍‌‌‌‍‌‍​‍​‍​﻿‍‍​‍​‍‌‍‍​‌﻿‌​‌﻿‌​‌﻿​​‌﻿​﻿​﻿‍‍​‍﻿﻿​‍﻿﻿‌‍​﻿‌‍﻿‌‌﻿​﻿​‍﻿‍‌﻿​﻿‌﻿‌​‌‍​‌‌‍​﻿‌‍‍﻿‌‍﻿﻿‌﻿‌‍‌‍‌‌‌﻿​‍‌‍‌‍‌‍﻿​‌‍﻿﻿‌﻿‌﻿​‍﻿‍‌‍​﻿‌‍﻿﻿​‍﻿﻿‌‍‍‌‌‍﻿‍‌﻿‌​‌‍‌‌‌‍﻿‍‌﻿‌​​‍﻿﻿‌‍‌‌‌‍‌​‌‍‍‌‌﻿‌​​‍﻿﻿‌‍﻿‌‌‍﻿﻿‌‍‌​‌‍‌‌​﻿﻿‌‌﻿​​‌﻿​‍‌‍‌‌‌﻿​﻿‌‍‌‌‌‍﻿‍‌﻿‌​‌‍​‌‌﻿‌​‌‍‍‌‌‍﻿﻿‌‍﻿‍​﻿‍﻿‌‍‍‌‌‍‌​​﻿﻿‌‌‍​﻿​﻿​‍​﻿​﻿‌‍​﻿​﻿​​​﻿‍‌‌‍​‍​﻿​‍​‍﻿‌​﻿‌​​﻿​‌​﻿​﻿‌‍‌​​‍﻿‌​﻿‌​‌‍​‌​﻿‌﻿​﻿​​​‍﻿‌​﻿‍‌‌‍​‌‌‍​‍‌‍​﻿​‍﻿‌‌‍‌‌​﻿‌​​﻿​﻿‌‍‌​​﻿​‌‌‍​‍​﻿‌﻿​﻿​​​﻿‌‍‌‍‌‍​﻿‌‍​﻿‌﻿​﻿‍﻿‌﻿‌​‌﻿‍‌‌﻿​​‌‍‌‌​﻿﻿‌‌‍​‍‌‍﻿​‌‍﻿﻿‌‍‌﻿‌‌​​‌‍﻿﻿‌﻿​﻿‌﻿‌​​﻿‍﻿‌﻿​​‌‍​‌‌﻿‌​‌‍‍​​﻿﻿‌‌﻿‌​‌‍‍‌‌﻿‌​‌‍﻿​‌‍‌‌​﻿﻿﻿‌‍​‍‌‍​‌‌﻿​﻿‌‍‌‌‌‌‌‌‌﻿​‍‌‍﻿​​﻿﻿‌‌‍‍​‌﻿‌​‌﻿‌​‌﻿​​‌﻿​﻿​‍‌‌​﻿​﻿‌​​‌​‍‌‌​﻿​‍‌​‌‍​‍‌‌​﻿​‍‌​‌‍‌‍​﻿‌‍﻿‌‌﻿​﻿​‍﻿‍‌﻿​﻿‌﻿‌​‌‍​‌‌‍​﻿‌‍‍﻿‌‍﻿﻿‌﻿‌‍‌‍](https://stackoverflow.blog/2026/06/16/if-context-is-king-architecture-is-the-castle/)** `Stack Overflow Blog`
+> *Stack Overflow 对话 Apollo GraphQL CEO——AI Agent 时代的 API 架构设计，上下文管理与图查询的演进。*
+
+📄 **[Three more static code analysis sensors](https://martinfowler.com/articles/sensors-for-coding-agents.html#StaticCodeAnalysisDependencyRules)** `Martin Fowler`
+> *Birgitta Böckeler 深入三种静态代码分析传感器——依赖规则、架构边界、代码标准，在 AI 辅助编码时代的应用。*
+
+📄 **[Maintainability sensors for coding agents](https://martinfowler.com/articles/sensors-for-coding-agents.html)** `Martin Fowler`
+> *Martin Fowler 提出面向编码 Agent 的可维护性传感器——当 AI 写代码成为常态，如何量化代码的可维护性。*
+
+📄 **[Fragments: May 14](https://martinfowler.com/fragments/2026-05-14.html)** `Martin Fowler`
+> *Martin Fowler 参加 The Orchard Retreat 的思考——大型机现代化改造的技术和人文视角。*
+
+📄 **[Rhombus Language 1.0](https://racket-lang.org/)** `Racket Blog`
+> *Rhombus 语言 1.0 正式发布——基于 Racket 的教学级语言，兼具 Lisp 表达力与静态类型安全。*
+
+📄 **[Swift Package Index joins Apple](https://swiftpackageindex.com/)** `Swift Package Index`
+> *Swift Package Index 被 Apple 收购——Swift 生态的包管理将迎来官方深度整合。*
+
+---
+
+## ☁️ 基础架构 / Infrastructure & DevOps
+
+📄 **["Fix" MacBook Neo Cursor Lag: Record 1 Pixel of the Screen Every 10 Seconds](https://gist.github.com/retroplasma/ec21767d0a8380c7ea9c2fbee1c7d6bf)** `HN / GitHub Gist`
+> *大神级调试——MacBook Neo 光标延迟的 root cause 是 GPU 电源管理策略，1 像素采样法修复方案脑洞大开。*
+
+📄 **[We're making Bunny DNS free: because a faster internet won't build itself](https://bunny.net/blog/were-making-bunny-dns-free/)** `Bunny.net / HN`
+> *Bunny DNS 宣布免费——声称目标是加速全球互联网，对开发者来说是一个性价比极高的新选择。*
+
+📄 **[How Meta Is Strengthening End-to-End Encrypted Backups](https://engineering.fb.com/2026/05/01/security/meta-strengthening-end-to-end-encrypted-backups/)** `Meta Engineering`
+> *Meta 端到端加密备份方案深度解析——HSM-based Backup Key Vault 架构设计，密钥管理与灾备策略。*
+
+---
+
+## ⚡ 开源项目 / Open Source
+
+📄 **[Qwen-AgentWorld: Language World Models for General Agents](https://arxiv.org/abs/2606.24597)** `ArXiv / HN`
+> *Qwen AgentWorld——用语言模型构建通用 Agent 的世界模型，通义千问团队最新研究。*
+
+📄 **[DiffusionBench: Towards Holistic Evaluation of Generative Diffusion Transformers](https://github.com/End2End-Diffusion/diffusion-bench)** `GitHub / HN`
+> *Diffusion 模型全面评测基准 DiffusionBench——覆盖图像、视频、3D 生成的质量评估。*
+
+📄 **[Raspberry Pi Pico W as USB Wi-Fi Adapter](https://gitlab.com/baiyibai/pico-usb-wifi)** `GitLab / HN`
+> *树莓派 Pico W 变身 USB Wi-Fi 适配器——硬件黑客的巧妙方案，成本仅几美元。*
+
+📄 **[FUTO Swipe – A new swipe typing model](https://futo.tech/)** `FUTO`
+> *FUTO 开源的全新滑行输入模型——性能媲美 Gboard 但完全本地运行，隐私至上的输入法方案。*
+
+---
+
+## 💡 工程文化 / Engineering Culture
+
+📄 **[How good can you be at Codenames without knowing any words?](https://danluu.com/codenames/)** `Dan Luu`
+> *Dan Luu 又一篇数据驱动的有趣分析——在不认识任何单词的情况下玩 Codenames 能有多强，顺便探讨了信息论。*
+
+📄 **[Vulnerability reports are not special anymore](https://words.filippo.io/vuln-reports/)** `Filippo Valsorda / HN`
+> *Filippo Valsorda 反思安全行业——漏洞报告已不再特殊，自动化工具正在改变安全研究的本质。*
+
+📄 **[Meta Pauses Employee-Tracking Program Following Internal Data Leak](https://www.wired.com/story/meta-pauses-employee-tracking-program-following-internal-security-breach/)** `Wired / HN`
+> *Meta 暂停员工追踪项目——数据泄露事件背后的工程文化反思。*
+
+---
+
+## 📝 中文深度 / 中文技术
+
+📄 **[美团发布原生多模态 LongCat-Next：当视觉和语音成为AI的母语](https://tech.meituan.com/2026/04/02/LongCat-Next.html)** `美团技术团队`
+> *LongCat-Next 原生多模态模型深度解析——从架构设计到训练策略，看多模态 AI 如何从拼接走向原生。*
+
+📄 **[LongCat-Flash-Prover：AI 攻克数学定理证明，不仅要“算得对”，更要“证得严”](https://tech.meituan.com/2026/04/07/LongCat-Flash-Prover.html)** `美团技术团队`
+> *美团把 AI 定理证明从猜答案推进到严格证明阶段，Flash-Prover 对形式化验证领域有重要启发。*
+
+📄 **[用Agent评测思路管理AI Coding —— 31万行代码AI重构的实践](https://tech.meituan.com/2026/05/07/Agent-AI-Coding.html)** `美团技术团队`
+> *31万行代码 AI 重构的一线报告——用 Agent 评测体系管了整个重构流程，方法论可复制。*
+
+📄 **[美团 LongCat 开源 General 365：树立推理评测新标尺](https://tech.meituan.com/2026/05/15/LongCat-General-365.html)** `美团技术团队`
+> *LongCat General 365 推理评测集填补了中文 LLM 推理能力标准化测试的空白，数据和方法完全开源。*
+
+📄 **[从高拟真到真可用，LongCat-Video-Avatar 1.5 正式开源](https://tech.meituan.com/2026/05/25/LongCat-Video-Avatar-1.5.html)** `美团技术团队`
+> *视频数字人从能看能用跨越——LongCat-Video-Avatar 1.5 口型同步和表情自然度明显突破。*
+
+📄 **[ACL 2026美团论文精选：从能力评测到推理优化，构建生成新范式](https://tech.meituan.com/2026/06/05/ACL-2026.html)** `美团技术团队`
+> *ACL 2026 美团入选论文合集覆盖评测、推理优化、生成范式三个方向，学术与实践相结合。*
+
+📄 **[从月球漫步到赛博都市，WBench 测出了世界模型的边界](https://tech.meituan.com/2026/06/12/LongCat-WBench.html)** `美团技术团队`
+> *世界模型评测基准 WBench——用月球漫步和赛博都市等场景测试世界模型的物理理解边界。*
+
+📄 **[美团海报生成 AIGC 技术创新与实践](https://tech.meituan.com/2026/06/18/AIGC-poster.html)** `美团技术团队`
+> *AIGC 海报生成在美团落地全记录——从模型选型到工程优化，电商场景 AI 设计实操经验。*
+
+📄 **[LARYBench 发布：定义具身动作表征 ImageNet，首次度量从人类视频学习的泛化表征](https://tech.meituan.com/2026/04/27/LongCat-LARYBench.html)** `美团技术团队`
+> *LARYBench 定义具身动作表征的 ImageNet——首次度量从人类视频学习的泛化表征。*
+
+📄 **[多Agent协作框架与系统架构综述 2025-2026](https://www.daoyuly.cn/2026/2026-04-01-multi-agent-frameworks-architecture-survey/)** `DaoYu`
+> *多 Agent 协作框架全面综述——对比 AutoGen、CrewAI、LangGraph 等框架的架构差异和选型建议。*
+
+📄 **[2026技术迭代新风向：系统开发与运维迈入智能融合新阶段](https://cloud.tencent.com/developer/article/2671852)** `Tencent Cloud`
+> *腾讯云视角的 2026 运维趋势——云原生深度普及、AI 智能运维、轻量化架构全面升级。*
+
+📄 **[2026 后端架构新风向！模块化单体强势出圈](https://www.toutiao.com/article/7641524040481489427/)** `Toutiao`
+> *模块化单体架构卷土重来——别再盲目堆砌微服务，这篇分析了何时该选单体、何时该拆。*
+
+---
+
+<div align="center">
+<p><code>数据来源：RSS 29/29 个源 · 抓取 260 篇文章</code> · 补全网搜索 8 篇</p>
+</div>
+11:T1c09,
+# vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研报告
+
+## 一、基础：Transformer 推理的两个阶段
+
+每个 token 生成分为两步：
+
+### Prefill（预填充）
+把整个 prompt（system prompt + user query）一次性并行算完，生成每个 token 位置对应的 **K 矩阵** 和 **V 矩阵**。计算量 = prompt token 数 × 模型参数量。prompt 越长，prefill 越慢。
+
+### Decode（逐 token 生成）
+每生成一个新 token，只算这一个 token 的 Q，然后跟所有之前位置的 K、V 做 attention。
+
+## 二、KV Cache 是什么
+
+Decode 阶段如果每次都要重新计算所有历史位置的 K、V，复杂度会从 O(n) 退化成 O(n²)，根本跑不动。
+
+**KV Cache** 的思路就是存下来复用：
+
+```
+首次推理:
+  Prefill: 计算 token_1~5 的 K1~5, V1~5 → 缓存
+  第1次 Decode: 算 token_6 的 K6,V6 → 跟缓存的 K1~5,V1~5 做 attention → 产出 token_6
+  第2次 Decode: 算 token_7 的 K7,V7 → 跟缓存的 K1~6,V1~6 做 attention → 产出 token_7
+```
+
+**KV Cache 的量级**：
+- 单 token 的 KV cache 大小 = 2（K+V）× layer_num × hidden_dim × precision_bytes
+  - Qwen2.5-72B（80层, 8192 hidden, FP16）≈ 2 × 80 × 8192 × 2 = ~2.6 MB / token
+  - 32K 上下文 ≈ 32K × 2.6 MB ≈ 83 GB —— 一块 A100 都不够
+- 所以才有 PagedAttention（vLLM 的核心创新）—— 像操作系统分页一样管理 KV cache
+
+## 三、vLLM Prefix Caching（APC, Automatic Prefix Caching）
+
+### 3.1 解决了什么问题
+
+KV Cache 是同一个请求内优化它的复用。但多个请求之间，如果 prompt 开头部分相同（称为 prefix），那 prefix 部分的 KV 是一样的——不需要每个请求都重新计算。
+
+### 3.2 工作原理
+
+vLLM 对每个 KV block 按内容计算 hash，把 hash 存入全局缓存表：
+
+```
+请求1: [金融系统prompt(800 token)][user_query_1(200 token)]
+请求2: [金融系统prompt(800 token)][user_query_2(200 token)]
+                    ↑
+         公共前缀 —— KV 完全一样，hash 命中后直接复用
+```
+
+具体流程：
+
+1. **Block 划分**：vLLM 将 KV cache 按固定大小（默认 16 token/block）分块
+2. **Hash 计算**：每个 block 的 KV 数据内容做 hash（基于 block 内所有 token 的 K、V 值）
+3. **全局缓存表**：hash → KV block 的映射，存储在 GPU 内存或 CPU 内存
+4. **新请求到达**：
+   - 前 16 个 token 的 block → 查 hash → 命中 → 从缓存取 KV block
+   - 第 17-32 token 的 block → 查 hash → 命中 → 从缓存取 KV block
+   - ...直到第一个 prefix 结束的 block（hash miss）
+   - 从 miss 位置开始正常 prefill
+5. **缓存淘汰**：LRU 策略，当 GPU 内存不够时淘汰最久未使用的 KV block
+
+### 3.3 效果
+
+| 配置 | Prefill 算力需求 | TTFT |
+|------|-----------------|------|
+| 不开 | 1000 token × 72B | ~3-8s |
+| 开（800 token 共享） | 200 token × 72B | ~0.5-2s |
+| **节省** | **80% prefill** | **~1-3s** |
+
+### 3.4 什么时候效果好
+
+- **System prompt 很长且跨请求大量重复**：如多 Agent 系统（5个agent共享prompt），或 Chatbot 系统 prompt
+- **多轮对话**：第一轮生成的 KV cache 在第二轮可以被 prefix 复用
+- **模型越大效果越明显**：prefill 计算量 = token × 参数量，72B 的 1 token ≈ 4B 的 18 个 token
+
+### 3.5 什么时候效果差/无效
+
+- 每个请求 prompt 完全不同，无公共前缀
+- 公共前缀极短（几个 token，vLLM block size 通常是 16）
+- 小模型（4B/7B），prefill 本身就是几十毫秒量级，省了也感受不到
+
+## 四、启用方式
+
+```bash
+# vLLM 启动时加一个参数即可
+python -m vllm.entrypoints.openai.api_server \
+  --model Qwen/Qwen2.5-72B-Instruct-AWQ \
+  --enable-prefix-caching            # ← 就这一行
+```
+
+应用层代码一行不用改。vLLM 自动做 block-level hash 匹配。
+
+## 五、vLLM Prefix Caching vs LMCache 对比
+
+### 5.1 LMCache 简介
+
+LMCache（GitHub 9.1k stars, Apache 2.0, UChicago）是一个独立的 KV cache 管理层，作为 daemon 运行。它把 KV cache 从"临时中间产物"变成了持久化、跨请求可复用的资源。
+
+### 5.2 核心能力
+
+| 能力 | vLLM Prefix Caching | LMCache |
+|------|-------------------|---------|
+| **复用位置** | 仅前缀 prefix | 任意位置（CacheBlend 技术） |
+| **存储层次** | GPU 显存 | GPU → CPU → SSD → Redis/S3 |
+| **持久性** | 请求结束即丢 | 持久化，daemon 重启不丢 |
+| **跨引擎** | 仅 vLLM 进程内 | vLLM / SGLang 之间共享 |
+| **PD分离** | 不支持 | 支持 prefill→decode 跨节点 KV 传输 |
+| **应用层改动** | 一行参数 | 装 daemon + 配存储后端 |
+| **观测能力** | 有限（vLLM metrics） | Prometheus + 命中率/生命周期追踪 |
+
+### 5.3 LMCache 的独特优势：CacheBlend（非前缀复用）
+
+vLLM 的 prefix caching 只能复用 prompt 开头的公共前缀。但实际场景中，相同的内容块可能出现在 prompt 的不同位置：
+
+```
+请求1: [sys_prompt][chunk_A][chunk_B][question]
+请求2: [sys_prompt][chunk_C][chunk_A][question]
+                                  ↑
+                   chunk_A 位置不同，vLLP prefix caching 必 miss
+                   LMCache CacheBlend 可以复用，只重算少量 token
+```
+
+这对 **RAG 场景** 尤其关键——不同用户问不同问题，但 retrieved chunks 大量重叠。
+
+### 5.4 选择建议
+
+| 场景 | 推荐方案 |
+|------|---------|
+| 共享 system prompt 的多 Agent 系统 | vLLM prefix caching ✅ 够用 |
+| 多轮长对话（跨轮复用） | LMCache（CPU offload + 持久化） |
+| RAG 场景，chunk 在不同 prompt 位置出现 | LMCache CacheBlend |
+| 单机单卡，简单场景 | vLLM prefix caching（零运维） |
+| 多节点 / PD 分离部署 | LMCache |
+
+### 5.5 显存优化补充
+
+**显存不够时的解决方案**（按推荐顺序）：
+
+1. **`--gpu-memory-utilization 0.9`**：控制 vLLM 占用多少显存
+2. **`--swap-space 64`**：vLLM 内置的 CPU swap，KV cache 不够时自动换出到 CPU 内存
+3. **`--max-num-seqs`**：限制并发请求数
+4. **LMCache**：更复杂的 tiered offload，但提供持久化和跨实例能力
+
+## 六、总结
+
+- KV Cache 是 Transformer decode 阶段的必然产物，解决"不重复计算历史 token"的问题
+- **vLLM Prefix Caching** 跨请求复用公共前缀的 KV cache，一行参数开启，省 30-80% prefill
+- **LMCache** 是更通用的 KV cache 管理层，解决非前缀复用、持久化和跨实例共享，但运维成本高
+- 选择建议：先开 `--enable-prefix-caching`，等到真正遇到"显存不够"或"多轮对话 TTFT 太长"的痛点时再考虑 LMCache
+
+## 参考
+
+- vLLM Automatic Prefix Caching 文档：https://docs.vllm.ai/en/stable/design/prefix_caching.html
+- LMCache GitHub：https://github.com/LMCache/LMCache
+- LMCache 论文：Yihua Cheng et al. "LMCache: An Efficient KV Cache Layer for Enterprise-Scale LLM Inference", arXiv:2510.09665
+- CacheBlend 论文：Jiayi Yao et al. "CacheBlend: Fast Large Language Model Serving for RAG with Cached Knowledge Fusion", EuroSys 2025
+12:T25c6,
+# DeepSeek-V4-Flash 内网 vLLM 部署完全指南
+
+## 一、模型规格
+
+DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：
+
+| 项目 | 值 |
+|------|-----|
+| 架构 | MoE（Mixture of Experts） |
+| 总参数量 | **284B** |
+| 激活参数量 | **13B**（每次推理只激活 13B，其余在 MoE 专家中稀疏路由） |
+| 专家数 | 256 个 routed experts + 1 个 shared expert |
+| 每 token 激活专家数 | 6 |
+| 上下文长度 | **1M tokens**（百万级） |
+| 权重精度 | **FP4 + FP8 混合**（原生已量化） |
+| 分片数 | 46 个 safetensors 文件 |
+| 磁盘总大小 | ~159 GB |
+| 架构名称 | `deepseek_v4`（自定义架构，非标准 Llama） |
+| 许可证 | MIT |
+
+**配置文件关键字段**（`config.json`）：
+
+```json
+{
+  "model_type": "deepseek_v4",
+  "expert_dtype": "fp4",           // MoE 专家权重是原生的 4-bit
+  "quantization_config": {
+    "quant_method": "fp8",          // 其余权重是 FP8
+    "weight_block_size": [128, 128]
+  },
+  "num_hidden_layers": 43,
+  "hidden_size": 4096,
+  "num_attention_heads": 64,
+  "num_key_value_heads": 1,       // MLA (Multi-head Latent Attention)
+  "head_dim": 512,
+  "n_routed_experts": 256,
+  "num_experts_per_tok": 6,
+  "max_position_embeddings": 1048576  // 1M tokens
+}
+```
+
+---
+
+## 二、这个模型特殊在哪
+
+和普通模型（Qwen、Llama）比，DeepSeek-V4-Flash 有几个关键差异：
+
+### ① 模型已经是原生量化的
+
+大多数开源模型以 FP16/BF16 精度发布，需要你自己做 AWQ/GPTQ 量化才能节约显存。
+
+**但这个模型不一样**——DeepSeek 发布时就已经是 FP4 + FP8 混合精度：
+- **MoE 专家参数**：FP4（4-bit 浮点）
+- **其他参数**：FP8（8-bit 浮点）
+
+这意味着你**不需要**再做额外的量化步骤（不需要 AutoAWQ，不需要 GPTQ）。
+
+### ② 它是 MoE 架构
+
+```
+输入 token
+    │
+    ▼
+┌──────────┐
+│ Router    │  ← 决定这个 token 应该分配给哪 6 个专家
+│ (门控网络) │
+└────┬─────┘
+     │
+     ▼
+  ┌──┴──┐  ┌──┴──┐  ┌──┴──┐      ┌──┴──┐
+  │专家1│  │专家2│  │专家3│  ...  │专家6│  ← 只激活 6/256 个专家
+  └──┬──┘  └──┬──┘  └──┬──┘      └──┬──┘
+     └────────┴────────┴────────────┘
+                    │
+                    ▼
+              输出合并
+```
+
+核心优势：**总参数量 284B，但每次只激活 13B**。也就是说，它的推理计算量大约相当于一个 13B 的 dense 模型，但模型容量（记忆的知识）相当于 284B。
+
+**对部署的影响**：
+- 显存占用主要由 284B 总参数决定（虽然计算量小，但所有专家的权重都得加载到显存）
+- 因为是 FP4/FP8 混合，实际显存约 ~80-100GB（而不是 284B × FP16 的 ~568GB）
+- 推理速度 ≈ 13B dense 模型
+
+### ③ 它使用 MLA（Multi-head Latent Attention）
+
+DeepSeek-V4 没有用标准的 Multi-Head Attention，而是用自己的 MLA：
+- `num_key_value_heads = 1`（只有一个 KV head）
+- `head_dim = 512`（每个 head 的维度很大）
+- 通过低秩投影（`q_lora_rank`, `o_lora_rank`）压缩 KV Cache
+
+**对部署的影响**：MLA 的 KV Cache 比标准 MHA 小得多，这对 1M 长上下文场景非常关键。但 vLLM 需要专门支持这种注意力机制。
+
+### ④ 它还有 CSA/HCA 混合注意力架构
+
+DeepSeek-V4 引入了：
+- **CSA**（Compressed Sparse Attention）：压缩稀疏注意力
+- **HCA**（Heavily Compressed Attention）：重度压缩注意力
+
+在 1M 上下文下，相比标准注意力只需要 27% 的 FLOPs 和 10% 的 KV Cache。
+
+---
+
+## 三、vLLM 对 DeepSeek-V4 的支持现状
+
+### 当前状态（截至 2026 年 6 月）
+
+vLLM 正在积极开发 DeepSeek-V4 支持，**已有初步支持但尚未完全稳定**：
+
+| 功能 | 状态 |
+|------|------|
+| 基础推理（MegaMoE + FP4 Indexer） | ✅ 已完成（PR #40860） |
+| FP4 权重加载 | ✅ 已完成 |
+| FP8 group quantization kernel | ✅ 已完成 |
+| Norm + Router 融合 | ✅ 已完成 |
+| Multi-stream 4 GEMM | ✅ 已完成 |
+| Nvlink all-to-all BF16/FP8 | ✅ 已完成 |
+| Fast topk kernel | ❌ 开发中 |
+| Indexer topk + page table fusion | ❌ 开发中 |
+| Pipeline parallelism | ❌ 开发中 |
+| KV cache offloading | ❌ 开发中 |
+| MTP（Multi-Token Prediction）优化 | ❌ 开发中 |
+
+### 你需要用哪个版本的 vLLM
+
+**建议使用最新版 vLLM（>= v0.11.0 或更新的 nightly）**，或者用官方 Docker 镜像的最新 tag。
+
+如果官方镜像还不支持，可能需要：
+1. 从 vLLM 源码的 main 分支 build Docker 镜像
+2. 或者使用 DeepSeek 自己提供的推理栈（如果官方 vLLM 还不稳定）
+
+```bash
+# 从源码构建（包含最新 DeepSeek-V4 支持）
+git clone https://github.com/vllm-project/vllm.git
+cd vllm
+docker build -t vllm-dsv4 .
+docker save vllm-dsv4 -o vllm-dsv4.tar
+```
+
+---
+
+## 四、部署流程
+
+### 准备工作
+
+| 需要准备的 | 说明 | 大小预估 |
+|-----------|------|---------|
+| vLLM Docker 镜像 | 需支持 deepseek_v4 架构 | ~15GB |
+| 模型文件（46 个分片） | 从 ModelScope 下载 | ~159GB |
+| 足够显存的 GPU | 见下方显存估算 | — |
+
+### 显存估算
+
+```
+DeepSeek-V4-Flash 284B params, FP4+FP8 mixed (~0.5-1 byte/param avg)
+
+模型权重 ≈ 159GB（磁盘大小就是权重大小）
+KV Cache（1M 上下文）≈ MLA 压缩后约 10-30GB
+中间激活 + 开销 ≈ 5-10GB
+
+总显存需求 ≈ 180-200GB（1M 上下文）
+              ≈ 80-100GB（32K 上下文）
+
+推荐配置：
+  · 8 × A100 80GB（1M 上下文）
+  · 2 × A100 80GB（32K 上下文）
+  · 4 × RTX 6000 48GB（32K 上下文）
+```
+
+### 具体步骤
+
+**有网环境**：
+
+```bash
+# 1. 下载模型
+pip install modelscope
+python3 -c "
+from modelscope import snapshot_download
+snapshot_download('deepseek-ai/DeepSeek-V4-Flash', local_dir='./DeepSeek-V4-Flash')
+"
+# 下载后得到 46 个分片文件
+
+# 2. 准备 vLLM 镜像（建议用最新版，或从源码 build）
+# 方案 A：用官方最新
+docker pull vllm/vllm-openai:latest
+docker save vllm/vllm-openai:latest -o vllm.tar
+
+# 方案 B：如果官方版不支持，从 main 分支 build
+git clone https://github.com/vllm-project/vllm.git
+cd vllm
+docker build -t vllm-dsv4 .
+docker save vllm-dsv4 -o vllm-dsv4.tar
+
+# 3. 把镜像 + 模型传到内网
+```
+
+**内网环境**：
+
+```bash
+# 4. 导入镜像
+docker load < vllm-dsv4.tar
+
+# 5. 启动 vLLM 服务
+docker run -d \
+  --gpus all \
+  --network host \
+  --shm-size 64g \
+  -v /data/DeepSeek-V4-Flash:/model \
+  --name dsv4-service \
+  vllm-dsv4:latest \
+  --model /model \
+  --served-model-name deepseek-v4-flash \
+  --tensor-parallel-size 8 \        # 用 8 张 GPU
+  --max-model-len 32768 \            # 先用 32K 上下文测试
+  --gpu-memory-utilization 0.9 \
+  --port 8000 \
+  --trust-remote-code
+
+# 6. 验证
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model": "deepseek-v4-flash", "messages": [{"role": "user", "content": "你好"}]}'
+```
+
+### 关键参数说明
+
+| 参数 | 建议值 | 说明 |
+|------|--------|------|
+| `--tensor-parallel-size` | GPU 数量 | 张量并行，每张卡分摊一部分专家和注意力计算 |
+| `--max-model-len` | 32768（调试）→ 1048576（生产） | 上下文越长，KV Cache 越占显存 |
+| `--gpu-memory-utilization` | 0.9 | 留 10% 给中间计算 |
+| `--shm-size` | 64g 或更高 | MoE 的 all-to-all 通信需要大量共享内存 |
+| `--trust-remote-code` | 必须加 | DeepSeek-V4 的 config 里有自定义代码 |
+
+---
+
+## 五、显存不足怎么办？
+
+### MoE 模型的特殊性
+
+DeepSeek-V4-Flash 284B 权重全部要加载到显存。vLLM 用 `--tensor-parallel-size` 把权重切到多张卡上。
+
+| GPU 配置 | 能否跑 32K 上下文 | 能否跑 1M 上下文 |
+|----------|-----------------|-----------------|
+| 1 × A100 80GB | ❌ 显存不够 | ❌ |
+| 4 × A100 80GB | ✅ 可以 | ❌ |
+| 8 × A100 80GB | ✅ | ✅ 勉强 |
+| 8 × H100 80GB | ✅ | ✅ 较好 |
+
+### 实在不够怎么办？
+
+1. **减短 max-model-len**：上下文减半，KV Cache 减半
+2. **增加 tensor-parallel-size**：用更多小显存卡分摊
+3. **pipeline-parallel-size**：多机流水线并行，适合多台 4-GPU 服务器
+4. **等 vLLM 的 KV cache offloading 功能完成**（路线图中）：把不常用的 KV Cache offload 到 CPU 内存
+
+---
+
+## 六、和普通模型部署的关键区别
+
+| | 普通模型（Qwen/Llama） | DeepSeek-V4-Flash |
+|--|----------------------|-------------------|
+| 是否需要量化 | 需要（AWQ/GPTQ） | **不需要**，已是 FP4+FP8 |
+| 架构 | Dense Transformer | MoE + MLA + CSA/HCA |
+| vLLM 支持 | 稳定 | 开发中，需最新版 |
+| 总参/激活参 | 相同 | 284B / 13B（巨大差异） |
+| 显存瓶颈 | 计算量 | 模型权重加载（所有专家都要加载） |
+| 推理速度 | 与总参数成正比 | 与激活参数成正比（≈13B 模型速度） |
+| 上下文能力 | 通常 128K | 原生 1M |
+
+---
+
+## 七、参考链接
+
+- DeepSeek-V4 技术报告: https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf
+- HuggingFace 模型页: https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash
+- ModelScope 地址: https://modelscope.cn/models/deepseek-ai/DeepSeek-V4-Flash
+- vLLM DeepSeek-V4 Roadmap: https://github.com/vllm-project/vllm/issues/40902
+- vLLM GitHub: https://github.com/vllm-project/vllm
+13:T250e,
+# ModelScope 权重分片 → 内网 vLLM 部署完整流程
+
+## 一、核心链路
+
+从 ModelScope 下载的权重分片，到最后能在内网用 vLLM 提供服务，中间需要经过的环节：
+
+```
+阶段一：有网环境（开发/构建机）
+───────────────────────────────────────────
+ ① 下载模型分片（ModelScope）
+         ↓
+ ② 量化模型（AWQ）—— 可选，但建议做
+         ↓
+ ③ 准备 vLLM Docker 镜像
+         ↓
+ ④ 打包导出（镜像 + 模型文件）
+         ↓
+  ┌──────────────────┐
+  │ 物理搬运到内网    │  ← 刻盘 / scp / 硬盘拷贝
+  └──────────────────┘
+
+阶段二：内网环境（生产服务器）
+───────────────────────────────────────────
+ ⑤ Docker 导入镜像
+         ↓
+ ⑥ 挂载模型文件 + 启动容器
+         ↓
+ ⑦ API 服务可用
+```
+
+---
+
+## 二、阶段一：有网环境——把所有东西准备好
+
+### ① 下载模型分片
+
+用 ModelScope 的 Python SDK：
+
+```bash
+pip install modelscope
+
+python3 -c "
+from modelscope import snapshot_download
+# 这会下载到当前目录下的 Qwen2.5-72B/ 文件夹
+snapshot_download('Qwen/Qwen2.5-72B-Instruct', local_dir='./Qwen2.5-72B')
+"
+```
+
+下载后的目录结构：
+
+```
+Qwen2.5-72B/
+├── config.json                 ← 模型配置
+├── tokenizer.json              ← 分词器
+├── model-00001-of-00060.safetensors
+├── model-00002-of-00060.safetensors
+├── ...                    ← 60 个分片文件
+├── model-00060-of-00060.safetensors
+└── model.safetensors.index.json  ← 索引：记录每个张量在哪个分片里
+```
+
+这就是你从 ModelScope 拿到的东西——**多个权重分片 + 索引文件**。vLLM 可以直接读这种目录。
+
+### ② 量化模型（AWQ）
+
+**为什么要量化？**
+
+70B 模型用 FP16（原始精度）需要约 140GB 显存——至少 2 张 A100（80GB）才能跑。量化到 INT4 后只需要约 40GB，**一张卡就够了**，推理速度还更快。
+
+```
+量化原理（一句话）：
+  每个权重本来用 16-bit 浮点数存（-65504 ~ 65504 范围）
+  量化后只用 4-bit 整数存（0 ~ 15 范围）
+  用一个 scale 系数来映射：float_val = int_val × scale
+  体积从 2 字节/参数 → 0.5 字节/参数，缩到 1/4
+```
+
+**实际操作**（用 AutoAWQ）：
+
+```bash
+# 安装
+pip install autoawq
+
+# 量化
+python3 << 'EOF'
+from awq import AutoAWQForCausalLM
+from transformers import AutoTokenizer
+
+model_dir = './Qwen2.5-72B'
+output_dir = './Qwen2.5-72B-AWQ'
+
+model = AutoAWQForCausalLM.from_pretrained(
+    model_dir, device_map='auto'
+)
+tokenizer = AutoTokenizer.from_pretrained(model_dir)
+
+quant_config = {
+    'zero_point': True,
+    'q_group_size': 128,
+    'w_bit': 4,         # 4-bit 量化
+    'version': 'GEMM'
+}
+
+model.quantize(tokenizer, quant_config=quant_config)
+model.save_quantized(output_dir)
+tokenizer.save_pretrained(output_dir)
+EOF
+```
+
+量化后的目录结构和原来一样——仍然是多个 `.safetensors` 分片文件 + `index.json`。区别是每个分片文件的大小只有原来的约 1/4。**vLLM 加载时加上 `--quantization awq` 参数即可。**
+
+**什么时候可以跳过量化？**
+- 你的 GPU 显存总和 > 模型大小 × 2（比如 70B 模型用 4 × A100 80GB，总显存 320GB >> 140GB）
+- 或只是做小模型（7B/14B 以下）
+
+### ③ 准备 vLLM Docker 镜像
+
+内网没有外网，所以需要先在能联网的机器上把 vLLM 的 Docker 镜像拉下来，打包带走。
+
+```bash
+# 拉取官方镜像（带 OpenAI 兼容 API）
+docker pull vllm/vllm-openai:latest
+
+# 查看确认
+docker images | grep vllm
+
+# 导出为 tar 包
+docker save vllm/vllm-openai:latest -o vllm-openai.tar
+```
+
+镜像大约 10-20GB（包含 CUDA、PyTorch、vLLM 等完整环境）。
+
+**进阶：如果想把模型也打到镜像里**（相当于一个包含了环境和模型的完整部署包）：
+
+```dockerfile
+# Dockerfile
+FROM vllm/vllm-openai:latest
+
+# 把量化后的模型整个目录复制进去
+COPY ./Qwen2.5-72B-AWQ /models/Qwen2.5-72B
+
+# 默认启动命令（运行时可以覆盖）
+CMD ["--model", "/models/Qwen2.5-72B", "--port", "8000"]
+```
+
+```bash
+docker build -t vllm-full-package .
+docker save vllm-full-package -o vllm-full-package.tar
+```
+
+**注意**：模型打包进镜像后 tar 文件会很大（40-150GB），传起来慢。更常见的做法是**模型单独传**，Docker run 时用 `-v` 挂载进去。
+
+### ④ 打包传输
+
+需要传到内网的材料：
+
+| 材料 | 大小（70B 模型为例） | 说明 |
+|------|-------------------|------|
+| `vllm-openai.tar` | ~15GB | Docker 镜像 |
+| `Qwen2.5-72B-AWQ/` 目录 | ~40GB | 量化后模型分片 |
+| 启动脚本 | 几 KB | 参数写好在文件里，免得出错 |
+
+**传输方式**：
+- 内网 scp / rsync（如果内网有入口机）
+- 硬盘/U 盘物理拷贝（物理隔离场景）
+- 刻录光盘（极端场景）
+
+---
+
+## 三、阶段二：内网环境——部署启动
+
+### ⑤ 导入 Docker 镜像
+
+```bash
+# 确认服务器有 NVIDIA 驱动 + Docker
+nvidia-smi
+docker info
+
+# 导入 vLLM 镜像
+docker load < vllm-openai.tar
+
+# 确认
+docker images
+# 应该看到 vllm/vllm-openai
+```
+
+### ⑥ 启动 vLLM 容器
+
+```bash
+docker run -d \
+  --gpus all \
+  --network host \
+  --shm-size 32g \
+  -v /data/models/Qwen2.5-72B-AWQ:/model \
+  --name vllm-service \
+  vllm/vllm-openai:latest \
+  --model /model \
+  --served-model-name my-qwen \
+  --tensor-parallel-size 4 \
+  --quantization awq \
+  --dtype auto \
+  --max-model-len 8192 \
+  --gpu-memory-utilization 0.9 \
+  --port 8000 \
+  --trust-remote-code
+```
+
+**参数详解（内网部署必调）：**
+
+| 参数 | 含义 | 你在内网怎么设 |
+|------|------|---------------|
+| `--tensor-parallel-size` | 用几张 GPU 并行处理一层 | = 这台机器上的 GPU 数量 |
+| `--quantization awq` | 告诉 vLLM 加载的是 AWQ 量化权重 | 如果你量化了就加，没量化不加 |
+| `--gpu-memory-utilization` | 显存用到多少百分比 | 0.9 留 10% 给其他开销 |
+| `--max-model-len` | 最大上下文长度 | 根据你的显存量调，越长越吃显存 |
+| `--shm-size` | 容器共享内存 | 大模型推荐 32GB 以上 |
+
+### ⑦ 验证
+
+```bash
+# 查看启动日志
+docker logs -f vllm-service
+# 看到 "Uvicorn running on http://0.0.0.0:8000" 表示 OK
+
+# 测试 API
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "my-qwen",
+    "messages": [{"role": "user", "content": "你好"}],
+    "max_tokens": 100
+  }'
+
+# 应该返回带 choices 的 JSON
+```
+
+---
+
+## 四、如果一台机器放不下——多机分布式
+
+当单机显存总量不够跑完整模型时，用多台服务器拼起来。
+
+```
+服务器 A (head)       服务器 B (worker)      服务器 C (worker)
+   ├── GPU 0-3           ├── GPU 0-3           ├── GPU 0-3
+   │                     │                     │
+   └─────────── 内网互联（NCCL/RoCE）───────────┘
+                        │
+                    vLLM 把模型层切到所有 GPU 上
+```
+
+每台机器都需要：vLLM 镜像 + 模型文件。
+
+```bash
+# 所有机器启动 Ray 集群通信
+# head 节点（假设 IP 192.168.1.1）：
+docker run --gpus all --network host --shm-size 32g \
+  -v /data/models/Qwen2.5-72B:/model \
+  vllm/vllm-openai:latest \
+  ray start --head --port=6379
+
+# 其他 worker 节点：
+docker run --gpus all --network host --shm-size 32g \
+  -v /data/models/Qwen2.5-72B:/model \
+  vllm/vllm-openai:latest \
+  ray start --address=192.168.1.1:6379
+
+# 进入 head 容器，启动 vLLM：
+docker exec -it <head容器ID> /bin/bash
+vllm serve /model \
+  --tensor-parallel-size 4 \      # 每台机器 4 张卡
+  --pipeline-parallel-size 3 \    # 3 台机器流水线并行
+  --dtype auto
+```
+
+---
+
+## 五、各步骤的时间预估
+
+| 步骤 | 耗时 | 说明 |
+|------|------|------|
+| 下载模型（70B） | 30-60 分钟 | 取决于带宽，ModelScope 国内较快 |
+| AWQ 量化（70B） | 1-3 小时 | 需要 GPU，最耗时的步骤 |
+| docker pull vLLM | 5-10 分钟 | 镜像 ~10GB |
+| docker save + 传输 | 20-60 分钟 | 取决于传输方式 |
+| docker load | 5-10 分钟 | |
+| 首次启动 vLLM | 2-10 分钟 | 需要编译 CUDA kernel 缓存 |
+
+---
+
+## 六、常见问题
+
+**Q：内网机器没有网络，pip install 怎么办？**
+A：不需要 pip。用 Docker 镜像，所有依赖都在镜像里。你只需要 `docker load < tar`。
+
+**Q：模型文件一定要量化吗？**
+A：不一定。看你的 GPU 总显存够不够。70B 模型 FP16 需要 ~140GB，INT4 需要 ~40GB。显存够就不用量化。
+
+**Q：量化会损失多少质量？**
+A：AWQ 4-bit 量化在 MMLU 等基准测试上通常损失 < 1-2%，对于大多数对话/生成场景几乎不可感知。
+
+**Q：多个分片文件怎么给 vLLM？**
+A：直接把分片文件所在目录路径传给 `--model` 参数，vLLM 会自动读 `index.json` 找到所有分片。不需要任何额外操作。
+
+**Q：为什么 shm-size 设 32GB？**
+A：vLLM 的多进程通信（tokenizer、调度器、GPU worker 之间）需要共享内存。不够会报 `bus error`。
+14:T20e2,
+# 智能体开发基础知识与模型量化指南
+
+## 一、大模型量化 — 常见后缀/格式全解
+
+### 为什么需要量化？
+
+默认模型权重用 BF16/FP16（每个参数 2 字节）。70B 模型 BF16 需要 **140GB 显存**。量化降低精度来压缩体积：
+
+| 格式 | 每参数大小 | 相对于 BF16 | 70B 模型显存 |
+|------|-----------|-------------|-------------|
+| FP32 | 4 字节 | 2x（更大） | 280GB |
+| BF16/FP16 | 2 字节 | 1x（基准） | 140GB |
+| FP8 | 1 字节 | 节省 50% | ~70GB |
+| INT8 | 1 字节 | 节省 50% | ~70GB |
+| INT4 | 0.5 字节 | 节省 75% | ~35-40GB |
+
+### 常见后缀逐一解释
+
+#### 精度后缀
+
+| 后缀 | 全称 | 说明 |
+|------|------|------|
+| **fp16** / **bf16** | Floating Point 16 / Brain Float 16 | 标准推理精度，无质量损失。BF16 是现代 GPU 原生支持的格式 |
+| **fp8** | Floating Point 8 | 1 字节浮点，H100/H200 等 Blackwell/Hopper 架构原生支持。质量接近 BF16（保留 ~99%），是 2026 年生产环境的性价比首选 |
+| **int8** | Integer 8 | 8 位整数，广泛兼容。质量约 BF16 的 97-98%。bitsandbytes 库支持 |
+| **int4** | Integer 4 | 4 位整数，极致压缩。质量约 BF16 的 93-96%，复杂推理任务下降较明显 |
+| **nf4** | Normalized Float 4 | QLoRA 微调专用的 4 位格式，信息论最优。不用作推理部署 |
+
+#### 量化方法后缀（重要！）
+
+| 后缀 | 全称 | 核心原理 | 适用场景 |
+|------|------|---------|---------|
+| **AWQ** | Activation-Aware Weight Quantization | 分析激活模式，识别重要权重并保护它们，不重要的量化更狠 | **INT4 最佳方案**，vLLM 部署首选，质量保留 ~94-96% |
+| **GPTQ** | Generative Pre-Training Quantization | 逐层量化，利用二阶信息（Hessian 矩阵）最小化误差 | 较早的 INT4 方案，工具支持广泛。质量略低于 AWQ |
+| **GGUF** | GPT-Generated Unified Format | llama.cpp/Ollama 的容器格式。支持混合精度（k-quants），可 CPU+GPU 协同推理 | **本地开发/Ollama 首选**，消费级显卡友好 |
+| **HQQ** | Half-Quadratic Quantization | 无需校准数据，解析求解量化问题。几分钟完成 70B 量化 | 快速原型验证，新模型发布当天即可量化 |
+| **SmoothQuant** | — | 平滑激活值异常值，使 INT8 推理更准确 | 数据中心 INT8 部署 |
+
+#### GGUF 内部的 k-quant 变体（常见后缀组合）
+
+| 后缀 | 说明 | 质量 vs BF16 |
+|------|------|-------------|
+| q2_k | 2 位混合，极致压缩 | ~80-85%（明显降质） |
+| q3_k | 3 位混合 | ~85-90% |
+| q4_k_m | **最常用的 4 位平衡点** | ~92-94% |
+| q5_k_m | 5 位高质量 | ~95-97% |
+| q6_k | 6 位，接近无损 | ~97-98% |
+| q8_0 | 8 位，几乎无损 | ~99% |
+
+### 硬件的选择策略
+
+| 硬件 | 推荐格式 |
+|------|---------|
+| H100/H200 (Hopper) 或 RTX PRO 6000 (Blackwell) 96GB | FP8（质量最高）或 AWQ INT4（70B 单卡） |
+| RTX 5090 32GB | AWQ INT4 跑 13-30B，GGUF Q4_K_M |
+| 消费级 24GB | GGUF Q4_K_M / Q5_K_M 跑 13B |
+| CPU only / Mac Apple Silicon | GGUF（原生 Metal 加速） |
+
+### 一句话选型口诀
+
+> **有 H100 用 FP8，显存不够用 AWQ，本地 Mac 用 GGUF，微调用 NF4。**
+
+---
+
+## 二、智能体 (AI Agent) 开发核心概念
+
+### 什么是 AI Agent？
+
+AI Agent 是能自主感知环境、做出决策、执行动作的智能系统。不同于单轮问答，Agent 能：
+- **规划**：将复杂任务分解为多步
+- **工具调用**：使用外部工具（搜索、代码执行、文件操作）
+- **记忆**：记住对话历史和中间状态
+- **反思**：根据结果自我修正
+
+### Agent 核心架构（2026 主流）
+
+```
+用户请求
+    │
+    ▼
+┌─────────────┐
+│   Orchestrator  │  ← 主控/调度器
+│  (规划、调度)    │
+└──────┬──────┘
+       │
+   ┌───┼───┬───┬───┐
+   ▼   ▼   ▼   ▼   ▼
+  LLM 搜索 代码 文件 数据库
+ (推理) (工具) (工具) (工具) (记忆)
+```
+
+### 主流的 Agent 模式
+
+**1. ReAct (Reasoning + Acting)**
+最经典的范式：思考 → 行动 → 观察 → 再思考
+```
+Thought: 我需要搜索今天的天气
+Action: 调用 search_weather()
+Observation: 晴天，25°C
+Thought: 天气不错，建议用户出门
+Answer: 今天天气很好，适合出去走走
+```
+
+**2. Function Calling**
+模型输出结构化 JSON 调用预定义函数，由框架执行并返回结果。
+
+**3. 多 Agent 协作 (Multi-Agent)**
+多个 Agent 各司其职，通过消息传递协作：
+- Supervisor Agent：分配任务、汇总结果
+- Worker Agent：执行具体子任务
+- Critic Agent：审核/检查质量
+
+**4. MCP (Model Context Protocol)**
+2025-2026 年兴起的新标准协议，让 LLM 和外部工具/数据源通过标准化接口交互。Anthropic 提出，类似 USB 标准——一次接入，到处使用。
+
+### 主流 Agent 开发框架
+
+| 框架 | 定位 | 特点 |
+|------|------|------|
+| **LangGraph** | 复杂 Agent 工作流 | 有向图编排、状态持久化、人机交互循环。最灵活的底层框架 |
+| **CrewAI** | 多 Agent 协作 | 角色定义明确（Manager + Worker），适合清晰的团队分工场景 |
+| **AutoGen** (Microsoft) | 多 Agent 对话 | 强调 Agent 间自由对话协商，适合复杂问题分解 |
+| **Semantic Kernel** | 企业级 | 微软出品，C#/Python，与 Azure/Azure DevOps 深度集成 |
+| **Dify** | 低代码 | 可视化编排，适合快速原型和业务人员使用 |
+| **Coze** (字节) | 低代码/中文友好 | 国内生态，插件市场丰富 |
+| **OpenAI Agents SDK** | 轻量/官方 | 2026 年新推出，适合简单场景 |
+
+### Agent 开发常见八股题
+
+**Q: Agent 的"记忆"如何实现？**
+A: 分三层：(1) 短期记忆 = 当前对话上下文窗口 (2) 长期记忆 = 向量数据库存储的嵌入历史 (3) 工作记忆 = 多步推理中的中间状态（通常用 Buffer 或 Graph State 管理）
+
+**Q: Tool Calling 和 Function Calling 有什么区别？**
+A: Function Calling 特指模型输出结构化参数（OpenAI API 格式），Tool Calling 是更宽泛的概念，包括 Function Calling、MCP 工具、自定义 API 等多种形式。
+
+**Q: Agent 如何避免无限循环？**
+A: (1) 最大迭代次数截断 (2) 重复检测（相同工具+相同参数） (3) 带超时的终止条件 (4) 人类介入循环 (Human-in-the-loop)
+
+**Q: 什么是 RAG + Agent 的区别？**
+A: RAG = 检索增强生成，解决知识实时性问题（查资料再回答）。Agent = 能执行动作的自主系统。两者常结合——Agent 用 RAG 作为记忆/知识来源。
+
+**Q: 多 Agent 和单 Agent 调度有什么区别？**
+A: 单 Agent 自己规划+执行+检查。多 Agent 将规划/执行/检查分开，每个 Agent 各司其职，适合复杂任务但增加通信开销。
+
+### 2026 年 Agent 开发趋势
+
+- **Agentic AI → 生产部署**：2026 年 Agent 从演示进入真正生产
+- **Multi-Agent 是最热门技能**：企业 Agent 需求最大的方向
+- **MCP 协议标准化**：工具/数据接入从定制化走向标准化
+- **Agent 安全成为焦点**：Prompt 注入、多步劫持、权限管控
+- **Windows Agent Framework**：微软在 Build 2026 推出的 OS 级 Agent 平台
+
+---
+
+## 三、模型部署与推理必知
+
+| 工具 | 说明 | 适用场景 |
+|------|------|---------|
+| **vLLM** | 高性能推理引擎，支持 PagedAttention 提升吞吐 | 生产环境多用户 API 服务 |
+| **SGLang** | 结构化生成语言，约束解码 | 需要结构化输出（JSON Schema）的场景 |
+| **llama.cpp** / **Ollama** | CPU+GPU 混合推理 | 本地开发、Mac 用户、消费级显卡 |
+| **TensorRT-LLM** | NVIDIA 官方优化引擎 | H100 等高端 GPU 极致性能 |
+| **TGI** (HF) | Hugging Face 推理引擎 | 快速部署 HF 模型 |
+
+---
+
+## 四、相关资源
+
+### 量化工具
+- AWQ: https://github.com/mit-han-lab/llm-awq
+- AutoGPTQ: https://github.com/AutoGPTQ/AutoGPTQ
+- llama.cpp: https://github.com/ggerganov/llama.cpp
+- bitsandbytes: https://github.com/bitsandbytes-foundation/bitsandbytes
+
+### 参考文章
+- LLM Quantization Explained (VRLA Tech): https://vrlatech.com/llm-quantization-explained-int4-int8-fp8-awq-and-gptq-in-2026/
+- LLM Quantization Guide (ResumeLens): https://www.resumelens.org/blog/ai/llm-quantization-guide
+15:T3c33,
+# Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换
+
+## 核心思想
+
+**不是写转换代码，是给大模型造一套"手艺工具"。**
+
+传统路线：
+```
+程序员写转换逻辑 → 编译成 CLI → 用户调用
+```
+
+Agent Skill 路线：
+```
+Skill 提供工具原语 → LLM 理解模板意图 → LLM 编排流程 → 生成 DOCX
+```
+
+**LLM 是设计师和工匠，工具只是它的手。**
+
+---
+
+## 设计原则
+
+1. **LLM 做决策，工具做执行** — 凡是需要理解、判断、映射的事交给 LLM，凡是机械操作交给工具
+2. **模板是 LLM 的"设计语言"** — LLM 需要能"看懂"模板里有什么样式，才能做出好的映射决策
+3. **映射决策由 LLM 推理产生** — 而不是硬编码在 config 里
+4. **可观察性** — LLM 的每一步决策（为什么这个 markdown 元素映射到那个样式）应该能 trace
+
+---
+
+## 方案 A：工具组合模式（Hermes 原生风格）
+
+Skill 提供一组**原子工具**，LLM 编排组合。
+
+```
+┌──────────────────────────────────────────────────┐
+│                    Agent (LLM)                     │
+│  ┌──────────┐  ┌──────────┐  ┌────────────────┐  │
+│  │ 理解模板  │→ │ 理解 MD  │→ │ 决定映射方案    │  │
+│  │ 的样式体系 │  │ 的结构   │  │  + 逐段渲染     │  │
+│  └────┬─────┘  └────┬─────┘  └───────┬────────┘  │
+└───────┼──────────────┼────────────────┼───────────┘
+        │              │                │
+        ▼              ▼                ▼
+┌──────────────────────────────────────────────────┐
+│                   Skill 工具层                     │
+│  ┌──────────────┐  ┌──────────┐  ┌────────────┐  │
+│  │template_     │  │md_parse  │  │docx_       │  │
+│  │analyze(path) │  │(path)    │  │render      │  │
+│  └──────────────┘  └──────────┘  │(md_ast,    │  │
+│                                  │ styles,    │  │
+│  ┌──────────────┐  ┌──────────┐  │ mapping,   │  │
+│  │style_mapping │  │docx_     │  │ template)  │  │
+│  │_suggest(...) │  │validate  │  └────────────┘  │
+│  └──────────────┘  └──────────┘                    │
+└──────────────────────────────────────────────────┘
+```
+
+### 工具清单（Hermes execute_code 可调用）
+
+```python
+# tool 1: 模板分析
+def template_analyze(template_path: str) -> dict:
+    """读取 DOCX 模板，返回完整的样式目录"""
+    # 返回: 段落样式列表、字符样式列表、表格样式列表、页面设置
+    # 每个样式包括: 名称、类型、字体、字号、颜色、粗体/斜体等属性
+    # 以及 numbering definitions（列表编号定义）
+    pass
+
+# tool 2: Markdown 解析
+def md_parse(md_path: str) -> list:
+    """解析 Markdown，返回结构化内容树"""
+    # 返回: [{type, level, text, spans: [{type, text}], children?}]
+    # 类型: heading, paragraph, list, table, codeblock, blockquote, image
+    # spans 类型: bold, italic, code, link, strikethrough, underline
+    pass
+
+# tool 3: 映射建议（LLM 辅助）
+def style_mapping_suggest(template_styles: dict, md_structure: list, user_hints: str = "") -> dict:
+    """LLM 根据模板样式和 Markdown 结构，自动推荐最优映射"""
+    # 本质是一个 LLM 调用，分析样式名称/属性与 markdown 语义的匹配度
+    # 返回: {paragraph: {h1: "Heading 1", p: "Normal", ...},
+    #        inline: {bold: "Strong Char", code: "Code Char", ...}}
+    pass
+
+# tool 4: 核心渲染
+def docx_render(md_ast: list, template_path: str, style_mapping: dict, output_path: str) -> str:
+    """执行渲染（纯机械操作，无智能判断）"""
+    # 用 python-docx 打开模板，遍历 md_ast
+    # 对每个元素: 查 style_mapping → 应用对应的段落/字符样式
+    # 不设任何 run.bold/italic 属性，只设 run.style
+    # 返回: 输出文件路径
+    pass
+
+# tool 5: 验证
+def docx_validate(docx_path: str, md_ast: list) -> dict:
+    """验证输出 DOCX 的完整性和样式正确性"""
+    # 检查: 内容完整性、样式应用是否正确、占位符残留
+    pass
+
+# tool 6: 模板样式可视化预览
+def template_preview(template_path: str) -> str:
+    """渲染一个"样式示例"文档，展示模板中每个样式的实际效果"""
+    # 生成一个 DOCX 或 HTML 预览，让用户/LLM 直观看到每个样式长什么样
+    # 这对于 LLM 做映射决策非常重要
+    pass
+```
+
+### Agent 工作流
+
+```
+用户: "把这份 report.md 套上公司的 docx 模板生成报告"
+
+Agent 内部推理链:
+
+Step 1 - 理解模板
+  template_analyze("template.docx")
+  → 得到: [{name: "Heading 1", font: "Microsoft YaHei", size: 22, bold: true},
+           {name: "Heading 2", font: "Microsoft YaHei", size: 16, bold: true},
+           {name: "Normal", font: "Microsoft YaHei", size: 11},
+           {name: "Quote Char", type: "character", color: "666666", italic: true},
+           ...]
+
+Step 2 - 理解内容
+  md_parse("report.md")
+  → 得到: [{type: "heading", level: 1, text: "第一章", ...},
+           {type: "paragraph", text: "这是**重点**内容", spans: [{text: "重点", type: "bold"}]},
+           ...]
+
+Step 3 - 推理映射方案
+  LLM 思考:
+  "模板里有 Heading 1-3，markdown 有 H1-H3，直接映射。等等，模板的 Heading 1 是微软雅黑 22pt，
+  看起来是正式的文档标题风格，适合映射。模板的 Quote Char 是斜体灰色字符样式，可以用来做引用
+  块的正文... 代码块模板里没有专门的 Code Block 段落样式，但有一个叫 'Code' 的字符样式，
+  可以建一个段落加这个字符样式..."
+
+  生成 style_mapping:
+  {
+    paragraph: {
+      h1: "Heading 1", h2: "Heading 2", h3: "Heading 3",
+      paragraph: "Normal", blockquote: "Quote Body",
+      code_block: "Normal",       # 段落用 Normal，靠字符样式区分
+      bullet_list: "List Bullet",
+      ordered_list: "List Number"
+    },
+    inline: {
+      bold: "Strong Char",
+      italic: "Emphasis Char",
+      code: "Code Char",
+      link: "Hyperlink Char",
+      strikethrough: "Strikethrough Char"
+    },
+    code_block_char: "Code"        # 代码块内全段用这个字符样式
+  }
+
+Step 4 - 执行渲染
+  docx_render(md_ast, "template.docx", style_mapping, "output.docx")
+  → "output.docx"
+
+Step 5 - 验证
+  docx_validate("output.docx", md_ast)
+  → {complete: true, style_accuracy: 0.95, issues: [...]}
+
+Step 6 - 呈现给用户
+  "已生成 output.docx。用了模板的 Heading 1-3 做标题层级，
+  代码块用 Normal 段落 + Code 字符样式保持格式一致。
+  唯一需要注意的是表格样式映射为 Table Grid，若需要自定义表头颜色可以调整映射。"
+```
+
+### 优势
+
+- **完全透明** — LLM 的每一步映射决策都可读、可干预
+- **可适应任意模板** — LLM 基于模板的实际样式内容决策，不依赖预配置
+- **可处理边缘情况** — 遇到奇怪格式时，LLM 能推理出最佳处理方式
+- **逐步验证** — 每步可中断、可调整
+
+### 劣势
+
+- **多轮工具调用** — 完整流程大约 5-7 轮，token 消耗大
+- **延迟** — 每轮 LLM 推理 + 工具执行，总耗时 30 秒+
+- **LLM 可能犯错** — 映射决策质量取决于模型能力
+
+---
+
+## 方案 B：智能单步模式（务实版）
+
+工具简化为**一个高层次的 "智能渲染器"**，LLM 只做关键的决策输入。
+
+```
+skill 提供: docx_render_intelligent(md_path, template_path, output_path, user_hints)
+```
+
+内部实现：
+1. 自动解析模板（python-docx）
+2. 自动解析 MD（mistune）
+3. LLM 调用（内部）："根据这些模板样式和 Markdown 结构，生成最优映射"
+4. 执行渲染（python-docx）
+5. 返回结果 + 映射说明
+
+**Agent 视角：**
+```
+用户: "把 report.md 套模板生成报告"
+Agent: 调用 docx_render_intelligent("report.md", "template.docx", "report.docx")
+       → {"status": "ok", "path": "report.docx", "mapping_used": {...}, "issues": []}
+       "已完成。模板映射详情：..."
+```
+
+### 优势
+
+- **一次调用** — 快速、token 省
+- **LLM 在内部使用** — 利用大模型的智能但不暴露复杂度
+
+### 劣势
+
+- **不透明** — Agent 看不到内部映射过程，难以干预
+- **LLM 调用在工具内部** — 工具成了一个"黑盒"，失去了 Agent 编排的灵活度
+- **调试困难** — 映射错了不容易修正，得修工具代码
+
+---
+
+## 方案 C：两阶段模式 ⭐（推荐）
+
+结合 A 和 B 的优点，分两阶段：
+
+**阶段 1 — 设计（LLM 密集型）**
+```
+Agent: template_analyze() → 理解样式体系
+Agent: md_parse() → 理解内容结构
+Agent: LLM 推理 → 生成 style_mapping（可让用户确认）
+```
+**阶段 2 — 执行（工具密集型）**
+```
+Agent: docx_render(md_ast, template, mapping, output) → 一次生成
+Agent: docx_validate() → 质量检查
+```
+
+```
+用户: "把 report.md 套模板生成报告"
+
+Agent:
+  styles = template_analyze("template.docx")
+  md_ast = md_parse("report.md")
+  mapping = style_mapping_suggest(styles, md_ast)
+  # 可选：展示给用户确认
+  result = docx_render(md_ast, "template.docx", mapping, "report.docx")
+  report = docx_validate("report.docx", md_ast)
+  → 呈现结果
+```
+
+---
+
+## Hermes Skill 具体实现
+
+作为 Hermes skill，结构应该是：
+
+```
+~/.hermes/skills/report-engine/
+├── SKILL.md                    # 技能描述 + 使用指引
+├── scripts/
+│   ├── template_analyze.py     # tool 1: 模板分析
+│   ├── md_parse.py             # tool 2: MD 解析
+│   ├── docx_render.py          # tool 3: 核心渲染
+│   ├── docx_validate.py        # tool 4: 验证
+│   └── docx_preview.py         # tool 5: 样式预览
+├── references/
+│   ├── style-mapping-guide.md  # 映射策略说明（LLM 参考）
+│   └── template-guide.md       # 模板制作指引
+└── templates/
+    └── default-reference.docx   # 内置默认模板
+```
+
+### SKILL.md 核心内容
+
+```markdown
+---
+name: report-engine
+description: "将 Markdown 文档通过 DOCX 模板渲染为格式化文档。提供模板分析、样式映射、渲染和验证工具。Agent 应通过工具组合完成转换，LLM 负责映射决策，工具负责执行。"
+version: 1.0.0
+author: nemo
+license: MIT
+metadata:
+  hermes:
+    tags: [docx, template, report, rendering, office]
+    related_skills: []
+---
+
+# Report Engine
+
+## 概述
+
+将 Markdown 内容套入 DOCX 模板，生成风格一致的正式文档。
+**模板是样式权威** — 所有内容样式由模板定义，StyleMapping 表决定映射关系。
+
+## 核心哲学
+
+| 谁 | 负责什么 |
+|----|---------|
+| **LLM (Agent)** | 理解模板样式体系、理解 MD 结构、推理映射方案、处理边缘情况 |
+| **工具 (Scripts)** | 模板分析、MD 解析、DOCX 渲染、质量验证 |
+
+## 工具使用指南
+
+### 1. template_analyze(template_path)
+
+读取 DOCX 模板，返回完整的样式目录。
+
+**返回结构：**
+```json
+{
+  "paragraph_styles": [
+    {"name": "Heading 1", "font": {"name": "...", "size": 22, "bold": true}, ...}
+  ],
+  "character_styles": [
+    {"name": "Strong Char", "font": {"bold": true, "color": "000000"}, ...}
+  ],
+  "table_styles": ["Table Grid", "Light Shading"],
+  "page_setup": {"width": 595, "height": 842, "margin_top": 72, ...},
+  "numbering": [
+    {"name": "ListBullet", "format": "bullet", "symbol": "●"},
+    {"name": "ListNumber", "format": "decimal", "start": 1}
+  ]
+}
+```
+
+### 2. md_parse(md_path)
+
+解析 Markdown 为结构化 AST。
+
+### 3. docx_render(md_ast, template_path, style_mapping, output_path)
+
+执行渲染。关键约束：
+- **段落**：`paragraph.style = doc.styles[mapping["paragraph"][type]]`
+- **Run**：`run.style = doc.styles[mapping["inline"][format]]`
+- **绝不直接设** `run.bold`、`run.italic`、`run.font.name` 等属性
+- 模板的样式定义是唯一来源
+
+### 4. docx_validate(docx_path, md_ast)
+
+验证输出质量。
+
+### 5. docx_preview(template_path)
+
+生成一个"样式示例文档"，让 LLM 直观看到每种样式的效果。
+```
+
+### Agent 调用示例（终端里看到的）
+
+```
+用户: "把这篇 report.md 套公司模板转成 DOCX"
+
+Agent 执行流程:
+  ╰─ 分析模板 ...
+  ╰─ 解析 Markdown ...
+  ╰─ 推理样式映射 ...
+      → H1 → Heading 1 (微软雅黑 22pt 粗体)
+      → H2 → Heading 2 (微软雅黑 16pt 粗体)
+      → **粗体** → Strong Char
+      → `代码` → Code Char
+  ╰─ 渲染 DOCX ...
+  ╰─ 验证输出 ...
+  ╰─ 完成
+
+已生成 /Users/nemo/report.docx
+映射方案:
+  ─────────────────────────────────
+  标题1 → Heading 1 (模板定义: 雅黑 22pt)
+  标题2 → Heading 2 (模板定义: 雅黑 16pt)
+  正文  → Normal (模板定义: 雅黑 10.5pt)
+  粗体  → Strong Char (模板定义: 粗体+主题色)
+  引用  → Quote Body 段落样式 + Quote Char 字符样式
+  代码  → Normal段落 + Code Char (Consolas 9pt)
+  ─────────────────────────────────
+  所有样式均从模板继承，内容不带硬编码格式。
+```
+
+---
+
+## 与 Kīlo 的兼容
+
+Kīlo 等 agent CLI 也遵循类似的 tool-calling 范式。核心设计不变：
+- 提供可被 LLM 调用的工具函数
+- 工具函数是纯机械操作（无 AI 决策）
+- LLM 负责编排和决策
+
+如果 Kīlo 支持 MCP（Model Context Protocol），也可以把工具包装成 MCP server：
+
+```python
+# mcp_server.py
+@tool
+def render_docx(md_path: str, template_path: str, style_mapping: dict = None) -> str:
+    """Render markdown to DOCX using template styles."""
+    ...
+```
+
+---
+
+## 我推荐的做法
+
+**两阶段模式（方案 C）**，理由：
+
+1. LLM 做它擅长的事（理解、推理、映射）→ 阶段 1
+2. 工具做它擅长的事（快速机械执行）→ 阶段 2
+3. 用户可以干预映射方案（在阶段 1 结束后确认）
+4. 对比纯工具模式（方案 A）：少 3-5 轮调用，快很多
+5. 对比黑盒模式（方案 B）：映射决策透明，可调整
+
+**优先级：**
+1. 先写 `template_analyze.py` 和 `docx_render.py` 两个核心脚本（纯机械逻辑）
+2. 再写 `SKILL.md`，重点写 LLM 做映射决策的指引
+3. 最后写 `style_mapping_suggest` 作为可选辅助（LLM-in-the-loop optimization）
+16:T33a8,
+# 将 Markdown 套入 DOCX 模板的实现方案调研
+
+> 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是**唯一样式权威**（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模板字符样式，而非直接设置 Run 属性。
+
+---
+
+## 一、现有生态盘点
+
+### 1.1 Pandoc + reference-doc — 最成熟的现有方案
+
+```
+pandoc input.md -o output.docx --reference-doc=template.docx
+```
+
+**原理**：pandoc 从 `reference.docx` 复制样式定义（段落样式、字符样式、表格样式、页面设置），应用到生成的 DOCX 上。
+
+**能力矩阵：**
+
+| 特性 | 支持度 | 说明 |
+|------|--------|------|
+| 段落样式继承 | ✅ | Heading 1~6, Normal, Quote 等按名称匹配 |
+| 页面设置继承 | ✅ | 纸张大小、边距、页眉页脚等 |
+| 表格样式 | ⚠️ 有限 | 默认只认 `Table` 样式名；2025年后有改进但仍有坑 |
+| **字符样式映射** | ❌ | `**粗体**` 默认转 `run.bold=True`，**不**使用字符样式 |
+| **自定义样式名** | ❌ | 硬编码映射（Heading→Heading 1，Bold→run.bold），无法配置 |
+| **章节槽位/占位符** | ❌ | 没有内容到模板特定位置注入的能力 |
+
+**关键限制**：pandoc 的 inline 格式渲染是**属性级别的**（`run.bold=True`），不走字符样式。要让 `**text**` → `run.style = 'Strong Char'`，需要 Lua filter 拦截 AST，手动写 OpenXML。而且不支持模板中的自定义段落样式名映射。
+
+**Lua filter 拐杖方案：**
+```lua
+-- 拦截 Strong 元素，强制转为带有字符样式的 Span
+function Strong(elems)
+  -- 需要注入 OpenXML 的 run properties，极其复杂
+  return pandoc.Span(elems, {custom_style = "Strong Char"})
+end
+```
+不推荐——pandoc 的 Lua API 对 docx 字符样式的控制非常有限，且不同版本行为不一致。
+
+### 1.2 docxtpl（python-docx-template）— 模板引擎方案
+
+```
+docxtpl 的思路：DOCX 里有 {{ variable }}，渲染时填入数据
+```
+
+**适合场景**：数据驱动的报告（如：{{ customer_name }}，{% for row in table %}），**不是 Markdown→DOCX**。
+
+**与需求差距**：
+- 需要人手工在 Word 里插入 Jinja2 标签
+- 不能直接吃 Markdown 文件
+- 格式标记需要预处理为 RichText 对象
+- 不解决"模板是唯一样式权威"问题
+
+### 1.3 python-docx + mistune — 纯手工方案（PRD 现状）
+
+```
+Markdown → mistune(解析) → ReportModel → python-docx(渲染) → DOCX
+```
+
+**优势**：完全可控，StyleMapping 随心定义
+**劣势**：要处理所有边缘情况（嵌套列表、表格内格式、图片、公式等）
+
+---
+
+## 二、核心架构选择（三种路线）
+
+### 路线 A：Pandoc-centric（薄封装）
+
+```
+Markdown → pandoc(解析+基础DOCX) → python-docx(后处理: 重写样式) → 最终DOCX
+```
+
+**流程：**
+1. `pandoc input.md -o temp.docx --reference-doc=template.docx`（先用模板出初稿）
+2. python-docx 打开 temp.docx，遍历所有段落和 run
+3. 对每个元素：查 StyleMapping 表，重新应用模板样式
+
+**优点：**
+- 利用 pandoc 的鲁棒解析能力（表格、代码块、公式、图片等）
+- 自己只需写"样式后处理"层，代码量最小
+- pandoc 处理了 95% 的 content→layout 转换
+
+**缺点：**
+- 两遍扫描，速度慢
+- pandoc 可能在输出中用了内联格式（run.bold=true），后处理要反过来"还原"成字符样式
+- 依赖 pandoc 二进制（版本兼容性）
+- pandoc 对一些 Markdown 方言的处理可能不符合预期
+
+**适用规模**：Phase 1 MVP 快速验证、不需要高度定制的场景
+
+### 路线 B：纯 python-docx（全控制 — PRD 推荐路线）
+
+```
+Markdown → mistune/markdown-it → ReportModel → python-docx(渲染器+样式映射器) → DOCX
+```
+
+**渲染器核心逻辑：**
+```python
+class DocxRenderer:
+    def __init__(self, template_path: str, style_mapping: StyleMapping):
+        self.doc = Document(template_path)  # 以模板为基础
+        self.style_mapping = style_mapping
+
+    def render_paragraph(self, block: ParagraphBlock):
+        p = self.doc.add_paragraph()
+        # 段落样式：由模板决定
+        p.style = self.doc.styles[block.type]  # Heading1, Normal, ListBullet...
+        for span in block.spans:
+            run = p.add_run(span.text)
+            # 字符样式：查 StyleMapping 表
+            char_style = self.style_mapping.get(span.format)
+            if char_style:
+                run.style = self.doc.styles[char_style]  # 关键：用样式名，不设属性
+```
+
+**关键设计点：**
+- **不在 Run 上设 bold/italic/font 属性**，统一用 `run.style = doc.styles[name]`
+- 模板的样式定义是唯一来源
+- StyleMapping 表是 Markdown 格式标记 → 模板字符样式名称的映射
+
+**优点：**
+- 一次遍历，架构简洁
+- 完全控制样式映射逻辑
+- 不依赖外部二进制
+- StyleMapping 可以动态配置（YAML）
+
+**缺点：**
+- 需要自己处理 Markdown 的所有边缘情况
+- markdown-it/mistune 的 AST 到 DOCX 的映射成本较高
+
+### 路线 C：混合（pandoc 的嘴 + python-docx 的胃）
+
+```
+Markdown → pandoc(解析为JSON AST) → Python(AST→ReportModel) → python-docx(渲染) → DOCX
+```
+
+```bash
+pandoc input.md -t json | python3 render.py --template template.docx > output.docx
+```
+
+**优点：**
+- 得到 pandoc 级别的解析质量（表格、公式、脚注、交叉引用全处理）
+- 渲染部分自己控制
+- `-t json` 是 pandoc 的标准输出，格式稳定
+
+**缺点：**
+- 仍然依赖 pandoc 二进制
+- AST→ReportModel 的转换有一定复杂度
+- pandoc AST 的结构和 python-docx 的段落模型差异较大
+
+---
+
+## 三、StyleMapping 表的设计
+
+这是项目核心创新点。建议设计为 YAML 配置文件，与模板分离。
+
+```yaml
+# style-mapping.yaml
+paragraph:
+  heading1: "Heading 1"           # Markdown # → 模板中的 "Heading 1" 样式
+  heading2: "Heading 2"
+  heading3: "Heading 3"
+  paragraph: "Normal"             # 普通段落
+  blockquote: "Quote"             # 引用块
+  code_block: "Code"              # 代码块
+  bullet_list: "List Bullet"      # 无序列表
+  ordered_list: "List Number"     # 有序列表
+  table_header: "Table Header"
+  table_cell: "Table Cell"
+
+inline:
+  bold: "Strong Char"             # **粗体** → 字符样式
+  italic: "Emphasis Char"         # *斜体* → 字符样式
+  code: "Code Char"               # `行内代码` → 字符样式
+  strikethrough: "Strikethrough Char"
+  underline: "Underline Char"
+  link: "Hyperlink Char"
+  subscript: "Subscript Char"
+  superscript: "Superscript Char"
+
+fallback:
+  paragraph: "Normal"             # 找不到映射时用的默认样式
+  inline: "Default Paragraph Font"
+```
+
+**渲染器行为：**
+```
+输入: "这是**粗体**和*斜体*"
+    ↓ mistune 解析
+AST: [文本("这是"), Strong("粗体"), 文本("和"), Emph("斜体")]
+    ↓ 查 StyleMapping
+    ↓ 
+输出段落: 段落样式 "Normal"
+  run1: 文本 "这是"       → 无字符样式（继承段落样式）
+  run2: 文本 "粗体"       → run.style = doc.styles["Strong Char"]
+  run3: 文本 "和"         → 无字符样式
+  run4: 文本 "斜体"       → run.style = doc.styles["Emphasis Char"]
+```
+
+**优点**：用户换模板只需改 `style-mapping.yaml`，不需要改代码。不同模板可以有不同的样式名。
+
+---
+
+## 四、CLI 友好化设计
+
+### 4.1 Unix 哲学风格
+
+```bash
+# 基本用法
+md2docx report.md --template company-template.docx -o report.docx
+
+# 管道模式
+cat report.md | md2docx --template company-template.docx > report.docx
+
+# 指定样式映射
+md2docx report.md --template t.docx -m style-mapping.yaml -o report.docx
+
+# 验证模式（不生成，只检查模板兼容性）
+md2docx report.md --template t.docx --validate
+
+# 列出模板中可用的样式
+md2docx --template t.docx --list-styles
+
+# 生成默认 style-mapping.yaml（基于模板自动推断）
+md2docx --template t.docx --init-mapping
+```
+
+### 4.2 TUI 补全友好
+
+- `--bash-completion` 输出 shell 补全脚本
+- `md2docx <Tab>` 自动补全 `.md` 文件
+- `--template <Tab>` 扫描 `~/.config/md2docx/templates/` 目录
+
+### 4.3 退出码和 stderr 协议
+
+```
+退出码: 0=成功, 1=解析错误, 2=模板错误, 3=映射缺失
+stderr: 纯文本状态（适合终端查看）
+stdout: 二进制 DOCX（适合管道）
+```
+
+---
+
+## 五、GUI 友好化设计
+
+### 5.1 Web UI（Phase 3 方向）
+
+```
+FastAPI + Jinja2/React 前端
+```
+
+核心页面：
+1. **上传模板**：上传 .docx，自动分析样式目录+预览
+2. **编辑映射**：下拉选择 Markdown 格式→模板样式，可视化
+3. **上传/粘贴 Markdown**：实时预览渲染效果（docx→PDF or HTML 预览）
+4. **下载**：一键下载最终 DOCX
+
+### 5.2 更轻量的 GUI 方案
+
+| 方案 | 适合场景 | 技术栈 |
+|------|---------|--------|
+| **Gradio** | 内部工具、快速原型 | Python 纯 |
+| **Textual** | 终端内 TUI（无需浏览器） | Python 纯 |
+| **Streamlit** | 数据工作者快速展示 | Python 纯 |
+| **Electron** | 独立桌面应用 | 太重，不推荐 |
+| **Typora 插件** | 如果用户用 Typora 写 MD | 与编辑器集成 |
+
+**Gradio 最快：**
+```python
+import gradio as gr
+
+def render(md_text, template_file):
+    with tempfile.NamedTemporaryFile() as f:
+        result = engine.render(md_text, template_file.name)
+        return result.path
+
+gr.Interface(
+    fn=render,
+    inputs=[gr.Textbox(label="Markdown"), gr.File(label="模板 .docx")],
+    outputs=gr.File(label="输出 .docx"),
+).launch()
+```
+
+### 5.3 CLI + GUI 复用同一核心
+
+```python
+# core/engine.py — 纯逻辑，无 IO 依赖
+class ReportEngine:
+    def render(self, md: str, template: TemplateProfile, mapping: StyleMapping) -> DocxOutput: ...
+
+# cli/main.py — 终端入口
+# web/app.py — Web 入口
+# skill/skill.py — Hermes Agent 入口
+```
+
+---
+
+## 六、Hermes Agent Skill 集成
+
+### 6.1 作为终端命令技能
+
+```yaml
+# SKILL.md
+name: report-engine
+description: 将 Markdown 渲染为带模板样式的 DOCX 文档
+commands:
+  - md2docx report.md -t template.docx -o output.docx
+```
+
+Agent 调用方式：
+```
+用户: "把这份 report.md 套用公司模板生成 DOCX"
+→ Agent 执行: md2docx report.md --template ~/templates/company.docx -o report.docx
+→ 返回文件路径给用户
+```
+
+### 6.2 作为 Agent 内部函数
+
+Skill 里提供 Python API，Agent 在 execute_code 中直接调用：
+```python
+from report_engine import render_docx
+path = render_docx("report.md", template="company.docx", mapping="style-mapping.yaml")
+```
+
+---
+
+## 七、实现路线建议
+
+### Phase 1（验证概念）：路线 A（Pandoc-centric）
+
+```bash
+pandoc input.md -o temp.docx --reference-doc=template.docx
+python3 -c "
+from docx import Document
+doc = Document('temp.docx')
+# 遍历所有段落，对每个 run 应用模板的字符样式
+for p in doc.paragraphs:
+    for run in p.runs:
+        if run.bold:
+            run.bold = None  # 清除属性
+            run.style = doc.styles['Strong Char']
+doc.save('output.docx')
+"
+```
+
+优点：半天就能跑通完整链路，验证"模板洗掉所有样式"的概念。
+
+### Phase 2（完整实现）：路线 B（纯 python-docx）
+
+转向纯 python-docx 路线，原因：
+- 不依赖 pandoc 版本
+- 真正的单次遍历
+- StyleMapping 表成为一等公民
+- 可以精细控制渲染质量
+
+### Phase 3（生态）: CLI + GUI + Skill 三件套
+
+复用同一 `core/engine.py`，封装三个入口：
+- `cli/main.py` — click/argparse CLI
+- `web/app.py` — FastAPI + Gradio
+- `skill/SKILL.md` — Hermes Agent 技能描述
+
+---
+
+## 八、需要避免的坑
+
+1. **不要同时设 run.style 和 run.bold** — python-docx 会合并行为不可预测，务必二选一
+2. **模板分析器必须提取完整样式目录** — 包括 numbering definitions（列表编号）、character styles（字符样式）、table styles（表格样式）
+3. **No-template 路径不需要** — 内置一个默认模板（如 pandoc 的 reference.docx）
+4. **链接和公式可能是例外** — OpenXML 的 hyperlink 需要特殊处理，公式（OMML）不支持样式覆盖
+5. **嵌套格式**（`***粗斜体***`）— 需要定义复合映射，或者直接叠加字符样式（python-docx 不支持 run 上叠加多个字符样式，需要创建复合字符样式）
+6. **跨平台** — python-docx 在 macOS/Linux/Windows 行为一致，但字体渲染不同
+
+---
+
+## 九、参考项目
+
+| 项目 | 地址 | 借鉴点 |
+|------|------|--------|
+| **pandoc** | pandoc.org | 解析器质量和参考文档系统 |
+| **python-docx-template** | github.com/elapouya/python-docx-template | DOCX 模板的 Subdoc 机制 |
+| **mistune** | github.com/lepture/mistune | Python Markdown 解析器（速度最快） |
+| **markdown-it-py** | github.com/executablebooks/markdown-it-py | 插件化 Markdown 解析（兼容 JS 生态） |
+| **WeasyPrint** | weasyprint.org | HTML→PDF 的样式继承模型值得借鉴 |
+| **Typst** | typst.app | 新一代排版系统，可以作为长期对标 |
+17:T144a,
+# macOS 内置大模型与本地 AI 训练
+
+> 关键词：apfel、Apple Intelligence、FoundationModels、MLX、本地微调、蒸馏
+> 最后更新：2026-06-10
+
+---
+
+## 一、macOS 内置大模型
+
+从 macOS 26 Tahoe 开始，每台 Apple Silicon Mac **都自带一个 LLM**，约 **3B 参数**，4096 token 上下文，混合 2/4-bit 量化，运行在 Neural Engine 上。
+
+### 基础信息
+
+| 项目 | 值 |
+|------|-----|
+| 参数规模 | ~3B |
+| 上下文窗口 | 4096 tokens |
+| 精度 | 混合 2/4-bit 量化 |
+| 运行位置 | Neural Engine + GPU |
+| 语言 | en, de, es, fr, it, ja, ko, pt, zh |
+| 底层框架 | FoundationModels.framework（Swift API） |
+| 隐私 | 不上传云端，Apple 不用于训练 |
+
+---
+
+## 二、apfel——内置模型的 CLI/HTTP 包装
+
+**apfel** 是 GitHub 上的开源项目（Arthur-Ficial/apfel），把 Apple 的 FoundationModels 框架包装成了 CLI 和 HTTP 服务器。
+
+### 安装
+
+```bash
+brew install apfel
+```
+
+### CLI 用法
+
+```bash
+# 直接问
+apfel "什么是注意力机制？"
+
+# 管道
+cat 财报.txt | apfel "总结这段"
+
+# 交互式聊天
+apfel --chat
+
+# 带 system prompt
+apfel --chat -s "你是一个金融分析师"
+```
+
+### HTTP 服务器（OpenAI 兼容）
+
+```bash
+apfel server --port 8080
+```
+
+启动后提供一个 OpenAI 兼容的 API：
+
+```bash
+curl http://localhost:8080/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "apple-intelligence",
+    "messages": [{"role": "user", "content": "你好"}]
+  }'
+```
+
+### 优点
+- 零配置，不需要下载模型、不需要 API key
+- 完全本地运行，不联网
+- OpenAI 兼容接口，可直接替换代码中的 GPT-4
+- 免费无限量使用
+
+### 局限
+
+| 局限 | 说明 |
+|------|------|
+| 模型不可选 | 只能用 Apple 内置的 ~3B 模型 |
+| 不可微调 | apfel 只做推理包装，不支持 LoRA 微调 |
+| 上下文小 | 4096 tokens，长文档需要分片 |
+| 能力有限 | 3B 模型 + 强量化，能力远不如 GPT-4/Qwen3 |
+| 只跑在 Mac 上 | 不能部署到服务器 |
+
+---
+
+## 三、能不能用来练习蒸馏和微调？
+
+### 蒸馏——✅ 可以
+
+apfel 的 HTTP API 可以当 **Teacher 模型**：
+
+```
+流程：
+1. 用 apfel 的 API 批量生成问答数据
+2. 用这些数据训练一个小模型（Student）——用 MLX 或 Unsloth
+3. 对比 Student 和 Teacher 的输出差异
+
+这就是蒸馏的标准做法。
+```
+
+**具体操作**：
+
+```python
+import requests
+
+# 用内置模型生成训练数据
+resp = requests.post("http://localhost:8080/v1/chat/completions", json={
+    "model": "apple-intelligence",
+    "messages": [{"role": "user", "content": "请解释什么是RAG？"}]
+})
+teacher_answer = resp.json()["choices"][0]["message"]["content"]
+
+# 然后用 teacher_answer 作为训练数据，训练小模型
+```
+
+### 微调——❌ 不能直接微调内置模型
+
+Apple 的内置模型本身 **不能** 通过 apfel 微调。但是：
+
+| 方案 | 能做什么 | 难度 |
+|------|---------|------|
+| **MLX + mlx-tune** | 在 Mac 上用 MLX 框架微调开源模型（Qwen/LLaMA），利用 GPU/ANE | ★★★ |
+| **Unsloth** | Mac MPS 后端，LoRA 微调 | ★★ |
+| **pmetal** | Rust 写的 Metal 高性能微调框架 | ★★★★ |
+| **LoRA-MPS-FineTuning** | GitHub 上专门针对 Apple Silicon 的微调项目 | ★★ |
+
+**最佳实践**：
+
+```bash
+# 1. 用 MLX 微调 Qwen3-0.6B（你 Mac 跑得动）
+pip install mlx-lm
+
+# 2. 准备数据（JSONL 格式）
+# {"messages": [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]}
+
+# 3. LoRA 微调
+mlx_lm.lora --model Qwen/Qwen3-0.6B \
+  --data ./train_data.jsonl \
+  --lora-layers 8 \
+  --batch-size 1 \
+  --iters 200
+
+# 4. 合并 + 推理
+mlx_lm.fuse --model Qwen/Qwen3-0.6B --adapter-path ./adapters
+```
+
+### 蒸馏 + 微调完整练习方案
+
+**这是你在 Mac 上就能完成的标准实验**：
+
+```
+Step 1: 用 apfel（Teacher）批量生成 500 条 QA 数据
+         apfel server → 你的 Python 脚本调 API → 存 JSONL
+
+Step 2: 用 MLX 微调一个开源小模型（Student）
+         mlx_lm.lora --model Qwen3-0.6B --data ./data.jsonl
+
+Step 3: 对比 Teacher vs Student
+         同样的问题，分别问 apfel 和你的微调模型
+         评估回答质量、推理速度、模型大小
+```
+
+---
+
+## 四、Apple Silicon 本地训练工具对比
+
+| 工具 | 支持训练？ | 支持推理？ | 语言 | 难度 |
+|------|-----------|-----------|------|------|
+| **apfel** | ❌ | ✅（内置模型） | Swift/CLI | ★ |
+| **MLX** | ✅ | ✅ | Python | ★★★ |
+| **mlx-tune** | ✅ | ✅ | Python/CLI | ★★ |
+| **Unsloth** | ✅（MPS） | ✅ | Python | ★★ |
+| **pmetal** | ✅ | ✅ | Rust | ★★★★ |
+| **llama.cpp** | ❌ | ✅（Metal） | C++/CLI | ★★ |
+| **Ollama** | ❌ | ✅ | CLI | ★ |
+| **LM Studio** | ❌ | ✅ | GUI | ★ |
+
+### 推荐学习路径
+
+```
+入门：Ollama + apfel（只推理，不训练）
+  ↓
+进阶：MLX + mlx-tune（在 Mac 上微调小模型）
+  ↓
+高阶：apfel server 当 Teacher → MLX 训练 Student（完整蒸馏实验）
+  ↓
+实战：用蒸馏后的模型替换你 RAG 系统中的 LLM，对比效果
+```
+18:T119b,
+# 如何从开源项目中学习：以 OpenViking 为例
+
+> 2026 年，代码本身越来越不值钱，值钱的是设计决策背后的 tradeoff 意识。
+> AI 能解释每一行代码在干什么，但不能替你做出架构选择。
+> 学习的核心目标：从"看懂代码"变成"看懂为什么这样设计"。
+
+## 三层递进法
+
+### 第一层：读文档 > 读代码（30 分钟）
+
+不要急着翻代码。先读：
+
+1. **README 的问题陈述** — 项目解决了什么痛点？你是否有同感？
+2. **Architecture Overview** — 全局架构图，理解模块划分哲学
+3. **核心设计文档** — storage architecture、data flow 等
+
+**例：OpenViking（github.com/volcengine/OpenViking，25.4k stars）**
+
+问题：AI Agent 开发的四个痛点：
+- Fragmented Context（记忆/资源/技能散落各处）
+- Surging Context Demand（长期任务上下文膨胀）
+- Poor Retrieval Effectiveness（平面存储缺乏全局视角）
+- Unobserveable Context（传统 RAG 检索链是黑盒）
+
+架构三层：
+```
+Client → Service Layer (FSService/SearchService/SessionService…7个)
+              ↓
+    ┌─────────┼─────────┐
+    ↓         ↓         ↓
+Retrieve   Session   Parse
+              ↓
+         Compressor
+              ↓
+    Storage Layer (AGFS + Vector Index)
+```
+
+7 个 Service 的划分本身就是一种架构范本。
+
+**2026 新工具：DeepWiki（deepwiki.com）** — 自动索引整个代码库、交叉引用、文件关系图。比自己翻 GitHub 树快 10 倍。
+
+### 第二层：选一条主线，端到端追（2 小时）
+
+不要试图理解所有代码。选**一条完整的数据流**追到底。
+
+**例：OpenViking 的 "添加上下文" 流程**
+
+```
+Input → Parser → TreeBuilder → AGFS → SemanticQueue → Vector Index
+```
+
+操作：
+```bash
+# 找到入口
+grep -r "class Parser" --include="*.py" src/
+# 看 imports 理解依赖
+# 看测试
+find tests -name "*parser*"
+# 看文件演化史
+git log --all --follow -p src/parser/parser.py
+```
+
+**测试比注释更有价值。** 测试用例暴露模块的契约和边界条件。
+
+### 第三层：理解架构模式的为什么（最值钱的一层）
+
+AI 很难完成这一层。要自己追问。
+
+**Q：为什么 OpenViking 用 "文件系统范式" 而不是 flat chunk 存储？**
+
+因为 URI 的本质是层次结构：`viking://resources/docs/auth`。文件系统的目录、层级、导航，直接映射到上下文管理的概念模型。这不是技术选择，是**概念模型的选择**。
+
+**Q：为什么 AGFS 从 Python 重写成了 Rust（RAGFS）？**
+
+看 crates/ragfs/ 目录。性能关键路径从动态语言迁移到零开销抽象语言，这是经典架构演化模式。
+
+**Q：为什么 L0/L1/L2 三级上下文？**
+
+L0 = 摘要抽象，L1 = 概览，L2 = 全文。Progressive loading 模式——先给 Agent 轻量级摘要，按需展开。token 节省 + 检索效率的经典 tradeoff。
+
+---
+
+## 2026 工具箱
+
+| 工具 | 用途 |
+|------|------|
+| **DeepWiki** | 代码库级索引、交叉引用 |
+| **git log --all --follow** | 理解文件演化历史 |
+| **git blame + GitHub PR** | 看某行代码的上下文和设计讨论 |
+| **AI assistant** | 问具体问题："AGFS 的 write path 是什么样的？" |
+| **build + run tests** | 验证理解的正确性 |
+
+---
+
+## 常见误区
+
+1. ❌ 从 main.py 开始读 → ✅ 从架构文档开始
+2. ❌ 逐行精读 → ✅ 先扫目录结构，选一条流程追
+3. ❌ 只看代码不看 Issues/PR → ✅ PR 中有大量设计讨论
+4. ❌ 被动阅读 → ✅ fork 下来改一行代码看测试会不会挂
+
+---
+
+## 从 OpenViking 可以带走的设计模式
+
+1. **Context as Filesystem** — 上下文不只是向量，而是可导航的目录树
+2. **Dual-layer Storage** — 内容层和索引层分离，各自优化
+3. **L0/L1/L2 Progressive Loading** — 按需加载，不要把所有内容塞进 context
+4. **Service 分解方式** — 7 个 Service 的划分就是架构范本
+
+核心原则：**读开源项目不是为了复制代码，而是为了让那个项目的设计直觉变成你的直觉。**
+
+---
+
+## 延伸阅读
+
+- [OpenViking GitHub](https://github.com/volcengine/OpenViking)
+- [OpenViking 架构文档](https://docs.openviking.ai/en/concepts/01-architecture)
+- [OpenViking Storage Architecture](https://docs.openviking.ai/en/concepts/05-storage)
+- [DeepWiki: OpenViking](https://deepwiki.com/volcengine/OpenViking)
+0:{"P":null,"c":["","blogs"],"q":"","i":false,"f":[[["",{"children":["blogs",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/04d54dkerqjcg.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/1xh5_hh-4xv03.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/18071siihbhhu.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"zh","suppressHydrationWarning":true,"children":["$","body",null,{"className":"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable antialiased","children":[["$","$L2",null,{"children":["$","$L3",null,{"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}],["$","script",null,{"async":true,"src":"//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"}]]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$6",null,{"fallback":["$","div",null,{"className":"min-h-screen flex items-center justify-center","children":["$","div",null,{"className":"w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"}]}],"children":["$","$L7",null,{"posts":[{"slug":"Cmake_learn_by_doing","title":"compile the source files in the src directory into a static link library","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"cmake is a system independent automatic construct tool.","content":"$8"},{"slug":"Cmake_learning","title":"Cmake Learning","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"> ***sudo apt install Cmake***","content":"$9"},{"slug":"Regex_learning","title":"***Regex***","date":"2026-06-25T00:00:00.000Z","tags":["regex","learning"],"category":"tech","description":"[**学习、受启发于deerchao的教程**](https://deerchao.cn/tutorials/regex/regex.htm)","content":"$a"},{"slug":"deep_reinforcement_learning","title":"Deep Reinforcement Learning","date":"2026-06-25T00:00:00.000Z","tags":["learning"],"category":"ai","description":"- Probability approximation","content":"$b"},{"slug":"docker_learning","title":"***docker***","date":"2026-06-25T00:00:00.000Z","tags":["docker","learning"],"category":"devops","description":"- > windows desktop version","content":"$c"},{"slug":"fundamentals_of_compiling_learning","title":"Introduction","date":"2026-06-25T00:00:00.000Z","tags":["learning"],"category":"tech","description":"- compiler: translate the code from source language to target language.","content":"\n### Introduction\n\n##### language processor\n\n- compiler: translate the code from source language to target language.\n- interpreter: Perform operations in the source language directly from the input\n- **example**: java processor:\n  source language -> translator -> middle program -> virtual machine\n                                                                                  input /                              \\ output\n- a language process system:\n  source language -> pre-processor -> pre-processed program  -> compiler -> target assembler -> assembler -> relocatable machine code -> linker(resolves external memory addresses)&loader(execute all executable target files in memory) <- library files & relocatable files,     and finally generate target machine code from linker and loader."},{"slug":"linux_learning","title":"Linux Learning","date":"2026-06-25T00:00:00.000Z","tags":["linux","learning"],"category":"tech","description":"1. - **WSL Features ** :","content":"\n1. - **WSL Features ** :\n\n     -WSL creates a `/home/<username>` directory by default, and the user is usually set as the owner of this directory. This means that within the `/home/<username>` directory and its subdirectories, you can create files and directories freely.\n\n     - If you are trying to create files or directories in other locations, such as'/' root or other non-personal directories, then 'sudo' permissions may be required.\n\n     and usually, `~` refer to the dir `/home/<username>`, they are the same. you can also see `/home/others`, but `~` always be your home, execute `pwd` to see.\n\n     use `su - <username>` to change user."},{"slug":"linux_shell","title":"Linux Shell","date":"2026-06-25T00:00:00.000Z","tags":["linux","shell"],"category":"tech","description":"***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a816...","content":"$d"},{"slug":"make_learning","title":"...other commands","date":"2026-06-25T00:00:00.000Z","tags":["make","learning"],"category":"devops","description":"for C/C++, u define commands in ``Makefile``, like ``Dockerfile``","content":"$e"},{"slug":"react_next","title":"server side rendering(SSR) and client side rendering(CSR)","date":"2026-06-25T00:00:00.000Z","tags":["react"],"category":"frontend","description":"feature of next.js, by 'use client' at the top of a file","content":"\n#### server side rendering(SSR) and client side rendering(CSR)\n\nfeature of next.js, by 'use client' at the top of a file\n\nSSR: the content of website will be rendered on server side and send the processed html files to client side, which can users have a faster experience.\n\nCSR: the content of website will not pre-render on server side,  instead, an html file with some js files will be sent to client side and rendered by browser, thus users can feel a little slow.\n\n"},{"slug":"relative_path_notice","title":"The relative path is relative to the compiled directory of the instruction, not relative to the file itself","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"tech","description":"current_path = os.getcwd()","content":"\n### The relative path is relative to the compiled directory of the instruction, not relative to the file itself\n\nfor example:\n\n```\ndir\n\t|\n\t+ dir1\n\t\t|\n\t\t+ relative.py\n```\n\nand in relative.py\n\n```python\nimport os \n\ncurrent_path = os.getcwd()\n\nprint(current_path)\n```\n\nexecute relative.py, the output will be:\n\n```bash\nE:\\dir\n```\n\nand this is your working directory:\n\n![relative_path](./picture/relative_path.png)\n\n"},{"slug":"use_rawlink_for_downloading_files","title":"Use Rawlink For Downloading Files","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"tech","description":"download files via markdown is not allowed on github, but u can:","content":"\ndownload files via markdown is not allowed on github, but u can:\n\n```markdown\n[Download .zip file](https://raw.githubusercontent.com/your-username/your-repo/main/yourfile.zip)\n```\n\n"},{"slug":"大四课程提前修计划","title":"大二下or大三下：","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"life","description":"","content":"\n# 大二下or大三下：\n\n应用软件综合课程设计I\n\n区块链技术及应用\n\n区块链技术及应用实验\n\n\n\n# 大三上\n\n应用软件综合课程设计II\n\n数据挖掘\n\n大数据可视化"},{"slug":"小说","title":"野狗","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"life","description":"​\t说实话写点什么一直是我的理想，偶尔它会被忘记，但是每次重新想起我都会在电脑新建文件夹看看有没有想法，这是否也算得上热爱呢？","content":"\n# 野狗 \n\n\n\n\n\n不要一直往回看，衣服反着穿可是勒脖子的。\n\n\n\n\n\n### 前言\n\n​\t说实话写点什么一直是我的理想，偶尔它会被忘记，但是每次重新想起我都会在电脑新建文件夹看看有没有想法，这是否也算得上热爱呢？\n\n​\t但是说实话，我个人无论见识还是格局都甚是局促，阅历很有限，与大作家丝毫没有可比性，有可能只是单纯地输出个人的情绪或者观点，并且还通常不怎么好，并且我也深受互联网幸存者偏差的影响，很难写出真能反映社会现状的文字。\n\n​\t但是文人骚客写文字也是排忧解闷，我也想试试。\n\n\n\n### 正文\n\n​\t王卓乐想都没想就把家里的照片全删掉了，八张照片，都是家里熟悉的场景，几十MB，不如腾出来留给其他的文件。\n\n​\t”如果照片里有家人或者有我们的合照我是不是就会好好端详一阵子？“\n\n​\t他发现他又对着这些照片发了好一会呆，不过以后不会这样了，他感到后悔，发呆这段时间又要被很多人超越了，他甚至可以知道哪几个已经趁机超过他了，有几个已经赶上来了。那些人死命奔跑踢起的尘风堵得他的鼻子有些喘不过气。\n\n​\t“算了，其实我也一样不会看的吧。”"},{"slug":"Subagent-Skill优化方法论","title":"Subagent 化 Skill 优化方法论","date":"2026-06-24T00:00:00.000Z","tags":["ai-agents","llm"],"category":"ai","description":"当 Skill 的步骤链变长时，单 Agent 架构会遇到一个根本性问题：**上下文污染（context pollution）**。","content":"$f"},{"slug":"TechBlogHunter-1849","title":"Techbloghunter 1849","date":"2026-06-24T00:00:00.000Z","tags":["tech-news","curated"],"category":"tech","description":"📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating...","content":"$10"},{"slug":"vLLM-Prefix-Caching原理与LMCache调研","title":"vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研报告","date":"2026-06-16T00:00:00.000Z","tags":["llm","deployment","vllm"],"category":"ai","description":"把整个 prompt（system prompt + user query）一次性并行算完，生成每个 token 位置对应的 **K 矩阵** 和 **V 矩阵**。计算量 = prompt token 数 × 模型参数量。prompt 越...","content":"$11"},{"slug":"DeepSeek-V4-Flash内网vLLM部署指南","title":"DeepSeek-V4-Flash 内网 vLLM 部署完全指南","date":"2026-06-15T00:00:00.000Z","tags":["llm","deployment","vllm"],"category":"ai","description":"DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：","content":"$12"},{"slug":"ModelScope模型本地编译部署完全指南","title":"ModelScope 权重分片 → 内网 vLLM 部署完整流程","date":"2026-06-15T00:00:00.000Z","tags":["llm","deployment","modelscope"],"category":"ai","description":"从 ModelScope 下载的权重分片，到最后能在内网用 vLLM 提供服务，中间需要经过的环节：","content":"$13"},{"slug":"智能体开发基础与模型量化指南","title":"智能体开发基础知识与模型量化指南","date":"2026-06-13T00:00:00.000Z","tags":["ai-agents","llm"],"category":"ai","description":"默认模型权重用 BF16/FP16（每个参数 2 字节）。70B 模型 BF16 需要 **140GB 显存**。量化降低精度来压缩体积：","content":"$14"},{"slug":"消融实验-Ablation-Study","title":"消融实验 (Ablation Study)","date":"2026-06-13T00:00:00.000Z","tags":["deep-learning","ml-theory"],"category":"ai","description":"控制变量法——把模型或系统的某个组件切除掉，观察性能下降了多少","content":"\n# 消融实验 (Ablation Study)\n\n## 是什么\n\n控制变量法——把模型/系统的某个组件\"切除\"掉，观察性能下降了多少，从而判断该组件的贡献度。\n\n名字来源于脑科学：医生切除部分脑区，观察哪些功能丧失，推断该区域的作用。\n\n## 基本原理\n\n```\n完整系统 → 性能 95%\n去掉组件 A → 性能 80%  → A 贡献了 15%\n去掉组件 B → 性能 93%  → B 贡献了 2%（可有可无）\n同时去掉 A+B → 性能 70% → A 和 B 有 5% 的交互增益\n```\n\n核心逻辑：不依赖直觉，用实验数据证明每个模块是否真的有用。\n\n## 什么时候需要做\n\n### 1. 论文 / 学术汇报\n审稿人几乎必问：\"你怎么证明你加的每个模块都有用？\"\n消融实验是 ML 论文的标准配置，否则 reviewer 会说\"没有消融 = 没有说服力\"。\n\n### 2. 迭代新特性 / 新模块时\n比如给 RAG 系统加了 reranker + query rewrite，跑一次消融：\n- 去掉 reranker → 指标降了 → 保留\n- 去掉 query rewrite → 指标没变 → 删掉，少维护一个坑\n\n### 3. 模型压缩 / 剪枝时\n移除注意力头、剪掉某些层，看哪些是冗余的，哪些不能动。\n\n### 4. 调试奇怪的现象时\n\"加了 A 效果反而变差了？\" → 单独测 A 的贡献，可能是 A 和已有模块冲突。\n\n## 一个典型例子\n\n做摘要生成系统，三个组件：\n- 实体链接（+3% ROUGE）\n- 关键词提取（+0.5% ROUGE，可以砍掉）\n- 重排序（-1% ROUGE，这个模块负优化）\n\n没有消融，你可能会把所有组件都堆上去，系统变慢变复杂，效果反而没提升。\n\n## 关联概念\n\n- A/B 测试（消融是在固定模型上切组件，A/B 是比较两个不同版本）\n- 敏感性分析（消融看组件的贡献度，敏感性看参数变化的影响）\n"},{"slug":"AgentSkill设计-Llm驱动转换","title":"Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换","date":"2026-06-10T00:00:00.000Z","tags":["ai-agents","llm"],"category":"tech","description":"给大模型造一套手艺工具——将 Markdown 套入 DOCX 模板","content":"$15"},{"slug":"Markdown套Docx模板实现方案","title":"将 Markdown 套入 DOCX 模板的实现方案调研","date":"2026-06-10T00:00:00.000Z","tags":["tools","productivity"],"category":"tech","description":"> 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是**唯一样式权威**（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模...","content":"$16"},{"slug":"macOS内置大模型与本地训练","title":"macOS 内置大模型与本地 AI 训练","date":"2026-06-10T00:00:00.000Z","tags":["llm","macos","local-training"],"category":"ai","description":"> 关键词：apfel、Apple Intelligence、FoundationModels、MLX、本地微调、蒸馏","content":"$17"},{"slug":"如何从开源项目中学习","title":"如何从开源项目中学习：以 OpenViking 为例","date":"2026-06-10T00:00:00.000Z","tags":["open-source","learning"],"category":"ai","description":"> 2026 年，代码本身越来越不值钱，值钱的是设计决策背后的 tradeoff 意识。","content":"$18"}],"tags":["ai-agents","cmake","curated","deep-learning","deployment","docker","learning","linux","llm","local-training","macos","make","ml-theory","modelscope","open-source","productivity","react","regex","shell","tech","tech-news","tools","vllm"]}]}],["$L19","$L1a"],"$L1b"]}],{},null,false,null]},null,false,"$@1c"]},null,false,null],"$L1d",false]],"m":"$undefined","G":["$1e",["$L1f"]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"5k-Cz6eXvLqXog9KmpMzH"}
+20:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"OutletBoundary"]
+23:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"ViewportBoundary"]
+25:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"MetadataBoundary"]
+19:["$","script","script-0",{"src":"/_next/static/chunks/2h_2mq1uhpalj.js","async":true,"nonce":"$undefined"}]
+1a:["$","script","script-1",{"src":"/_next/static/chunks/0a9exhvd9af8q.js","async":true,"nonce":"$undefined"}]
+1b:["$","$L20",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@21"}]}]
+22:[]
+1c:"$W22"
+1d:["$","$1","h",{"children":[null,["$","$L23",null,{"children":"$L24"}],["$","div",null,{"hidden":true,"children":["$","$L25",null,{"children":["$","$6",null,{"name":"Next.Metadata","children":"$L26"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+1f:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/04d54dkerqjcg.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+24:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+27:I[23227,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"IconMark"]
+21:null
+26:[["$","title","0",{"children":"Nemo — Personal Space"}],["$","meta","1",{"name":"description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","meta","2",{"name":"author","content":"Nemo"}],["$","meta","3",{"name":"keywords","content":"Nemo,个人网站,博客,全栈开发,RAG,强化学习"}],["$","meta","4",{"property":"og:title","content":"Nemo — Personal Space"}],["$","meta","5",{"property":"og:description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","meta","6",{"property":"og:locale","content":"zh_CN"}],["$","meta","7",{"property":"og:type","content":"website"}],["$","meta","8",{"name":"twitter:card","content":"summary"}],["$","meta","9",{"name":"twitter:title","content":"Nemo — Personal Space"}],["$","meta","10",{"name":"twitter:description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","link","11",{"rel":"icon","href":"/favicon.ico?favicon.2os6yout_mfjj.ico","sizes":"640x640","type":"image/x-icon"}],["$","link","12",{"rel":"icon","href":"/Image/favicon.ico"}],["$","$L27","13",{}]]
