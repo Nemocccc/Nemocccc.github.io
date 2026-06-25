@@ -3,7 +3,7 @@ title: "Techbloghunter 1849"
 date: 2026-06-24
 tags: ["tech-news", "curated"]
 category: tech
-description: "📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating..."
+description: "📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating"
 ---
 
 <div align="center">

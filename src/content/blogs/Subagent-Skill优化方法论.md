@@ -3,7 +3,7 @@ title: "Subagent 化 Skill 优化方法论"
 date: 2026-06-24
 tags: ["ai-agents", "llm"]
 category: ai
-description: "当 Skill 的步骤链变长时，单 Agent 架构会遇到一个根本性问题：**上下文污染（context pollution）**。"
+description: "当 Skill 的步骤链变长时，单 Agent 架构会遇到一个根本性问题：上下文污染（context pollution）。"
 ---
 
 # Subagent 化 Skill 优化方法论

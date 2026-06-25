@@ -3,7 +3,7 @@ title: "Linux Learning"
 date: 2026-06-25
 tags: ["linux", "learning"]
 category: tech
-description: "1. - **WSL Features ** :"
+description: "1. - WSL Features  :"
 slug: linux_learning
 ---
 

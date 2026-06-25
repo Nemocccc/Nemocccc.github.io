@@ -3,7 +3,7 @@ title: "Cmake Learning"
 date: 2026-06-25
 tags: ["cmake", "learning"]
 category: tech
-description: "> ***sudo apt install Cmake***"
+description: "> *sudo apt install Cmake*"
 slug: Cmake_learning
 ---
 

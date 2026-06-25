@@ -3,7 +3,7 @@ title: "vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研
 date: 2026-06-16
 tags: ["llm", "deployment", "vllm"]
 category: ai
-description: "把整个 prompt（system prompt + user query）一次性并行算完，生成每个 token 位置对应的 **K 矩阵** 和 **V 矩阵**。计算量 = prompt token 数 × 模型参数量。prompt 越..."
+description: "把整个 prompt（system prompt + user query）一次性并行算完，生成每个 token 位置对应的 K 矩阵 和 V 矩阵。计算量 = prompt token 数 × 模型参数量。prompt 越..."
 ---
 
 # vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研报告

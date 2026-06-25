@@ -3,7 +3,7 @@ title: "将 Markdown 套入 DOCX 模板的实现方案调研"
 date: 2026-06-10
 tags: ["tools", "productivity"]
 category: tech
-description: "> 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是**唯一样式权威**（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模..."
+description: "> 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是唯一样式权威（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模..."
 ---
 
 # 将 Markdown 套入 DOCX 模板的实现方案调研
