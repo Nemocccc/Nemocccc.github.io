@@ -362,11 +362,14 @@ body {
   padding-left: 0;
 }
 .markdown-body .task-list-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  position: relative;
+  padding-left: 1.5rem;
+  list-style: none;
 }
 .markdown-body .task-list-item input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 0.35em;
   accent-color: var(--accent);
 }
 
