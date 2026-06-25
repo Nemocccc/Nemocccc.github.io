@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
-2:I[22210,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js","/_next/static/chunks/3zo6056xuvsb1.js","/_next/static/chunks/2hmfuxwajty1h.js","/_next/static/chunks/3jf8q_9-ia3no.js"],"default"]
+2:I[22210,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js","/_next/static/chunks/3zo6056xuvsb1.js","/_next/static/chunks/2c9lkvph-ta0n.js","/_next/static/chunks/3jf8q_9-ia3no.js"],"default"]
 8:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"OutletBoundary"]
 9:"$Sreact.suspense"
 3:T22e9,
@@ -423,9 +423,9 @@ cpack -C CPackSourceConfig.cmake
 - autotools
 - qmake
 - ...
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"Cmake_learn_by_doing","title":"compile the source files in the src directory into a static link library","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"cmake is a system independent automatic construct tool.","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"-v9JgbL-owTsKg9h7aSdO"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"Cmake_learn_by_doing","title":"compile the source files in the src directory into a static link library","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"cmake is a system independent automatic construct tool.","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"k5VbgIoDlhmyaOR5J0H8r"}
 4:["$","script","script-0",{"src":"/_next/static/chunks/3zo6056xuvsb1.js","async":true}]
-5:["$","script","script-1",{"src":"/_next/static/chunks/2hmfuxwajty1h.js","async":true}]
+5:["$","script","script-1",{"src":"/_next/static/chunks/2c9lkvph-ta0n.js","async":true}]
 6:["$","script","script-2",{"src":"/_next/static/chunks/3jf8q_9-ia3no.js","async":true}]
 7:["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]
 a:null
