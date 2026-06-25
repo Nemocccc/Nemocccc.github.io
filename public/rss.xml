@@ -1,0 +1,2023 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Nemo's Blog</title>
+        <link>https://nemocccc.github.io</link>
+        <description>Personal blog about tech, AI, and life</description>
+        <lastBuildDate>Thu, 25 Jun 2026 10:24:08 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Next.js</generator>
+        <language>zh</language>
+        <copyright>All rights reserved 2026, Nemo</copyright>
+        <item>
+            <title><![CDATA[compile the source files in the src directory into a static link library]]></title>
+            <link>https://nemocccc.github.io/blogs/Cmake_learn_by_doing</link>
+            <guid>https://nemocccc.github.io/blogs/Cmake_learn_by_doing</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[cmake is a system independent automatic construct tool.]]></description>
+            <content:encoded><![CDATA[
+### cmake-learn-by-doing
+
+##### source-link: [CMake 入门实战 | HaHack](https://www.hahack.com/codes/cmake)
+
+
+
+#### introduction
+
+cmake is a system independent automatic construct tool.
+
+use cmake generating Makefile in linux:
+
+1. write `CMakeLists.txt`
+2. `cmake PATH` or `ccmake PATH`, the differences is that ccmake provide an interactive UI.
+3. use `make PATH` to compile.
+
+
+
+#### single-source-file
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+add_executable(hello main.cpp)
+```
+
+than:
+
+```bash
+make
+
+./hello
+```
+
+
+
+#### mutiple-source-files
+
+file tree:
+
+```
+./t1
+	|
+	+--- main.cpp
+	|
+	+--- math.cpp
+	|
+	+--- math.h
+```
+
+then change `CMakeLists.txt`:
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+add_executable(hello main.cpp math.cpp)
+```
+
+if too much source files, use
+
+```cmake
+aux_source_directory(<dir> <variable>)# clollect address of all source files and save the infomation to variable, without filter, which means these files could include suffixless files like makefile and CMakeLists.txt itself.
+```
+
+CMakeLists.txt:
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+aux_source_directory(. DIR_SRCS)
+
+add_executable(hello main.cpp math.cpp)
+```
+
+to directly collect files with appointed suffix use file(GLOB) or file(GLOB_RECURSE):
+```cmake
+file(GLOB <variable> <globbing-expression>) #search files in current dir that matches globbing-expression.
+file(GLOB_RECURSE <variable> <globbing-expression>) #also search child-dir resursively.
+```
+
+
+
+#### multiple-directories-and-multiple-source-files
+
+```
+./t1
+	|
+	+--- main.cpp
+	|
+	+-- /math
+        |
+        +--- math.cpp
+        |
+        +--- math.h
+```
+
+in this case, we need to write CMakeLists.txt for both root dir and math dir:
+
+root dir:
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+aux_source_directory(. DIR_SRCS)
+
+add_executable(hello main.cpp math.cpp)
+
+add_subdirectory(math) #add sublibraries so that CMakeLists.txt in sublibrarities can also be processed
+
+target_link_libraries(hello MathFunctions)#tell cmake that main should have to link a library named MathFunctions
+```
+
+sub dir:
+
+```cmake
+aux_source_directory(. DIR_MATH_SRCS)
+
+# compile the source files in the src directory into a static link library
+add_library(MathFunctions ${DIR_MATH_SRCS})
+```
+
+
+
+####  customize-compilation-options
+
+`configure-file`:
+
+```
+configure_file(
+    "${SOURCE_FILE}"  # source files address
+    "${DESTINATION_FILE}"  # target files address
+    [COPYONLY]  # selectable, if selected, cmake simply copy files, without variable substitution
+)
+```
+
+`option`:
+
+```
+option(<OPTION_NAME> "<help description>" <VALUE>)
+```
+
+
+
+root CMakeList.txt:
+
+```cmake
+cmake_minimum_required (VERSION 3.10)
+
+project(hello VERSION 1.0)
+
+# add a configure header, to process cmake settings toward source code, so that we can 
+configure_file(
+    "${PROJECT_SOURCE_DIR}/config.h.in" #${PROJECT_SOURCE_DIR} is an auto variable regarding source address.
+    "${PROJECT_BINARY_DIR}/config.h"
+)
+
+#define weather to use our self-define mathfunction library
+option(
+    USE_MYMATH
+    "Use provided math implementtation" ON
+)
+
+# weather to add mathfunctions library
+if (USE_MYMATH)
+    include_directories("${PROJECT_SOURCE_DIR}/math")
+    add_subdirectory(math)
+    set(EXTRA_LIBS ${EXTRA_LIBS} MathFunctions)
+endif(USE_MYMATH)
+
+aux_source_directory(. DIR_SRCS)
+
+add_executable(hello main.cpp)
+
+target_link_libraries(hello ${EXTRA_LIBS})#tell cmake that main should have to link a library named MathFunctions
+```
+
+in `main.cpp`:
+
+```cpp
+// main.cpp
+
+#include<iostream>
+#include"config.h" //auto-generate by cmake from config.h.in, if not include, `#ifdef` always false
+
+#ifdef USE_MYMATH
+    #include "math/math.h"
+#else 
+    #include <math.h>
+#endif
+
+int main(){
+    std::cout << "hello world" << std::endl;
+    
+#ifdef USE_MYMATH
+    math();
+#else 
+    std::cout << "im standard math lib" << std::endl;
+#endif
+
+    return 0;
+}
+```
+
+in `config.h.in`:
+
+```
+#cmakedefine USE_MYMATH
+```
+
+then on bash:
+
+`cmake .` or `cmake -USE_MYMATH OFF` default value is ON.
+
+
+
+#### install-and-test
+
+install() in cmake use to appoint files, libraries and executable files that should be copied to the system installation directory during the build process. 
+
+add the following to math/CMakeLists.txt:
+
+```cmake
+#specify math library's installing address
+install (TARGETS math DESTINATION bin)
+install (FILES math.h DESTINATION include)
+```
+
+add the following to the ending of root CMakeLists.txt:
+
+```cmake
+install (TARGETS hello DESTINATION bin)
+install (FILES "${PROJECT_BINARY_DIR}/config.h" DESTINATION include)
+```
+
+then hello and libmath.o that generated will be copied to /usr/local/bin, and math.h and config.h will be copied to /usr/local/include. /usr/local is the default installing root address,we can modify variable CMAKE_INSTALL_PREFIX to appoint the target address.
+
+---
+
+cmake provide a tool named CTest ,  if we want our project has a test function, what we need to do is to  add `add_test` in our `CMakeList.txt`.
+
+```cmake
+add_test(NAME <test_name>
+          COMMAND <command> [<arg1> <arg2> ...]
+          [CONFIGURATIONS <config1> [<config2>...]]
+          [WORKING_DIRECTORY <dir>]
+          [COMPILE_DEFINITIONS <def1> [<def2>...]])
+```
+
+in CMakeLists.txt:
+
+```cmake
+enable_testing()
+
+# test weather testing program can run successfully
+add_test (test_run hello) #if hello need parameter, use add_test (test_run hello <pm1> ...)
+
+#test weather help-info can prompt normally
+add_test (test_usage hello)
+set_tests_properties (test_usage
+	PROPERTIES PASS_REGULAR_EXPRESSION "Usage: .* base exponent") #`PASS_REGULAR_EXPRESSION`: check if the output contians the string "Usage: .* base exponent"
+	
+#add_test (test_case_1 hello pm1 pm2)
+#set_tests_properties (test_case_1
+#	PROPERTIES PASS_REGULAR_EXPRESSION "xxx")
+#
+#add_test
+#......
+```
+
+auto-test: **write macro**
+
+:star:example:star:
+
+```cmake
+macro (do_test arg1 arg2 result)#numbers of args depend on your function.
+  add_test (test_${arg1}_${arg2} Demo ${arg1} ${arg2})
+  set_tests_properties (test_${arg1}_${arg2}
+    PROPERTIES PASS_REGULAR_EXPRESSION ${result})
+endmacro (do_test)
+
+#do_test（arg1 arg2 "part of target")
+```
+
+
+
+#### support-gdb
+
+active `-g` option in debug mode.
+
+```cmake
+#setup compile options for different build type
+set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -00 -Wall -g -ggdb")
+set(CMAKE_CXXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -03 -Wall")
+```
+
+then you can construct your project in Debug mode:
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Debug .
+make
+```
+
+start your executable files:
+
+```bash
+gdb ./your exectable
+```
+
+
+
+#### adding-environment-detection
+
+excample: when we need to use pow() function, first we need to check weather system contains pow()
+
+`check_function_exists(<function_name> <variable>)` if function exists, the value of variable will be TRUE.
+
+- add CheckFunctionExists.cmake macro at root CMakeLists.txt before `configure_file`
+  ```cmake
+  #check if system support pow() function
+  include (${CMAKE_ROOT}/Modules/CheckFunctionExists.cmake)
+  check_function_exists (pow HAVE_POW)
+  ```
+
+- modify config.h.in:
+  ```cmake
+  #cmakedefine HAVE_POW
+  ```
+
+- use macro and function in main.cpp, like:
+  ```c++
+  #ifdef HAVE_POW
+  	std::cout << "now we use standard function" << std::endl;
+  #else
+  	std::cout << "user define function" << std::endl;
+  #endif
+  ```
+
+  
+
+#### adding-version-number
+
+- ```cmake
+  project(<project name> VERSION x.x.x)
+  ```
+
+- ```cmake
+  #condition version
+  if (condition1)
+  	set(PROJECT_VERSION "1.0.0")
+  else()
+  	set(PROJECT_VERSION "1.0.0")
+  endif()
+  ```
+
+- ```cmake
+  set(<project name>_VERISON_MAJOR 1)
+  set(<project name>_VERSION_MINOR 0)
+  ```
+
+- ```cmake
+  #when store the version number in a single file
+  file(READ "version.txt" PROJECT_VERSION)
+  ```
+
+get version number in source code, for excample, cpp:
+
+```c++
+//config.h.in
+#define hello_VERSION_MAJOR @hello_VERSION_MAJOR@
+#define hellp_VERSION_MINOR @hello_VERSION_MINOR@
+```
+
+do not forget to add `#include "config.h"` in cpp file.
+
+
+
+#### generate-installer
+
+at the endding of root CMakeLists.txt, add:
+
+```cmake
+#build a CPack installer
+include (InstallRequiredSystemLibraries)
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_PACKAGE_NAME "hello")
+set(CPACK_RESOURCE_FILE_LICENSE
+	"${CMAKE_CURRENT_SOURCE_DIR}/License,txt")#ser license
+set(CPACK_PACKAGE_VERSION "${VERSION}")
+#set(CPACK_PACKAGE_VERSION_MAJOR "${hello_VERSION_MAJOR}")#some CPack variable
+#set(CPACK_PACKAGE_VERSION_MINOR "${hello_VERSION_MINOR}")
+set(CPACK_PACKAGE_CONTACT "Nemo 1774747097@qq.com")
+include(CPack)
+```
+
+generate binary installer:
+
+```bash
+cpack -C CPackConfig.cmake
+```
+
+generate source code installer:(need compile and install by yourself)
+
+```bash
+cpack -C CPackSourceConfig.cmake
+```
+
+
+
+#### *migrate-projects-from-other-platforms-to-CMake*
+
+- autotools
+- qmake
+- ...
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Cmake Learning]]></title>
+            <link>https://nemocccc.github.io/blogs/Cmake_learning</link>
+            <guid>https://nemocccc.github.io/blogs/Cmake_learning</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[> ***sudo apt install Cmake***]]></description>
+            <content:encoded><![CDATA[
+> ***sudo apt install Cmake***
+
+### Cmake
+
+***[CMake Tutorial — Mastering CMake](https://cmake.org/cmake/help/book/mastering-cmake/cmake/Help/guide/tutorial/index.html#introduction)***
+
+
+
+### `CMakeLists.txt`
+
+`cmake_minimum_required()`: Run Cmake function with a compatible version od Cmake.
+
+> - ```cmake
+>   cmake_minimum_required(VERSION <min>[...<policy_max>] [FATAL_ERROR])
+>   ```
+
+`project()`: start a project and set the name, other project level info. 
+
+`add_executable()`: create an executable file using the specified source code files.
+
+
+
+#### step1:  basic starting point
+
+most simple CMakeLists.txt:
+
+```cmake
+cmake_minimum_required(VERSION 3.10)
+
+#set the project name
+project(Tutorial)  #you can also use PROJECT, cmake is case insensitive
+
+#add the executable
+add_executable(Tutorial tutorial.cxx)
+```
+
+
+
+#### adding a version number and configured header file
+
+set version number:
+
+```cmake
+project(tutorial VERSION 1.0)
+```
+
+configure a header file to pass version number to source code:
+
+```cmake
+configure_file(TutorialConfig.h.in TutorialConfig.h)
+```
+
+the config file will be written into the binary tree. add that directory to the list of paths to search for include  files. add the following:
+
+```cmake
+target_include_directories(Tutorial PUBLIC 
+							"${PROJECT_BINARY_DIR}"
+							)
+```
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[***Regex***]]></title>
+            <link>https://nemocccc.github.io/blogs/Regex_learning</link>
+            <guid>https://nemocccc.github.io/blogs/Regex_learning</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[[**学习、受启发于deerchao的教程**](https://deerchao.cn/tutorials/regex/regex.htm)]]></description>
+            <content:encoded><![CDATA[
+### ***Regex***
+
+[**学习、受启发于deerchao的教程**](https://deerchao.cn/tutorials/regex/regex.htm)
+
+> what is regex? something similer to wildcard, but more complex, more flexible and strong.
+
+**matecharacter**: special character that has special rule to match characters.
+
+> `.`: match anycharacters except `\n`
+>
+> `\w`: match letters, numbers, _ (and chinese), [a-z0-9A-Z_]
+>
+> `\s`: match blank characters include `\n`
+>
+> `\d`: match numbers
+>
+> `\b`: match the beginning or ending of characters, autually, it matches a place that one or both of former and latter character match `\w`
+>
+> `^`: match the beginning of characters
+>
+> `$`: match the ending of characters
+
+examples:
+
+`\bhi\b`: precise match "hi"
+
+`\bhi\b.*\bLucy\b`: match "hi [...] lucy"
+
+`\ba.*\b`: match words start with letter a
+
+`\b\w{6}\b`: match words with 6 characters
+
+`\b\d{5, 12}\b`: match numbers that no less than 5 digits and no more than 12 digits.
+
+`\b\d{5, 12}@qq.com\b`: match QQ mail box
+
+`^\w*@\w{?, ?}.\w{2, ?}$`: match any mail box(i have forgot how many characters a mail boox have).
+
+**meaning-transform**: `\`, transform matecharacter into normal character if you want the matecharacter itself, including `\\`
+
+example: `\($*\).o`: ?
+
+**repetition**: \
+
+> `*`: repeat zero or more times
+>
+> `+`: repeat one or more times
+>
+> `?`: repeat 0 or 1 times
+>
+> `{n}`: repeat n times
+>
+> `{n,}`: repeat n or more times
+>
+> `{n, m}`: repeat no less then n times but no more than m times
+
+example: `^\w+`: match the first words in a sentense.
+
+**character class**: to match none-matecharacters
+
+`[aeiou]`, match a, e, i, o, u
+
+`[.?!]`: match punctuation like ., ?, !
+
+`[0-9]`: equal to `\d`
+
+[a-z0-9A-Z_]: equal to `\w`
+
+`\(?0\d{2}[)-]?\d{8}`: match phonre numbers start with 0
+
+**if-else**: |
+
+`\(?0\d{2}[)-]?\d{8}` actually can match characters (023-32142131, which is the wrong format.
+
+the right answer is `\(0\d{2}\)[- ]?\d{8}|0\d{2}[- ]?\d{8}`
+
+however, you should focus on the order, for example:
+
+`\d{5}-\d{4}|\d{5}` is right, but `\d{5}|\d(5)-\d{4}` is wrong, because what matches `\d{5}-\d{4}` can match `\d{5}`, so it match `\d{5}` and would not think about the other branches. just like if-else conditions in C++ and python.
+
+**group**: mostly for repetition of multi-characters, and auto-distribute group codes for groups, code 0 refer to the whole expression. 
+
+`(\d{1,3}\.){3}\d{1,3}` repeat 3 times for `\d{1, 3}\.` .
+
+`((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)`: matches right ip address. to under stand this expression, understanding `2[0-4]\d|25[0-5]|[01]?\d\d?`id the most important.
+
+**autonymy**: like ! in python and C++
+
+`\W`（capital, follow the same): `!\w`
+
+`\S` , `\D` , `\B`, 
+
+`[^exp]`: matches any characters except e, x, p
+
+**backrefer**
+
+by default, from lest to eight , marked by `(`, the group would automatically get a code from 1 on.
+
+`\b(\w+)\b\s+\1\b` can match repeated words like `go go`. `\1` here is the content that `\w+` matched such as `go`.
+
+`\b(?<Word>\w+)\b\s+\k<Word>\b`: match repeated words and assign the group with code `word`.
+
+- capture: 
+
+  > (exp): match and capture characters **into groups** and auto assign code.
+  >
+  > (?<name>exp): match and capture cahracters and assign the group `name` as code.
+  >
+  > (?:exp): match but not capture characters and also not assign codes.
+
+- assert: match a position but not consume it.
+
+  > (?=exp): matches location before exp, like ^.
+  >
+  > - `\b\w+(?=ing\b)` match characters before ing, such as:singing -> sing, dancing -> danc
+  >
+  > (?<=exp): matches location after exp,. like $.
+  >
+  > - `(?<=\bre)\w+\b` match characters after re, such as: reading -> ading, reset ->set.
+  >
+  > `(?<=\s)\d+(?=\s)`matches numbers that barrier by blank character.
+  >
+  > (?!exp): match a location that not follow by exp
+  >
+  > - `\b\w*q[^u]\w*\b`: matches words that have a q that without a u bellow, however it can also match a word that the q is the last letter of the word, for example, it can match`iraq fighting`. and `\b\w*q(?!u)\w*\b` is what you need because (?!u) would not consume the letter bellow the q.
+  > - `\d{3}(?!\d)` match 3 numbers without a number bellow.
+  > - `\b((?!abc)\w)+\b` match a word that do not contain the `abc`.
+  >
+  > (?<!exp): match a location that not following exp
+  >
+  > - `(?<![a-z])\d{7}` matches 7 numbers without lowercase letter on the front.
+  >
+  > `(?<=<(\w+)>).*(?=<\/\1>)` matches content in simple HTML label without attributes.
+
+**comment**
+
+use (?#comment) to contain comment like (?#这是注释)
+
+active "ignore blank characters in mode" choice is recommended. and so that you can write commend like this:
+```
+(?<=    # 断言要匹配的文本的前缀
+<(\w+)> # 查找尖括号括起来的内容
+        # (即HTML/XML标签)
+)       # 前缀结束
+.*      # 匹配任意文本
+(?=     # 断言要匹配的文本的后缀
+<\/\1>  # 查找尖括号括起来的内容
+        # 查找尖括号括起来的内容
+)       # 后缀结束
+```
+
+**Greed and laziness**
+
+regex always try to match as much as characters, for example, `aabab`, a.*b can match the whole characters but not only `aab`,  chich called greed.
+
+sometimes we need regex match as less as it can. then we can simply add `?` bellow.
+
+a.*?b match `aab`.
+
+`*?`, `+?`, `??`, `{n, m}`, `{n,}`
+
+**processing option**
+
+`IgnoreCase`: ignore differences between capital letters and lowercase letters.
+
+`Multiline`: change `^` and `$` . now they the beginning and ending of one line, not words.
+
+`Singleline(dotAll)`: change `.`, make it can match all characters (including `\n`), and is not limited in one line.
+
+`IgnorePatternWhitespace`: ignore unescaped white space in expression and active comments marked by #.
+
+`ExplicitCapture`: only capture groups that have been explicitly tag.
+
+***recursive matching**
+
+match nesting multi-levels structure. but hard. omit.
+
+``(?`group`)``, ``(?`-group`)``, ``(?(group)yes|no)``, (?!)
+
+example:
+
+```
+<                   #最外层的左括号
+  [^<>]*            #它后面非括号的内容
+  (
+      (
+        (?'Open'<)  #左括号，压入"Open"
+        [^<>]*      #左括号后面的内容
+      )+
+      (
+        (?'-Open'>) #右括号，弹出一个"Open"
+        [^<>]*      #右括号后面的内容
+      )+
+  )*
+  (?(Open)(?!))     #最外层的右括号前检查
+                    #若还有未弹出的"Open"
+                    #则匹配失败
+
+>                #最外层的右括号
+```
+
+### ***others***:
+
+![other grammar](./picture/regex_other_grammar.png)
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Deep Reinforcement Learning]]></title>
+            <link>https://nemocccc.github.io/blogs/deep_reinforcement_learning</link>
+            <guid>https://nemocccc.github.io/blogs/deep_reinforcement_learning</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[- Probability approximation]]></description>
+            <content:encoded><![CDATA[
+- #### Monte Carlo
+
+  - Probability approximation
+  - definite integral approximation
+  - Expectation approximation
+  - stochastic gradient
+    - Stochastic gradient allows for faster approximation of results
+
+- ### Basic concepts of reinforcement learning
+
+  - #### markov decision process, MDP
+  
+    - agents interact with the environment
+    - agents makes decisions and actions
+    - environment act as rules in the interaction
+    - state: all the information for one frame
+    - state space: a set of state(limited or infinite countable)
+    - action: agents' s decision base on current state
+    - action space: a set of possible decisions
+    - **reward**: value of the decision, defines by us.
+    - **state transition**:
+      - Deterministic state transfer is a special case of stochastic state transfer
+  
+  - policy: agents make decision base on the state.
+  
+    - > The goal of reinforcement learning is to obtain a strategy function,the strategy can be deterministic or stochastic.
+  
+    - stochastic policy:  input state, output possibility of actions base on the state (probability density function).
+  
+    - deterministic policy: input state, output deterministic action instead of possibility (0-1 density function) - > a little similar to max function.
+  
+    - agent environment interaction: agent make decision base on the possibility, then programs calculate the new state and return a reward for agent.
+  
+  - stochasticity: action and state are the sources of stochasticity.
+  
+    - > markov property: the next state only relevant with the state and action now, and irrelevant with state and action before.
+  
+    - trajectory: all the actions, states, rewards that observable for agent in one episode.
+  
+  - return and discounted return: 
+  
+    > add up rewards in an episode. consist of return and discounted return(more often)
+  
+    - return : discount factor = 1
+    - discounted return : discounted factor < 1
+    - stochasticity : fundamentally because of the stochasticity of action and state.
+    - finite-horizon MDP and infinite-horizon MDP:
+      - finite-horizon MDP has a terminal state of one episode.
+      - infinite-horizon MDP should attach a discounted return that smaller than 1 or its return can go infinite.
+  
+  - value function
+  
+    - > expectation of return, reflecting the  current situation good or bad, the larger it is, the better the current situation
+  
+    - action-value function: the result of Q(action-value function) is the expectation of U(discounted return) in current situation.]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[***docker***]]></title>
+            <link>https://nemocccc.github.io/blogs/docker_learning</link>
+            <guid>https://nemocccc.github.io/blogs/docker_learning</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[- > windows desktop version]]></description>
+            <content:encoded><![CDATA[
+## ***docker***
+
+- > windows desktop version
+
+- install directly from official website
+
+- or run ` winget install Docker.DockerDesktop ` on powershell
+
+- in this way your docker'root is in windows but not wsl-ubuntu, all your commands should be executed on a windows terminal, for example, ` sudo systemctl restart docker ` on linus should be `Restart-Service docker` on windows or you can just restart it on docker desktop' s UI
+
+- mirror gas pedal
+
+  - docker desktop -> settings ->  Use the wsl2 based engine
+
+  - -> resources -> change dick image location
+
+  - -> docker engine ->
+
+  - ```json
+    {
+        "builder": {
+          "gc": {
+            "defaultKeepStorage": "20GB",
+            "enabled": true
+          }
+        },
+        "experimental": true,
+        "registry-mirrors": [
+          "https://hub-mirror.c.163.com",
+          "https://mirror.baidubce.com",
+          "https://dzoprv55.mirror.aliyuncs.com"
+        ]
+    }
+    ```
+
+  - -> APPLY & RESTART(lower right)
+
+- get image
+
+  - ```bash
+    $ docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签] 
+    ```
+
+  - such as `$ docker pull ubuntu:22.04`
+
+  - for more `$ docker pull --help`
+
+- run
+
+  - ```bash
+    docker run -it --rm ubuntu:22:04 bash # ``--rm`` here means remove docker after exit
+    		  
+    docker run ubuntu:18.04 /bin/echo 'Hello world'
+    		  
+    docker run -t -i ubuntu:18.04 /bin/bash
+    ```
+
+  - `-i`: interactive
+
+  - `-t`: open terminal (pseudo-tty)
+
+  - ```bash
+    $ docker container start # start exited docker
+    		  
+    ps | top # list pocesses
+    ```
+
+  - `-d`:guarded state operation
+
+  - without `-d`:
+
+    - ```bash
+      $ docker run ubuntu:18.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
+      hello world
+      hello world
+      hello world
+      hello world
+      ```
+
+  - with `-d`:
+
+    - ```bash
+      $ docker run -d ubuntu:18.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
+      			  77b2dc01fe0f3f1265df143181e7b9af5e05279a884f4776ee75350ea9d8017a
+      ```
+
+  - to see docker info: `docker container ls`
+
+  - to see output of docker: `docker container log`
+
+  - to go into containers that was running background (start with `-d` parameters)
+
+    - `docker attach` or `docker exec`(recommened)
+
+    - `docker attach` - example:
+
+      - ```bash
+        docker run -d ubuntu
+        				  
+        docker contianer ls
+        				  
+        docker attach xxx
+        root@xxx:/#
+        ```
+
+      - notice: if you exit from this terminal, it could cause the stop of docker container
+
+    - `docker exec` -example:
+
+      - ```bash
+        docker run -d ubuntu
+        				  
+        docker container ls
+        				  
+        docker exec -i xxx bash # start bash shell in interative mode
+        				  
+        docker exec -it xxx bash
+        ```
+
+      - if you exit from this bash, it could not cause the stop of docker container, this is why we recommend `docker exec`.
+
+- stop container
+
+  - ```bash
+    docker container stop # stop a runing container
+    		  
+    exit # stop the terminal
+    		  
+    docker container ls -a # view containers stopped
+    		  
+    docker container restart # stop a container, then restart it.
+    ```
+
+- export docker image && import
+
+  - ```bash
+    docker container ls -a
+    		  
+    docker export [CONTAINER ID] > xxx.tar
+    ```
+
+  - ```bash
+    cat ubuntu.tar | docker import - test/ubuntu:v1.0
+    		  
+    docker image ls
+    		  
+    docker import http://example.com/exampleimage.tgz example/imagerepo # import container from certain URL or dictonary
+    ```
+
+- delete containers
+
+  - ```bash
+    docker container rm xxx
+    		  
+    docker container prune
+    ```
+
+- list docker images
+
+  - ```
+    docker image ls
+    		  
+    dcoker system df
+    		  
+    docker image ls -f dangling=true  # should dangling images
+    		  
+    docker iamge prune # delete dangling image
+    		  
+    # `` docker image ls `` only shows top images, if you want to see all images including middle images, run
+    docker iamge ls -a
+    		  
+    docker iamge ls ubuntu
+    		  
+    docker image ls ubuntu:22.04
+    		  
+    docker image ls -f since=mongo:3.2 # filter since/before
+    		  
+    docker image ls -f label=com.example.version=0.1
+    		  
+    docker iamge ls -q # if you want to delete some iamges
+    		  
+    docker image ls --format "{{.ID}}: {{.Repository}}"
+    		  
+    docker image ls --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}"
+    ```
+
+- docker delete
+
+  - ```bash
+    		  docker image ls
+      		  
+    docker image rm xxx #generally speaking, only the first three characters of IMAGE ID is enough,such as ``docker image rm 501``
+    		  
+    docker image rm centos
+    		  
+    docker image ls --digest
+    docker image rm node@xxx:xxx #xxx:xxx is the digest of image
+    		  
+    docker image rm $(docker image ls -q [repo's name])
+    docker image rm $(docker image ls -q -f before=mongo:3.2)
+    ```
+
+- `docker search` && `docker pull`
+
+- `docker push`
+
+  - ```bash
+    docker tag REPOSITORY:TAG docker-hub-username/REPOSITORY:TAG
+    		  
+    docker image ls
+    		  
+    docker push docker-hub-username/REPOSITORY:TAG
+    		  
+    docker search docker-hub-username
+    ```
+
+- customize images
+
+  - ``git commit``  is not recommended as it can contain a lot of thing that are irrelevant and useless for your image. what's worse, the process you construct the image is invisible for everyone else. the image can go heavier over time. because the result of any modification on image is simply to mark, add, or modify the current layer without altering the previous layer.
+
+  - [x] we recommend to use **Dockerfile**, as a bash, we write every commends needed to construct the image on this file, so that it is visible for everyone to see the construction of the image. thus we can Optimize the construction of images to achieve light-weighting
+
+    - 1. make  a new **empty** dictionary, and name it **Dockerfile**
+         ```bash
+         mkdir [project]
+         cd [project]
+         touch Dockerfile
+         ```
+
+         and in Dockerfile:
+
+      2. ``FROM basic-image`` **important and must be placed at the beginning of file**
+         and particularly, ``FROM scratch`` : scratch is an empty(only with some matedata in it) virtual image, in this image, you first ``RUN`` is the first layer of the image.
+
+      3. ``RUN xxx``:
+         when you execute a ``RUN``, you construct a new layer of image.
+         so the number of ``RUN`` is the fewer the better. for example:
+
+         - use
+           ```bash
+           FROM debian:stretch
+           
+           RUN set -x; buildDeps='gcc libc6-dev make wget' \
+               && apt-get update \
+               && apt-get install -y $buildDeps \
+               && wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz" \
+               && mkdir -p /usr/src/redis \
+               && tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \
+               && make -C /usr/src/redis \
+               && make -C /usr/src/redis install \
+               && rm -rf /var/lib/apt/lists/* \
+               && rm redis.tar.gz \
+               && rm -r /usr/src/redis \
+               && apt-get purge -y --auto-remove $buildDeps
+           ```
+
+         - instead of:
+           ```bash
+           FROM debian:stretch
+           
+           RUN apt-get update
+           RUN apt-get install -y gcc libc6-dev make wget
+           RUN wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz"
+           RUN mkdir -p /usr/src/redis
+           RUN tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1
+           RUN make -C /usr/src/redis
+           RUN make -C /usr/src/redis install
+           ```
+
+         as you can see,  
+
+         - [x] it is without necessity to build a lot of layers.
+         - [x] Getting into the habit of line breaks for different commands
+         - [x] You can also see that at the end of this set of commands the command to clean up your work has been added, removing the software that was needed in order to compile the build, cleaning up all the files that were downloaded and expanded, and also cleaning up the apt cache files. This is a very important step, as we said before, images are stored in multiple tiers, and what is in each tier does not get deleted in the next tier, it stays with the image. So when the image is built, it is important to make sure that each tier only adds what really needs to be added, and anything extraneous should be cleaned up.
+
+      4. In the directory where the **Dockerfile** file is located, execute the:
+         ```bash
+         docker build -t TAGname .  # -t here maens tag
+         ```
+
+      5. the ``.`` at the end of ``docker build`` commend means current dictionary. it aims to Specify Context. after that, some of you commends only go into effect within the context, such as ``COPY``:
+         ``COPY ../package.json /app`` and ``COPY /opt/xxxx /app`` can't work.
+         for more, see [[使用 Dockerfile 定制镜像 | Docker — 从入门到实践 (gitbook.io)](https://yeasy.gitbook.io/docker_practice/image/build)]
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Introduction]]></title>
+            <link>https://nemocccc.github.io/blogs/fundamentals_of_compiling_learning</link>
+            <guid>https://nemocccc.github.io/blogs/fundamentals_of_compiling_learning</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[- compiler: translate the code from source language to target language.]]></description>
+            <content:encoded><![CDATA[
+### Introduction
+
+##### language processor
+
+- compiler: translate the code from source language to target language.
+- interpreter: Perform operations in the source language directly from the input
+- **example**: java processor:
+  source language -> translator -> middle program -> virtual machine
+                                                                                  input /                              \ output
+- a language process system:
+  source language -> pre-processor -> pre-processed program  -> compiler -> target assembler -> assembler -> relocatable machine code -> linker(resolves external memory addresses)&loader(execute all executable target files in memory) <- library files & relocatable files,     and finally generate target machine code from linker and loader.]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Linux Learning]]></title>
+            <link>https://nemocccc.github.io/blogs/linux_learning</link>
+            <guid>https://nemocccc.github.io/blogs/linux_learning</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[1. - **WSL Features ** :]]></description>
+            <content:encoded><![CDATA[
+1. - **WSL Features ** :
+
+     -WSL creates a `/home/<username>` directory by default, and the user is usually set as the owner of this directory. This means that within the `/home/<username>` directory and its subdirectories, you can create files and directories freely.
+
+     - If you are trying to create files or directories in other locations, such as'/' root or other non-personal directories, then 'sudo' permissions may be required.
+
+     and usually, `~` refer to the dir `/home/<username>`, they are the same. you can also see `/home/others`, but `~` always be your home, execute `pwd` to see.
+
+     use `su - <username>` to change user.]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Linux Shell]]></title>
+            <link>https://nemocccc.github.io/blogs/linux_shell</link>
+            <guid>https://nemocccc.github.io/blogs/linux_shell</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a816...]]></description>
+            <content:encoded><![CDATA[
+***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a8166aa)***
+
+
+
+
+
+
+
+``ll [dictionary]``:
+
+ - to see detail information of files in the dictionary
+
+ - example: 
+
+   ```bash
+   root@server-235-a4000:/anything# ll .
+   total 4
+   authority links owner group blocks last-interview
+   drwxrwxrwx 4 1021 1021   47 Jul  5 08:10 ./
+   drwxr-xr-x 1 root root 4096 Jul  6 03:45 ../
+   drwxrwxrwx 2 1021 1021   50 Jul  5 08:10 config/
+   drwxrwxrwx 2 root root   30 Jul  5 07:53 project/
+   ```
+
+ - in the first colume:
+   'd' means "dictionary"
+   'r' means "read"
+   'w' means "write"
+   "x" means "exec"
+   '-' means "no authority"
+
+---
+
+`cd -` : 
+
+ rapid change of work dictionary
+
+---
+
+`echo`
+
+-  `ech o   <string>` : print <string> directly on console.
+
+- `echo <string> > <file>` : overlay write <string> into files. 
+
+> ` >> ` : readdition mode
+
+
+---
+
+`cat`
+
+- `cat <files>` : print the content of files.  mostly use.
+
+- `cat < <files>` : similar to the former, seldom use, when use , mostly combined with  other commands likes `sort < hello.txt | cat`
+
+- `cat < <file1>  > <file2>` : reload input to file1, and reload output to file2, overwrite.
+
+---
+
+**shell script** : `touch ****.sh`
+
+- function:
+
+```bash
+**** () {
+	cd try_something/config/
+	docker exec -it anything_ubuntu22basic_image bash
+	# here, $0 is the name of function, $1~$9...refer to the parameters. 
+}
+```
+
+---
+
+
+```bash
+mkdir test
+cd $_
+```
+
+is equal to:
+
+```bash
+mkdir test
+cd test
+```
+
+`$_` is equal to `$1` (the first parameter) of the former expression.
+
+---
+
+`!!` , will be replaced by the former expression.
+
+for example, if your operation not permitted, you can `sudo !!`.
+
+```bash
+$ rmdir test
+operation not permitted
+$ sudo !! # is equal to sudo rmdir test here.
+```
+
+---
+
+`$?` refers to the exit status of your former commands
+
+```bash
+grep foobar sd.sh
+echo $? #if no foobar in sd.sh, it would be 1, if not, it would be 0.
+```
+
+---
+
+- `$#` :  The number of parameters of the command
+
+- `$$` : process id of the command of what is running.
+
+- `$@` : all  the arguments of the command.
+
+---
+
+`grep`
+
+- `docker-compose ps || grep Up` : find if the output of `docker-compose ps` contains 'Up'.
+
+- `grep <string> <filename>` : find <string> in <file>
+- `grep "pattern" file1 file2 file3` : find same "pattern0" in multiple files.
+- `grep -r "pattern" /path/to/directory` : find "pattern" in dir and subdir.
+- `grep --help`
+
+---
+
+`tail` : 
+
+- `tail --help`
+- `tail <file>` : print the last 10 lines of file(by default) -> in reverse order
+- `tail -n -20 <file>` : in order
+- `tail -f <file>` : always trace the latest content of file.
+
+---
+
+- `> / <` standard reload
+- `>> / <<` add reload
+- `2>` standard error *output* reload (no`2<`, not legal)
+- `&>`  standard *output* reload and standard error *output* reload (by default /dev/null)
+
+---
+
+`ls` : 
+
+- `ls *.sh` : find files with special suffix.
+
+- ```bash
+    mkdir project1 project2
+    mkdir project23
+    ls project?  #project1 project2
+    ls project?*   #project1 project2 project23
+    ```
+
+---
+
+`convert` : image processing
+
+- `convert input.jpg output.png` : change format.
+
+- `convert input.jpg -resize 800x600 output.jpg` : change height and width.
+
+- `convert input.jpg -crop 100x100+50+50 output.jpg` : cut image
+- `convert input.jpg -rotate 90 output.jpg` : rotate the image.
+- `convert input.jpg -colorspace Gray output.jpg` change color.
+- `convert input.jpg watermark.png -gravity south -composite output.jpg` use another iamge as watermark.
+- `convert image1.jpg image2.jpg -append output.jpg` : combine mult image into one.
+
+---
+
+`{}` : 
+
+1. **brace expansion**
+
+- `touch project{1, 2}/src/test/test{1, 2, 3}.py `: this can touch totally 6 files at two different directory.
+
+- `convert input.{png, jpg}` : ?
+- `touch {foo,bar}/{a..j}` : touch foo/a ~ foo/j , bar/a~bar/j
+- ```bash
+  touch foo/s bar/y
+  diff <(ls foo) <(ls bar)
+  ```
+- 
+
+---
+
+`diff` : 
+
+- `diff file1.txt file2.txt` : find the differents of two files.
+- `diff -rq dir1 dir2` : find the differents of files in two directories.
+- `diff --help`
+
+---
+
+`shellcheck` : shell/bash script debug tool
+
+- ```bash
+  sudo apt-get update && sudo apt-get upgrade
+  sudo apt-get install -y shellcheck
+  ```
+
+- `shellcheck script.py`
+
+- `shellcheck script1.sh script2.sh`
+
+- `shellcheck $(find . -name "*.sh")`
+
+- `shellcheck -s bash -e SC2046 script.sh`
+
+- `shellcheck script.sh > check_results.txt`
+
+---
+
+`man` : manual of commands.
+
+- `man ffmpeg` , `man rg` , `man tldr` and so on , run and u will know.
+
+---
+
+`find` :
+
+- `find . -name src -type d` : find dir that named as src in current dir
+
+- `find . -path '**/test/*.py' -type f` 
+- ` find . -mtime -1` : -mtime -> modify time | -1 -> last day.
+- `find . -name "*.tmp" -exec rm {} \` : `{}` -> all files find matched | `\` -> claim the end of `rm` command
+
+- **fd-find** : better then find
+
+---
+
+`$()` : Used for command substitution, that is, to assign the output of a command to a variable
+
+`${}` : Used for variable expansion, that is, inserting the value of a variable into a string.
+
+---
+
+`seq` : to generate a set of numbers.
+
+- `seq <options> <start> <end>`
+- `seq -f "%02g" 0 9`  : "%02g" => numbers is formatted as the smallest two-digit number
+
+---
+
+`sed`: `sed [options] 'command' [file]`
+
+- `s/pattern/replacement/flags`
+
+  ```bash
+  sed 's/oldtest/newtest/g' file.txt #g : global replace , i : ignore case
+  ```
+
+- `sed '/delete the line that match this text/d' file.txt` : yes, the line!
+
+  ```bash
+  zixing.liao@server-235-a4000:/DATACENTER1/zixing.liao/try_something/shellPrac/day3$ cat test.txt
+  hello world
+  llohe wldor
+  sdajkskdhakjd
+  zixing.liao@server-235-a4000:/DATACENTER1/zixing.liao/try_something/shellPrac/day3$ sed '/hello/d' test.txt
+  llohe wldor
+  sdajkskdhakjd
+  ```
+
+- `i\text`: insert text before matched line, `a\text`: insert text after matched line.
+
+  ```bash
+  sed '/match text/a\' #insert a new line after match line
+  ```
+
+- ```bash
+  sed '/match line/p' file.txt # print match words' line in file.txt
+  ```
+
+- `address1,address2 command`: line range
+
+  ```bash
+  sed -n '1,5p' file.txt # print line1~line5
+  ```
+
+- ```bash
+  sed -f script.sed file.txt # read commands from a script and deal file with these commands.
+  ```
+  
+- `df | sed '1d' | grep -v 'tmpfs' | awk '{print $NF}')`
+
+---
+
+`awk` : 
+
+1. To print a specific column:
+   ```bash 
+   awk '{print $column_number}' file
+   ```
+   - For example, print the second column in the file example.txt:
+     ```bash 
+     awk '{print $2}' example.txt
+     ```
+
+2. Number of statistical lines:
+   `awk 'END{print NR}' file`
+   - For example, count the number of lines in the file example.txt:
+     `awk 'END{print NR}' example.txt`
+3. Number of statistical columns:
+   `awk '{print NF}' file`
+   - For example, count the number of columns in the first row of the example.txt file:
+     `awk 'NR==1{print NF}' example.txt`
+4. Filter line:
+   `awk '/pattern/' file`
+   - For example, print the line containing "example" :
+     `awk '/example/' example.txt`
+5. Calculate the sum:
+   `awk '{sum += $column_number} END{print sum}' file`
+   - For example, calculate the sum of the third column in the file example.txt:
+     `awk '{sum += $3} END{print sum}' example.txt`
+6. Condition print:
+   `awk '$column_number > value {print $0}' file`
+   - For example, print the third column greater than 10 in the file example.txt:
+     `awk '$3 > 10 {print $0}' example.txt`
+
+---
+
+`stat` : `stat [options] <file>`
+
+- `stat file.txt`
+- `stat -h file.txt`
+- `stat -f /`
+- `stat --format="%A %n %s %w %u %g\n" file.txt`
+- `stat -c %a $F`
+
+---
+
+`rsync` : `rsync [options] <source> <target>`
+
+- `rsync -avz -e ssh /path/to/source user@remote:/path/to/destination`
+- `rsync -avz -e ssh user@remote:/path/to/source /path/to/destination`
+- `rsync -avu /path/to/source /path/to/destination`
+- `rsync -avz /path/to/source /path/to/destination`
+- `rsync -avhi /path/to/source /path/to/destination`
+- `rsync -avze 'ssh -i /path/to/private_key' /path/to/source user@remote:/path/to/destination`
+- `rsync -av --delete /path/to/source /path/to/destination`
+- `rsync -av --exclude='*.log' --exclude='/tmp/' /path/to/source /path/to/destination`
+
+---
+
+***it is very important to wrapped your shell variable with "" when you need to use it***
+
+1. prevent path expanding: 
+   - if value of variable contains space, tab and \n, it can cause some undefined actions.
+   - for example: if  `variable=your name`, and your command `cd $variable` is expanding to `cd your name`, and you know what will happen next, but `cd "$variable"` go as you want
+   - protect special symbols, see "$1."
+   - if value of variable is none, it can cause something you cannot imagine.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+shell script practice : [shell脚本一天一练-day1_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1ih4y1Y7nh/?spm_id_from=333.788&vd_source=8a614553fd42ac4044499e810a8166aa)
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[...other commands]]></title>
+            <link>https://nemocccc.github.io/blogs/make_learning</link>
+            <guid>https://nemocccc.github.io/blogs/make_learning</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[for C/C++, u define commands in ``Makefile``, like ``Dockerfile``]]></description>
+            <content:encoded><![CDATA[
+### make
+
+for C/C++, u define commands in ``Makefile``, like ``Dockerfile``
+
+***when you run ``make``, it will try to find Makefile in current dictionary,and run all commands in Makefile***
+
+***if u just want to run one of the commands, run``make [target]``***
+
+**Rule** : 
+
+```makefile
+target-file: prerequisites-1 prerequisites-1
+	commands
+```
+
+such as:
+
+```makefile
+x.txt: a.txt b.txt
+	cat a.txt b.txt > x.txt #合并a.txt,b.txt作为x.txt
+```
+
+**phony-target**
+
+```makefile
+# ...other commands
+
+clean:
+	rm -f xx.xxx   #ponder: could we run other commands in ``clean`` command?
+	
+# ...
+```
+
+such as:
+
+```makefile
+clean:
+	rm -f a.txt
+	rm -f b.txt
+```
+
+if u had made a ``clean.file`` it can disturb ``make`` recognizing ``clean`` command, or you can explicit declare:
+
+```makefile
+.PHONY: clean #tell make: do not recognize clean as a file
+clean:
+	...
+```
+
+other phony targets: ``install``
+
+**multi-rules**
+
+first, example:
+
+```makefile
+cd:
+	pwd
+	cd ..
+	pwd
+```
+
+result:
+
+```bash
+$ make cd
+pwd
+/home/ubuntu/makefile-tutorial/v1
+cd ..
+pwd
+/home/ubuntu/makefile-tutorial/v1
+```
+
+why the result of ``pwd`` is the same before and after the command ``cd ..``?
+
+because make isolate a shell environment for every commands, command like single `cd ..` would not influence the environment of other commands.
+
+to see right result, you can separate each successive command with `;` like:
+
+```makefile
+cd_ok:
+	pwd; \
+	cd .. ; \
+	pwd
+	echo "right way"
+```
+
+**do not print command(still print execute info)**
+
+add `@` before the target command:
+
+```makefile
+no_output:
+	@echo 'not display'
+	echo 'display'
+```
+
+run `make` and u will see:
+
+```bash
+$ make no_output
+not display
+echo 'will display'
+will display
+```
+
+**control ERROR**
+
+when make is executing commands, if an ERROR occur(return none-zero-value), it will stop working.
+
+such as you delete an not exist file.
+
+---
+
+in some moments, we want to ignore some ERROR and keep executing latter commands, add `-` before the command like:
+
+```makefile
+ignore_error:
+	-rm zzz.xxx
+	echo 'OK'
+```
+
+you can ignore commands that can cause ERROR but not disturb logic.
+
+**make `.cpp` files**
+
+examples:
+
+- `hello.h`:
+
+  ```cpp
+  // hello.h
+  
+  #ifndef HELLO_H
+  #define HELLO_H
+  
+  int hello();
+  
+  #endif
+  ```
+
+- `hello.cpp`:
+
+  ```cpp
+  #include<iostream>
+  #include "hello.h"
+  
+  int hello(){
+  	std::cout << "hello, world" << std::endl;
+      
+      return 0;
+  }
+  ```
+
+- `test.cpp`:
+
+  ```cpp
+  #include<iostream>
+  #include "hello.h"
+  
+  int main(){    //only one main function is allowed
+      std::cout << "preparing" << std:endl;
+      hello():
+      std::cout << "ok" << std::endl;
+      
+      return 0;
+  }
+  ```
+
+- `Makefile`:
+
+  ```makefile
+  test.out: test.o hello.o
+  	g++ -o test.out test.o hello.o    #the first file after `-o` should be the file to be generate
+  	
+  hello.o: hello.h hello.cpp
+  	g++ -c hello.cpp  #not similar to `-o`, the `-c` could automatically generate .o files
+  	
+  test.o: test.cpp hello.h
+  	g++ -c test.cpp
+  	
+  clean:
+  	rm -f *.o #remove all files with `.o` file suffix
+  	rm -f test.out
+  ```
+
+---
+
+similar to `Dockerfile`,  make only build and compile files that had changed(if you had run `make` before),such as:
+
+```bash
+root@server-235-a4000:/anything/project# make
+g++ -c test.cpp
+g++ -c hello.cpp
+g++ -o test.out test.o hello.o
+root@server-235-a4000:/anything/project# make
+make: 'test.out' is up to date.
+```
+
+if u change `hello.cpp`, it only re-compile `g++ -c hello.cpp`.
+
+**implicit rule**:
+
+use the former project as example, if you delete `.o` rules, just run:
+
+```makefile
+test.out: test.o hello.o
+	g++ -o test.out test.o hello.o
+	
+clean:
+	rm -f *.o test.out
+```
+
+it okay and compile successfully:
+
+```bash
+root@server-235-a4000:/anything/project# make
+g++    -c -o test.o test.cpp
+g++    -c -o hello.o hello.cpp
+g++ -o test.out test.o hello.o
+```
+
+it is because make had built-in implicit rules for `c`, `cpp`, `asm`, `fortran` and so on. if commands in makefiles lacks of defines of rules,it will automatically use implicit rules, however not all commands have implicit rules.
+
+such as for `cpp`, if `.o` lacks of rules, it will run:
+
+```makefile
+xxx.o: xxx.cpp
+	g++ -c -o xxx.o xxx.cpp
+```
+
+but for c/cpp, it can cause some problems: if we change the define of `.h`, as implicit rule of .o could not trace the .h files, at last the .o would not re-compile.
+for more, 
+[GNU Make - 内置规则目录](https://runebook.dev/zh/docs/gnu_make/catalogue-of-rule)
+
+[Implicit Rules (GNU make)](https://www.gnu.org/software/make/manual/html_node/Implicit-Rules.html)
+
+**variables**: to solve the repetition problems.
+
+use the former Makefile as example, we can change it to this form:
+
+```makefile
+TARGET = test.out
+
+$(TARGET): test.o hello.o
+	g++ -o $(TARGET) hello.o test.o
+	
+clean:
+	rm -f *.o $(TARGET)
+```
+
+define format: `variable name = value` or `variable name = value`.
+
+usually define variable name with capital letter.
+
+---
+
+automatically generate object list:
+
+```makefile
+# $(wildcard *.cpp)list all files with .cpp cuffix in current dictionary
+# use function patsubst to mode-replace so we can get hello.o and test,o
+OBJS = $(patsubst %.cpp, %.o, $(wildcard *.cpp))
+TARGET = test.out
+
+$(TARGET): $(OBJS)
+	g++ -o $(TARGET) $(OBJS)
+	
+clean:
+	rm -f *.o $(TARGET)
+```
+
+**built-in variables**: ...
+
+**automatic variables**
+
+some variables in makefiles such as `$@` , `$^` and `$<` called automatic variables,they automatically refer to relevant values. for example:
+
+```makefile
+# %@ refer to target files, $^ refer to prerequisites.
+test.out: test.o hello,o
+	$(++) -o $@ $^ #can cause ambiguity
+	# $(++) -o $(@) $(^) #avoid ambiguity
+```
+
+for better debug:
+
+```makefile
+test.out: test.o hello.o
+	@echo '$$@ = $@' //print target files
+	@echo '$$< = $<' //print the first prerequisites
+	@echo '$$^ = $^' // print all prerequisites
+	g++ -o $@ $^
+```
+
+in this case i guess $ in makefile may work like \ in cpp(\n and \\n).
+
+**mode-rule**
+
+> define by yourself, more flexible than implicit rules
+
+```makefile
+OBJS = $(patsubst %.cpp, %.o, $(wildcard *.cpp))
+TARGET = test.out
+
+$(TARGET): $(OBJS)
+	g++ -o $(TARGET) $(OBJS)
+	
+#mode-rules: when make **need** target xxx.o, automatically generate a xxx.o: xxx.c rule
+%.o: %.cpp
+	@echo 'compiling $<...'
+	g++ -c -o $@ $^
+
+clean:
+	rm -f *.o $(TARGET)
+```
+
+however, this still cant solve the problem of changing .h could not make .cpp update
+
+**automatically prerequisites generation**
+
+parameter `-MM` can automatically find out the .h prerequisites of .cpp,with using `g++ -MM test.cpp`
+
+```makefile
+SRC_DIR = ./src
+BUILD_DIR = ./build
+TARGET = $(BUILD_DIR)/test.out
+
+CFLAGS = -Wall
+
+.PHONY: printdir all clean
+
+# ./src/*.cpp
+SRCS = $(shell find $(SRC_DIR) -name '*.cpp')
+# ./src/*.cpp -> ./build/*.o
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
+# ./src/*.cpp -> ./build/*.d
+DEPS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.d, $(SRCS))
+
+# default target
+all: $(TARGET) printdir
+
+printdir: # print current working dir
+	@echo "Current Directory: $(CURDIR)"  
+
+$(BUILD_DIR)/%.d: $(SRC_DIR)/%.cpp # pattern rule, represent that .d files in build/ is built by the corresponding .cpp files in src/
+	@mkdir -p $(dir $@); \ 
+	rm -f $@; \
+	g++ -MM $< > $@.tmp; \
+	sed 's, \($*\)\.o[ :]*, \1.o $@ : , g' < $@.tmp > $@; \
+	rm -f $@.tmp
+	
+# parameter -p ensure that before making target dictionary, its father dir has exist,
+# $(dir $@)is the target file's dictinary, for example, build/ for build/main.default
+# parameter -MM finds out the prerequisites of target files, $< refer to the first prerequisites, > $@.tmp redirect output to target .d file's temporary version
+# sed: stream editor; s: replace mode; g: global
+# \($*\)\.o[ :]*: regex grammar, autonymy `\` here aims to diliver ()  to sed editor accurately without interpreted by shell.
+# 	$*: auto-parameter for makefile, represent the basic name of file(without prefix and suffix)
+# < $@.tmp: set $@.tmp(target.tmp) as input files
+# > $@: write outputs in target file.
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	g++ $(CFLAGS) -c -o $@ $<
+
+$(TARGET): $(OBJS)   #generate test.out
+	@echo "building $@..."
+	@mkdir -p $(dir $@)
+	g++ -o $(TARGET) $(OBJS)
+
+clean:
+	@echo "clean ..."
+	rm -rf $(BUILD_DIR)
+
+-include $(DEPS) # include all the prerequisites in makefile can help make better update(why? i dont know)
+```
+
+however, this can be totally different in windows system.
+
+so, lets join Cmake.
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[server side rendering(SSR) and client side rendering(CSR)]]></title>
+            <link>https://nemocccc.github.io/blogs/react_next</link>
+            <guid>https://nemocccc.github.io/blogs/react_next</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[feature of next.js, by 'use client' at the top of a file]]></description>
+            <content:encoded><![CDATA[
+#### server side rendering(SSR) and client side rendering(CSR)
+
+feature of next.js, by 'use client' at the top of a file
+
+SSR: the content of website will be rendered on server side and send the processed html files to client side, which can users have a faster experience.
+
+CSR: the content of website will not pre-render on server side,  instead, an html file with some js files will be sent to client side and rendered by browser, thus users can feel a little slow.
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[The relative path is relative to the compiled directory of the instruction, not relative to the file itself]]></title>
+            <link>https://nemocccc.github.io/blogs/relative_path_notice</link>
+            <guid>https://nemocccc.github.io/blogs/relative_path_notice</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[current_path = os.getcwd()]]></description>
+            <content:encoded><![CDATA[
+### The relative path is relative to the compiled directory of the instruction, not relative to the file itself
+
+for example:
+
+```
+dir
+	|
+	+ dir1
+		|
+		+ relative.py
+```
+
+and in relative.py
+
+```python
+import os 
+
+current_path = os.getcwd()
+
+print(current_path)
+```
+
+execute relative.py, the output will be:
+
+```bash
+E:\dir
+```
+
+and this is your working directory:
+
+![relative_path](./picture/relative_path.png)
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Use Rawlink For Downloading Files]]></title>
+            <link>https://nemocccc.github.io/blogs/use_rawlink_for_downloading_files</link>
+            <guid>https://nemocccc.github.io/blogs/use_rawlink_for_downloading_files</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[download files via markdown is not allowed on github, but u can:]]></description>
+            <content:encoded><![CDATA[
+download files via markdown is not allowed on github, but u can:
+
+```markdown
+[Download .zip file](https://raw.githubusercontent.com/your-username/your-repo/main/yourfile.zip)
+```
+
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[大二下or大三下：]]></title>
+            <link>https://nemocccc.github.io/blogs/大四课程提前修计划</link>
+            <guid>https://nemocccc.github.io/blogs/大四课程提前修计划</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[
+# 大二下or大三下：
+
+应用软件综合课程设计I
+
+区块链技术及应用
+
+区块链技术及应用实验
+
+
+
+# 大三上
+
+应用软件综合课程设计II
+
+数据挖掘
+
+大数据可视化]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[野狗]]></title>
+            <link>https://nemocccc.github.io/blogs/小说</link>
+            <guid>https://nemocccc.github.io/blogs/小说</guid>
+            <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[​	说实话写点什么一直是我的理想，偶尔它会被忘记，但是每次重新想起我都会在电脑新建文件夹看看有没有想法，这是否也算得上热爱呢？]]></description>
+            <content:encoded><![CDATA[
+# 野狗 
+
+
+
+
+
+不要一直往回看，衣服反着穿可是勒脖子的。
+
+
+
+
+
+### 前言
+
+​	说实话写点什么一直是我的理想，偶尔它会被忘记，但是每次重新想起我都会在电脑新建文件夹看看有没有想法，这是否也算得上热爱呢？
+
+​	但是说实话，我个人无论见识还是格局都甚是局促，阅历很有限，与大作家丝毫没有可比性，有可能只是单纯地输出个人的情绪或者观点，并且还通常不怎么好，并且我也深受互联网幸存者偏差的影响，很难写出真能反映社会现状的文字。
+
+​	但是文人骚客写文字也是排忧解闷，我也想试试。
+
+
+
+### 正文
+
+​	王卓乐想都没想就把家里的照片全删掉了，八张照片，都是家里熟悉的场景，几十MB，不如腾出来留给其他的文件。
+
+​	”如果照片里有家人或者有我们的合照我是不是就会好好端详一阵子？“
+
+​	他发现他又对着这些照片发了好一会呆，不过以后不会这样了，他感到后悔，发呆这段时间又要被很多人超越了，他甚至可以知道哪几个已经趁机超过他了，有几个已经赶上来了。那些人死命奔跑踢起的尘风堵得他的鼻子有些喘不过气。
+
+​	“算了，其实我也一样不会看的吧。”]]></content:encoded>
+        </item>
+    </channel>
+</rss>

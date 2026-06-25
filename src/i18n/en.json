@@ -1,0 +1,57 @@
+{
+  "site": {
+    "title": "Nemo's Space",
+    "subtitle": "Chasing dreams",
+    "description": "Full-stack dev · RAG & RL enthusiast"
+  },
+  "nav": {
+    "home": "Home",
+    "blogs": "Blog",
+    "resume": "Resume"
+  },
+  "home": {
+    "welcome": "Welcome to my personal website",
+    "hero_subtitle": "Full-stack Developer | RAG & RL Enthusiast",
+    "view_blogs": "View Blog",
+    "view_resume": "View Resume",
+    "github_repos": "GitHub Repos",
+    "pinned_repos": "Pinned Projects"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Notes & Technical Sharing",
+    "search_placeholder": "Search articles...",
+    "no_results": "No articles found",
+    "tags": "Tags",
+    "read_more": "Read more",
+    "reading_time": "min read",
+    "published_on": "Published on",
+    "back_to_blogs": "← Back to blogs",
+    "comments": "Comments",
+    "all_posts": "All Posts"
+  },
+  "resume": {
+    "title": "Resume",
+    "download": "Download PDF"
+  },
+  "footer": {
+    "copyright": "© 2025 Nemo. All rights reserved.",
+    "friend_links": "Friends",
+    "friend_links_desc": "Am I my own best friend?"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "zh": "中文",
+    "en": "English"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Type to search...",
+    "no_results": "No results found",
+    "results_for": "Results for: "
+  }
+}

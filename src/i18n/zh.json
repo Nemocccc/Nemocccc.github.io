@@ -1,0 +1,57 @@
+{
+  "site": {
+    "title": "Nemo 的个人空间",
+    "subtitle": "追逐梦想的路上",
+    "description": "全栈开发者 · RAG & RL 爱好者"
+  },
+  "nav": {
+    "home": "首页",
+    "blogs": "博客",
+    "resume": "简历"
+  },
+  "home": {
+    "welcome": "欢迎来到我的个人网站",
+    "hero_subtitle": "全栈开发者 | RAG & RL 爱好者",
+    "view_blogs": "浏览博客",
+    "view_resume": "查看简历",
+    "github_repos": "GitHub 仓库",
+    "pinned_repos": "精选项目"
+  },
+  "blog": {
+    "title": "博客",
+    "subtitle": "学习笔记与技术分享",
+    "search_placeholder": "搜索文章...",
+    "no_results": "没有找到相关文章",
+    "tags": "标签",
+    "read_more": "阅读更多",
+    "reading_time": "分钟阅读",
+    "published_on": "发布于",
+    "back_to_blogs": "← 返回博客列表",
+    "comments": "评论",
+    "all_posts": "全部文章"
+  },
+  "resume": {
+    "title": "简历",
+    "download": "下载 PDF"
+  },
+  "footer": {
+    "copyright": "© 2025 Nemo. All rights reserved.",
+    "friend_links": "友情链接",
+    "friend_links_desc": "自己跟自己算不算友情？"
+  },
+  "theme": {
+    "light": "浅色模式",
+    "dark": "深色模式",
+    "system": "跟随系统"
+  },
+  "language": {
+    "zh": "中文",
+    "en": "English"
+  },
+  "search": {
+    "title": "搜索",
+    "placeholder": "输入关键词搜索...",
+    "no_results": "没有搜索结果",
+    "results_for": "搜索结果: "
+  }
+}
