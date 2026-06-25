@@ -1,0 +1,288 @@
+---
+title: "DeepSeek-V4-Flash 内网 vLLM 部署完全指南"
+date: 2026-06-15
+tags: ["llm", "deployment", "vllm"]
+category: ai
+description: "DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数："
+---
+
+# DeepSeek-V4-Flash 内网 vLLM 部署完全指南
+
+## 一、模型规格
+
+DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：
+
+| 项目 | 值 |
+|------|-----|
+| 架构 | MoE（Mixture of Experts） |
+| 总参数量 | **284B** |
+| 激活参数量 | **13B**（每次推理只激活 13B，其余在 MoE 专家中稀疏路由） |
+| 专家数 | 256 个 routed experts + 1 个 shared expert |
+| 每 token 激活专家数 | 6 |
+| 上下文长度 | **1M tokens**（百万级） |
+| 权重精度 | **FP4 + FP8 混合**（原生已量化） |
+| 分片数 | 46 个 safetensors 文件 |
+| 磁盘总大小 | ~159 GB |
+| 架构名称 | `deepseek_v4`（自定义架构，非标准 Llama） |
+| 许可证 | MIT |
+
+**配置文件关键字段**（`config.json`）：
+
+```json
+{
+  "model_type": "deepseek_v4",
+  "expert_dtype": "fp4",           // MoE 专家权重是原生的 4-bit
+  "quantization_config": {
+    "quant_method": "fp8",          // 其余权重是 FP8
+    "weight_block_size": [128, 128]
+  },
+  "num_hidden_layers": 43,
+  "hidden_size": 4096,
+  "num_attention_heads": 64,
+  "num_key_value_heads": 1,       // MLA (Multi-head Latent Attention)
+  "head_dim": 512,
+  "n_routed_experts": 256,
+  "num_experts_per_tok": 6,
+  "max_position_embeddings": 1048576  // 1M tokens
+}
+```
+
+---
+
+## 二、这个模型特殊在哪
+
+和普通模型（Qwen、Llama）比，DeepSeek-V4-Flash 有几个关键差异：
+
+### ① 模型已经是原生量化的
+
+大多数开源模型以 FP16/BF16 精度发布，需要你自己做 AWQ/GPTQ 量化才能节约显存。
+
+**但这个模型不一样**——DeepSeek 发布时就已经是 FP4 + FP8 混合精度：
+- **MoE 专家参数**：FP4（4-bit 浮点）
+- **其他参数**：FP8（8-bit 浮点）
+
+这意味着你**不需要**再做额外的量化步骤（不需要 AutoAWQ，不需要 GPTQ）。
+
+### ② 它是 MoE 架构
+
+```
+输入 token
+    │
+    ▼
+┌──────────┐
+│ Router    │  ← 决定这个 token 应该分配给哪 6 个专家
+│ (门控网络) │
+└────┬─────┘
+     │
+     ▼
+  ┌──┴──┐  ┌──┴──┐  ┌──┴──┐      ┌──┴──┐
+  │专家1│  │专家2│  │专家3│  ...  │专家6│  ← 只激活 6/256 个专家
+  └──┬──┘  └──┬──┘  └──┬──┘      └──┬──┘
+     └────────┴────────┴────────────┘
+                    │
+                    ▼
+              输出合并
+```
+
+核心优势：**总参数量 284B，但每次只激活 13B**。也就是说，它的推理计算量大约相当于一个 13B 的 dense 模型，但模型容量（记忆的知识）相当于 284B。
+
+**对部署的影响**：
+- 显存占用主要由 284B 总参数决定（虽然计算量小，但所有专家的权重都得加载到显存）
+- 因为是 FP4/FP8 混合，实际显存约 ~80-100GB（而不是 284B × FP16 的 ~568GB）
+- 推理速度 ≈ 13B dense 模型
+
+### ③ 它使用 MLA（Multi-head Latent Attention）
+
+DeepSeek-V4 没有用标准的 Multi-Head Attention，而是用自己的 MLA：
+- `num_key_value_heads = 1`（只有一个 KV head）
+- `head_dim = 512`（每个 head 的维度很大）
+- 通过低秩投影（`q_lora_rank`, `o_lora_rank`）压缩 KV Cache
+
+**对部署的影响**：MLA 的 KV Cache 比标准 MHA 小得多，这对 1M 长上下文场景非常关键。但 vLLM 需要专门支持这种注意力机制。
+
+### ④ 它还有 CSA/HCA 混合注意力架构
+
+DeepSeek-V4 引入了：
+- **CSA**（Compressed Sparse Attention）：压缩稀疏注意力
+- **HCA**（Heavily Compressed Attention）：重度压缩注意力
+
+在 1M 上下文下，相比标准注意力只需要 27% 的 FLOPs 和 10% 的 KV Cache。
+
+---
+
+## 三、vLLM 对 DeepSeek-V4 的支持现状
+
+### 当前状态（截至 2026 年 6 月）
+
+vLLM 正在积极开发 DeepSeek-V4 支持，**已有初步支持但尚未完全稳定**：
+
+| 功能 | 状态 |
+|------|------|
+| 基础推理（MegaMoE + FP4 Indexer） | ✅ 已完成（PR #40860） |
+| FP4 权重加载 | ✅ 已完成 |
+| FP8 group quantization kernel | ✅ 已完成 |
+| Norm + Router 融合 | ✅ 已完成 |
+| Multi-stream 4 GEMM | ✅ 已完成 |
+| Nvlink all-to-all BF16/FP8 | ✅ 已完成 |
+| Fast topk kernel | ❌ 开发中 |
+| Indexer topk + page table fusion | ❌ 开发中 |
+| Pipeline parallelism | ❌ 开发中 |
+| KV cache offloading | ❌ 开发中 |
+| MTP（Multi-Token Prediction）优化 | ❌ 开发中 |
+
+### 你需要用哪个版本的 vLLM
+
+**建议使用最新版 vLLM（>= v0.11.0 或更新的 nightly）**，或者用官方 Docker 镜像的最新 tag。
+
+如果官方镜像还不支持，可能需要：
+1. 从 vLLM 源码的 main 分支 build Docker 镜像
+2. 或者使用 DeepSeek 自己提供的推理栈（如果官方 vLLM 还不稳定）
+
+```bash
+# 从源码构建（包含最新 DeepSeek-V4 支持）
+git clone https://github.com/vllm-project/vllm.git
+cd vllm
+docker build -t vllm-dsv4 .
+docker save vllm-dsv4 -o vllm-dsv4.tar
+```
+
+---
+
+## 四、部署流程
+
+### 准备工作
+
+| 需要准备的 | 说明 | 大小预估 |
+|-----------|------|---------|
+| vLLM Docker 镜像 | 需支持 deepseek_v4 架构 | ~15GB |
+| 模型文件（46 个分片） | 从 ModelScope 下载 | ~159GB |
+| 足够显存的 GPU | 见下方显存估算 | — |
+
+### 显存估算
+
+```
+DeepSeek-V4-Flash 284B params, FP4+FP8 mixed (~0.5-1 byte/param avg)
+
+模型权重 ≈ 159GB（磁盘大小就是权重大小）
+KV Cache（1M 上下文）≈ MLA 压缩后约 10-30GB
+中间激活 + 开销 ≈ 5-10GB
+
+总显存需求 ≈ 180-200GB（1M 上下文）
+              ≈ 80-100GB（32K 上下文）
+
+推荐配置：
+  · 8 × A100 80GB（1M 上下文）
+  · 2 × A100 80GB（32K 上下文）
+  · 4 × RTX 6000 48GB（32K 上下文）
+```
+
+### 具体步骤
+
+**有网环境**：
+
+```bash
+# 1. 下载模型
+pip install modelscope
+python3 -c "
+from modelscope import snapshot_download
+snapshot_download('deepseek-ai/DeepSeek-V4-Flash', local_dir='./DeepSeek-V4-Flash')
+"
+# 下载后得到 46 个分片文件
+
+# 2. 准备 vLLM 镜像（建议用最新版，或从源码 build）
+# 方案 A：用官方最新
+docker pull vllm/vllm-openai:latest
+docker save vllm/vllm-openai:latest -o vllm.tar
+
+# 方案 B：如果官方版不支持，从 main 分支 build
+git clone https://github.com/vllm-project/vllm.git
+cd vllm
+docker build -t vllm-dsv4 .
+docker save vllm-dsv4 -o vllm-dsv4.tar
+
+# 3. 把镜像 + 模型传到内网
+```
+
+**内网环境**：
+
+```bash
+# 4. 导入镜像
+docker load < vllm-dsv4.tar
+
+# 5. 启动 vLLM 服务
+docker run -d \
+  --gpus all \
+  --network host \
+  --shm-size 64g \
+  -v /data/DeepSeek-V4-Flash:/model \
+  --name dsv4-service \
+  vllm-dsv4:latest \
+  --model /model \
+  --served-model-name deepseek-v4-flash \
+  --tensor-parallel-size 8 \        # 用 8 张 GPU
+  --max-model-len 32768 \            # 先用 32K 上下文测试
+  --gpu-memory-utilization 0.9 \
+  --port 8000 \
+  --trust-remote-code
+
+# 6. 验证
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model": "deepseek-v4-flash", "messages": [{"role": "user", "content": "你好"}]}'
+```
+
+### 关键参数说明
+
+| 参数 | 建议值 | 说明 |
+|------|--------|------|
+| `--tensor-parallel-size` | GPU 数量 | 张量并行，每张卡分摊一部分专家和注意力计算 |
+| `--max-model-len` | 32768（调试）→ 1048576（生产） | 上下文越长，KV Cache 越占显存 |
+| `--gpu-memory-utilization` | 0.9 | 留 10% 给中间计算 |
+| `--shm-size` | 64g 或更高 | MoE 的 all-to-all 通信需要大量共享内存 |
+| `--trust-remote-code` | 必须加 | DeepSeek-V4 的 config 里有自定义代码 |
+
+---
+
+## 五、显存不足怎么办？
+
+### MoE 模型的特殊性
+
+DeepSeek-V4-Flash 284B 权重全部要加载到显存。vLLM 用 `--tensor-parallel-size` 把权重切到多张卡上。
+
+| GPU 配置 | 能否跑 32K 上下文 | 能否跑 1M 上下文 |
+|----------|-----------------|-----------------|
+| 1 × A100 80GB | ❌ 显存不够 | ❌ |
+| 4 × A100 80GB | ✅ 可以 | ❌ |
+| 8 × A100 80GB | ✅ | ✅ 勉强 |
+| 8 × H100 80GB | ✅ | ✅ 较好 |
+
+### 实在不够怎么办？
+
+1. **减短 max-model-len**：上下文减半，KV Cache 减半
+2. **增加 tensor-parallel-size**：用更多小显存卡分摊
+3. **pipeline-parallel-size**：多机流水线并行，适合多台 4-GPU 服务器
+4. **等 vLLM 的 KV cache offloading 功能完成**（路线图中）：把不常用的 KV Cache offload 到 CPU 内存
+
+---
+
+## 六、和普通模型部署的关键区别
+
+| | 普通模型（Qwen/Llama） | DeepSeek-V4-Flash |
+|--|----------------------|-------------------|
+| 是否需要量化 | 需要（AWQ/GPTQ） | **不需要**，已是 FP4+FP8 |
+| 架构 | Dense Transformer | MoE + MLA + CSA/HCA |
+| vLLM 支持 | 稳定 | 开发中，需最新版 |
+| 总参/激活参 | 相同 | 284B / 13B（巨大差异） |
+| 显存瓶颈 | 计算量 | 模型权重加载（所有专家都要加载） |
+| 推理速度 | 与总参数成正比 | 与激活参数成正比（≈13B 模型速度） |
+| 上下文能力 | 通常 128K | 原生 1M |
+
+---
+
+## 七、参考链接
+
+- DeepSeek-V4 技术报告: https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf
+- HuggingFace 模型页: https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash
+- ModelScope 地址: https://modelscope.cn/models/deepseek-ai/DeepSeek-V4-Flash
+- vLLM DeepSeek-V4 Roadmap: https://github.com/vllm-project/vllm/issues/40902
+- vLLM GitHub: https://github.com/vllm-project/vllm

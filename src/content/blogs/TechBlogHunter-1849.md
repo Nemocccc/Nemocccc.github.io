@@ -1,0 +1,171 @@
+---
+title: "Techbloghunter 1849"
+date: 2026-06-24
+tags: ["tech-news", "curated"]
+category: tech
+description: "📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating..."
+---
+
+<div align="center">
+<h1>📚 技术博客精选</h1>
+<p><code>2026-06-24 18:49</code> · <code>共 43 篇精选</code></p>
+</div>
+
+---
+
+## 🏗️ 架构与设计 / Architecture & Design
+
+📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating-data-ingestion-systems-at-meta-scale/)** `Meta Engineering`
+> *Meta 数据摄入系统迁移实战——从单体管道到分布式数据湖的演进路线，如何处理 PB 级数据迁移的兼容性和回滚。*
+
+📄 **[SilverTorch: Index as Model — A New Retrieval Paradigm for Recommendation Systems](https://engineering.fb.com/2026/05/26/ml-applications/silvertorch-index-as-model-new-retrieval-paradigm-recommendation-systems/)** `Meta Engineering`
+> *Meta 推荐系统新范式 Index as Model——将检索组件统一为单一模型，替代传统多阶段级联架构，性能提升显著。*
+
+📄 **[Modernizing the Facebook Groups Search to Unlock the Power of Community Knowledge](https://engineering.fb.com/2026/04/21/ml-applications/modernizing-the-facebook-groups-search-to-unlock-the-power-of-community-knowledge/)** `Meta Engineering`
+> *FB Groups 搜索现代化改造——从 Elasticsearch 到向量检索+语义理解的混合架构升级，搜索相关度提升显著。*
+
+📄 **[Data Projects: Managing Data Assets at Netflix Scale](https://netflixtechblog.com/data-projects-managing-data-assets-at-netflix-scale-7ca25888591e?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix 数据资产管理体系——从数据发现、血缘追踪到访问控制，如何在超大规模下保障数据治理。*
+
+📄 **[VMAF v1: Good Is Not Good Enough](https://netflixtechblog.com/vmaf-v1-good-is-not-good-enough-60d7e4244ea8?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix VMAF v1 视频质量评估升级——为什么原有的 VMAF 不够好，新版本引入了哪些感知质量指标改进。*
+
+📄 **[Introducing the Cloudflare One stack: agent-powered deployment](https://blog.cloudflare.com/cloudflare-one-stack/)** `Cloudflare Blog`
+> *Cloudflare One 零信任网络架构新方案——用 Agent 驱动的自动化部署替代手动策略配置，SASE 落地实践。*
+
+📄 **[From Silos to Service Topology: Why Netflix Built a Real-Time Service Map](https://netflixtechblog.com/from-silos-to-service-topology-why-netflix-built-a-real-time-service-map-0165ba13a7bc?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix 实时服务拓扑图构建之路——从孤立监控到全链路服务依赖可视化，微服务可观测性的最佳实践。*
+
+📄 **[The Evolution of Cassandra Data Movement at Netflix](https://netflixtechblog.com/the-evolution-of-cassandra-data-movement-at-netflix-6e13329c80a1?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix Cassandra 数据迁移架构演进——从手动搬迁到自动化数据流动，Cassandra 运维的实战经验。*
+
+📄 **[How Netflix Simplified Batch Compute with Kueue](https://netflixtechblog.com/how-netflix-simplified-batch-compute-with-kueue-87860682629c?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
+> *Netflix 用 Kueue 简化批处理计算——K8s 原生批处理调度器在大规模 ML 训练场景的实践。*
+
+📄 **[Align your architecture backlog with Tech Roadmap Prioritization (TRP)](https://aws.amazon.com/blogs/architecture/align-your-architecture-backlog-with-tech-roadmap-prioritization-trp/)** `AWS Architecture Blog`
+> *AWS TRP 方法论——如何用技术路线图优先级对齐架构 backlog，避免架构债务无限累积。*
+
+📄 **[Maintainability sensors for coding agents](https://martinfowler.com/articles/sensors-for-coding-agents.html)** `Martin Fowler`
+> *Martin Fowler 提出面向编码 Agent 的可维护性传感器——当 AI 写代码成为常态，如何量化代码的可维护性。*
+
+📄 **[Three Bold Predictions for Distributed Systems in 2026](https://www.axoniq.io/blog/three-bold-predictions-for-distributed-systems-in-2026)** `Axoniq Blog`
+> *分布式系统三大预测：边缘原生服务、AI 驱动编排、更强一致性模型——挑战当前微服务主流范式。*
+
+📄 **[Distributed Systems Patterns Every Backend Engineer Must Know in 2026](https://devstarsj.github.io/2026/03/26/distributed-systems-patterns-guide-2026/)** `DevStars`
+> *2026 后端工程师必知的分布式系统模式大全——一致性哈希、Saga、CQRS、事件溯源，附代码示例和架构对比。*
+
+---
+
+## 🔧 编程语言 / Languages & Runtimes
+
+📄 **[Bliki: Vibe Coding](https://martinfowler.com/bliki/VibeCoding.html)** `Martin Fowler`
+> *Martin Fowler 定义 Vibe Coding——用 LLM Prompt 构建应用的新范式，及其对软件工程质量的影响。*
+
+📄 **[The VibeSec Reckoning](https://martinfowler.com/articles/vibesec-reckoning.html)** `Martin Fowler`
+> *Vibe Coding 时代的安全危机——当代码由 AI 生成时，安全漏洞以新形态涌现，开发者如何应对。*
+
+📄 **[If context is king, architecture is the castle​​​​‌﻿‍﻿​‍​‍‌‍﻿﻿‌﻿​‍‌‍‍‌‌‍‌﻿‌‍‍‌‌‍﻿‍​‍​‍​﻿‍‍​‍​‍‌﻿​﻿‌‍​‌‌‍﻿‍‌‍‍‌‌﻿‌​‌﻿‍‌​‍﻿‍‌‍‍‌‌‍﻿﻿​‍​‍​‍﻿​​‍​‍‌‍‍​‌﻿​‍‌‍‌‌‌‍‌‍​‍​‍​﻿‍‍​‍​‍‌‍‍​‌﻿‌​‌﻿‌​‌﻿​​‌﻿​﻿​﻿‍‍​‍﻿﻿​‍﻿﻿‌‍​﻿‌‍﻿‌‌﻿​﻿​‍﻿‍‌﻿​﻿‌﻿‌​‌‍​‌‌‍​﻿‌‍‍﻿‌‍﻿﻿‌﻿‌‍‌‍‌‌‌﻿​‍‌‍‌‍‌‍﻿​‌‍﻿﻿‌﻿‌﻿​‍﻿‍‌‍​﻿‌‍﻿﻿​‍﻿﻿‌‍‍‌‌‍﻿‍‌﻿‌​‌‍‌‌‌‍﻿‍‌﻿‌​​‍﻿﻿‌‍‌‌‌‍‌​‌‍‍‌‌﻿‌​​‍﻿﻿‌‍﻿‌‌‍﻿﻿‌‍‌​‌‍‌‌​﻿﻿‌‌﻿​​‌﻿​‍‌‍‌‌‌﻿​﻿‌‍‌‌‌‍﻿‍‌﻿‌​‌‍​‌‌﻿‌​‌‍‍‌‌‍﻿﻿‌‍﻿‍​﻿‍﻿‌‍‍‌‌‍‌​​﻿﻿‌‌‍​﻿​﻿​‍​﻿​﻿‌‍​﻿​﻿​​​﻿‍‌‌‍​‍​﻿​‍​‍﻿‌​﻿‌​​﻿​‌​﻿​﻿‌‍‌​​‍﻿‌​﻿‌​‌‍​‌​﻿‌﻿​﻿​​​‍﻿‌​﻿‍‌‌‍​‌‌‍​‍‌‍​﻿​‍﻿‌‌‍‌‌​﻿‌​​﻿​﻿‌‍‌​​﻿​‌‌‍​‍​﻿‌﻿​﻿​​​﻿‌‍‌‍‌‍​﻿‌‍​﻿‌﻿​﻿‍﻿‌﻿‌​‌﻿‍‌‌﻿​​‌‍‌‌​﻿﻿‌‌‍​‍‌‍﻿​‌‍﻿﻿‌‍‌﻿‌‌​​‌‍﻿﻿‌﻿​﻿‌﻿‌​​﻿‍﻿‌﻿​​‌‍​‌‌﻿‌​‌‍‍​​﻿﻿‌‌﻿‌​‌‍‍‌‌﻿‌​‌‍﻿​‌‍‌‌​﻿﻿﻿‌‍​‍‌‍​‌‌﻿​﻿‌‍‌‌‌‌‌‌‌﻿​‍‌‍﻿​​﻿﻿‌‌‍‍​‌﻿‌​‌﻿‌​‌﻿​​‌﻿​﻿​‍‌‌​﻿​﻿‌​​‌​‍‌‌​﻿​‍‌​‌‍​‍‌‌​﻿​‍‌​‌‍‌‍​﻿‌‍﻿‌‌﻿​﻿​‍﻿‍‌﻿​﻿‌﻿‌​‌‍​‌‌‍​﻿‌‍‍﻿‌‍﻿﻿‌﻿‌‍‌‍](https://stackoverflow.blog/2026/06/16/if-context-is-king-architecture-is-the-castle/)** `Stack Overflow Blog`
+> *Stack Overflow 对话 Apollo GraphQL CEO——AI Agent 时代的 API 架构设计，上下文管理与图查询的演进。*
+
+📄 **[Three more static code analysis sensors](https://martinfowler.com/articles/sensors-for-coding-agents.html#StaticCodeAnalysisDependencyRules)** `Martin Fowler`
+> *Birgitta Böckeler 深入三种静态代码分析传感器——依赖规则、架构边界、代码标准，在 AI 辅助编码时代的应用。*
+
+📄 **[Maintainability sensors for coding agents](https://martinfowler.com/articles/sensors-for-coding-agents.html)** `Martin Fowler`
+> *Martin Fowler 提出面向编码 Agent 的可维护性传感器——当 AI 写代码成为常态，如何量化代码的可维护性。*
+
+📄 **[Fragments: May 14](https://martinfowler.com/fragments/2026-05-14.html)** `Martin Fowler`
+> *Martin Fowler 参加 The Orchard Retreat 的思考——大型机现代化改造的技术和人文视角。*
+
+📄 **[Rhombus Language 1.0](https://racket-lang.org/)** `Racket Blog`
+> *Rhombus 语言 1.0 正式发布——基于 Racket 的教学级语言，兼具 Lisp 表达力与静态类型安全。*
+
+📄 **[Swift Package Index joins Apple](https://swiftpackageindex.com/)** `Swift Package Index`
+> *Swift Package Index 被 Apple 收购——Swift 生态的包管理将迎来官方深度整合。*
+
+---
+
+## ☁️ 基础架构 / Infrastructure & DevOps
+
+📄 **["Fix" MacBook Neo Cursor Lag: Record 1 Pixel of the Screen Every 10 Seconds](https://gist.github.com/retroplasma/ec21767d0a8380c7ea9c2fbee1c7d6bf)** `HN / GitHub Gist`
+> *大神级调试——MacBook Neo 光标延迟的 root cause 是 GPU 电源管理策略，1 像素采样法修复方案脑洞大开。*
+
+📄 **[We're making Bunny DNS free: because a faster internet won't build itself](https://bunny.net/blog/were-making-bunny-dns-free/)** `Bunny.net / HN`
+> *Bunny DNS 宣布免费——声称目标是加速全球互联网，对开发者来说是一个性价比极高的新选择。*
+
+📄 **[How Meta Is Strengthening End-to-End Encrypted Backups](https://engineering.fb.com/2026/05/01/security/meta-strengthening-end-to-end-encrypted-backups/)** `Meta Engineering`
+> *Meta 端到端加密备份方案深度解析——HSM-based Backup Key Vault 架构设计，密钥管理与灾备策略。*
+
+---
+
+## ⚡ 开源项目 / Open Source
+
+📄 **[Qwen-AgentWorld: Language World Models for General Agents](https://arxiv.org/abs/2606.24597)** `ArXiv / HN`
+> *Qwen AgentWorld——用语言模型构建通用 Agent 的世界模型，通义千问团队最新研究。*
+
+📄 **[DiffusionBench: Towards Holistic Evaluation of Generative Diffusion Transformers](https://github.com/End2End-Diffusion/diffusion-bench)** `GitHub / HN`
+> *Diffusion 模型全面评测基准 DiffusionBench——覆盖图像、视频、3D 生成的质量评估。*
+
+📄 **[Raspberry Pi Pico W as USB Wi-Fi Adapter](https://gitlab.com/baiyibai/pico-usb-wifi)** `GitLab / HN`
+> *树莓派 Pico W 变身 USB Wi-Fi 适配器——硬件黑客的巧妙方案，成本仅几美元。*
+
+📄 **[FUTO Swipe – A new swipe typing model](https://futo.tech/)** `FUTO`
+> *FUTO 开源的全新滑行输入模型——性能媲美 Gboard 但完全本地运行，隐私至上的输入法方案。*
+
+---
+
+## 💡 工程文化 / Engineering Culture
+
+📄 **[How good can you be at Codenames without knowing any words?](https://danluu.com/codenames/)** `Dan Luu`
+> *Dan Luu 又一篇数据驱动的有趣分析——在不认识任何单词的情况下玩 Codenames 能有多强，顺便探讨了信息论。*
+
+📄 **[Vulnerability reports are not special anymore](https://words.filippo.io/vuln-reports/)** `Filippo Valsorda / HN`
+> *Filippo Valsorda 反思安全行业——漏洞报告已不再特殊，自动化工具正在改变安全研究的本质。*
+
+📄 **[Meta Pauses Employee-Tracking Program Following Internal Data Leak](https://www.wired.com/story/meta-pauses-employee-tracking-program-following-internal-security-breach/)** `Wired / HN`
+> *Meta 暂停员工追踪项目——数据泄露事件背后的工程文化反思。*
+
+---
+
+## 📝 中文深度 / 中文技术
+
+📄 **[美团发布原生多模态 LongCat-Next：当视觉和语音成为AI的母语](https://tech.meituan.com/2026/04/02/LongCat-Next.html)** `美团技术团队`
+> *LongCat-Next 原生多模态模型深度解析——从架构设计到训练策略，看多模态 AI 如何从拼接走向原生。*
+
+📄 **[LongCat-Flash-Prover：AI 攻克数学定理证明，不仅要“算得对”，更要“证得严”](https://tech.meituan.com/2026/04/07/LongCat-Flash-Prover.html)** `美团技术团队`
+> *美团把 AI 定理证明从猜答案推进到严格证明阶段，Flash-Prover 对形式化验证领域有重要启发。*
+
+📄 **[用Agent评测思路管理AI Coding —— 31万行代码AI重构的实践](https://tech.meituan.com/2026/05/07/Agent-AI-Coding.html)** `美团技术团队`
+> *31万行代码 AI 重构的一线报告——用 Agent 评测体系管了整个重构流程，方法论可复制。*
+
+📄 **[美团 LongCat 开源 General 365：树立推理评测新标尺](https://tech.meituan.com/2026/05/15/LongCat-General-365.html)** `美团技术团队`
+> *LongCat General 365 推理评测集填补了中文 LLM 推理能力标准化测试的空白，数据和方法完全开源。*
+
+📄 **[从高拟真到真可用，LongCat-Video-Avatar 1.5 正式开源](https://tech.meituan.com/2026/05/25/LongCat-Video-Avatar-1.5.html)** `美团技术团队`
+> *视频数字人从能看能用跨越——LongCat-Video-Avatar 1.5 口型同步和表情自然度明显突破。*
+
+📄 **[ACL 2026美团论文精选：从能力评测到推理优化，构建生成新范式](https://tech.meituan.com/2026/06/05/ACL-2026.html)** `美团技术团队`
+> *ACL 2026 美团入选论文合集覆盖评测、推理优化、生成范式三个方向，学术与实践相结合。*
+
+📄 **[从月球漫步到赛博都市，WBench 测出了世界模型的边界](https://tech.meituan.com/2026/06/12/LongCat-WBench.html)** `美团技术团队`
+> *世界模型评测基准 WBench——用月球漫步和赛博都市等场景测试世界模型的物理理解边界。*
+
+📄 **[美团海报生成 AIGC 技术创新与实践](https://tech.meituan.com/2026/06/18/AIGC-poster.html)** `美团技术团队`
+> *AIGC 海报生成在美团落地全记录——从模型选型到工程优化，电商场景 AI 设计实操经验。*
+
+📄 **[LARYBench 发布：定义具身动作表征 ImageNet，首次度量从人类视频学习的泛化表征](https://tech.meituan.com/2026/04/27/LongCat-LARYBench.html)** `美团技术团队`
+> *LARYBench 定义具身动作表征的 ImageNet——首次度量从人类视频学习的泛化表征。*
+
+📄 **[多Agent协作框架与系统架构综述 2025-2026](https://www.daoyuly.cn/2026/2026-04-01-multi-agent-frameworks-architecture-survey/)** `DaoYu`
+> *多 Agent 协作框架全面综述——对比 AutoGen、CrewAI、LangGraph 等框架的架构差异和选型建议。*
+
+📄 **[2026技术迭代新风向：系统开发与运维迈入智能融合新阶段](https://cloud.tencent.com/developer/article/2671852)** `Tencent Cloud`
+> *腾讯云视角的 2026 运维趋势——云原生深度普及、AI 智能运维、轻量化架构全面升级。*
+
+📄 **[2026 后端架构新风向！模块化单体强势出圈](https://www.toutiao.com/article/7641524040481489427/)** `Toutiao`
+> *模块化单体架构卷土重来——别再盲目堆砌微服务，这篇分析了何时该选单体、何时该拆。*
+
+---
+
+<div align="center">
+<p><code>数据来源：RSS 29/29 个源 · 抓取 260 篇文章</code> · 补全网搜索 8 篇</p>
+</div>

@@ -76,21 +76,21 @@
 .markdown-body h4 {
   @apply text-foreground font-bold scroll-mt-20;
 }
-.markdown-body h1 { @apply text-3xl mt-8 mb-4; }
-.markdown-body h2 { @apply text-2xl mt-6 mb-3 pb-2 border-b border-border; }
-.markdown-body h3 { @apply text-xl mt-5 mb-2; }
-.markdown-body p { @apply my-3 leading-7; }
-.markdown-body ul, .markdown-body ol { @apply my-3 pl-6; }
+.markdown-body h1 { @apply text-2xl sm:text-3xl mt-8 mb-4; }
+.markdown-body h2 { @apply text-xl sm:text-2xl mt-6 mb-3 pb-2 border-b border-border; }
+.markdown-body h3 { @apply text-lg sm:text-xl mt-5 mb-2; }
+.markdown-body p { @apply my-3 leading-7 text-sm sm:text-base; }
+.markdown-body ul, .markdown-body ol { @apply my-3 pl-4 sm:pl-6; }
 .markdown-body li { @apply my-1; }
 .markdown-body a { @apply text-accent hover:text-accent-2 underline underline-offset-2 transition-colors; }
 .markdown-body blockquote {
-  @apply border-l-4 border-accent/30 pl-4 py-1 my-4 bg-muted/50 rounded-r-lg italic text-muted-foreground;
+  @apply border-l-4 border-accent/30 pl-3 sm:pl-4 py-1 my-4 bg-muted/50 rounded-r-lg italic text-muted-foreground text-sm sm:text-base;
 }
 .markdown-body code {
   @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
 }
 .markdown-body pre {
-  @apply bg-muted p-4 rounded-lg overflow-x-auto my-4 border border-border;
+  @apply bg-muted p-3 sm:p-4 rounded-lg overflow-x-auto my-4 border border-border text-sm;
 }
 .markdown-body pre code {
   @apply bg-transparent p-0;
@@ -99,10 +99,10 @@
   @apply rounded-lg my-4 max-w-full;
 }
 .markdown-body table {
-  @apply w-full border-collapse my-4;
+  @apply w-full border-collapse my-4 text-sm;
 }
 .markdown-body th, .markdown-body td {
-  @apply border border-border px-3 py-2 text-left;
+  @apply border border-border px-2 sm:px-3 py-2 text-left;
 }
 .markdown-body th {
   @apply bg-muted font-semibold;

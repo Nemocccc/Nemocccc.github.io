@@ -33,7 +33,7 @@ export default function BlogArticleClient({
 
         {/* Article header */}
         <header className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          <h1 className="text-2xl sm:text-3xl sm:text-4xl font-bold tracking-tight mb-4">
             {post.title}
           </h1>
 

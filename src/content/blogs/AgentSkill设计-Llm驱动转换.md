@@ -1,0 +1,417 @@
+---
+title: "Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换"
+date: 2026-06-10
+tags: ["ai-agents", "llm"]
+category: tech
+description: "给大模型造一套手艺工具——将 Markdown 套入 DOCX 模板"
+---
+
+# Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换
+
+## 核心思想
+
+**不是写转换代码，是给大模型造一套"手艺工具"。**
+
+传统路线：
+```
+程序员写转换逻辑 → 编译成 CLI → 用户调用
+```
+
+Agent Skill 路线：
+```
+Skill 提供工具原语 → LLM 理解模板意图 → LLM 编排流程 → 生成 DOCX
+```
+
+**LLM 是设计师和工匠，工具只是它的手。**
+
+---
+
+## 设计原则
+
+1. **LLM 做决策，工具做执行** — 凡是需要理解、判断、映射的事交给 LLM，凡是机械操作交给工具
+2. **模板是 LLM 的"设计语言"** — LLM 需要能"看懂"模板里有什么样式，才能做出好的映射决策
+3. **映射决策由 LLM 推理产生** — 而不是硬编码在 config 里
+4. **可观察性** — LLM 的每一步决策（为什么这个 markdown 元素映射到那个样式）应该能 trace
+
+---
+
+## 方案 A：工具组合模式（Hermes 原生风格）
+
+Skill 提供一组**原子工具**，LLM 编排组合。
+
+```
+┌──────────────────────────────────────────────────┐
+│                    Agent (LLM)                     │
+│  ┌──────────┐  ┌──────────┐  ┌────────────────┐  │
+│  │ 理解模板  │→ │ 理解 MD  │→ │ 决定映射方案    │  │
+│  │ 的样式体系 │  │ 的结构   │  │  + 逐段渲染     │  │
+│  └────┬─────┘  └────┬─────┘  └───────┬────────┘  │
+└───────┼──────────────┼────────────────┼───────────┘
+        │              │                │
+        ▼              ▼                ▼
+┌──────────────────────────────────────────────────┐
+│                   Skill 工具层                     │
+│  ┌──────────────┐  ┌──────────┐  ┌────────────┐  │
+│  │template_     │  │md_parse  │  │docx_       │  │
+│  │analyze(path) │  │(path)    │  │render      │  │
+│  └──────────────┘  └──────────┘  │(md_ast,    │  │
+│                                  │ styles,    │  │
+│  ┌──────────────┐  ┌──────────┐  │ mapping,   │  │
+│  │style_mapping │  │docx_     │  │ template)  │  │
+│  │_suggest(...) │  │validate  │  └────────────┘  │
+│  └──────────────┘  └──────────┘                    │
+└──────────────────────────────────────────────────┘
+```
+
+### 工具清单（Hermes execute_code 可调用）
+
+```python
+# tool 1: 模板分析
+def template_analyze(template_path: str) -> dict:
+    """读取 DOCX 模板，返回完整的样式目录"""
+    # 返回: 段落样式列表、字符样式列表、表格样式列表、页面设置
+    # 每个样式包括: 名称、类型、字体、字号、颜色、粗体/斜体等属性
+    # 以及 numbering definitions（列表编号定义）
+    pass
+
+# tool 2: Markdown 解析
+def md_parse(md_path: str) -> list:
+    """解析 Markdown，返回结构化内容树"""
+    # 返回: [{type, level, text, spans: [{type, text}], children?}]
+    # 类型: heading, paragraph, list, table, codeblock, blockquote, image
+    # spans 类型: bold, italic, code, link, strikethrough, underline
+    pass
+
+# tool 3: 映射建议（LLM 辅助）
+def style_mapping_suggest(template_styles: dict, md_structure: list, user_hints: str = "") -> dict:
+    """LLM 根据模板样式和 Markdown 结构，自动推荐最优映射"""
+    # 本质是一个 LLM 调用，分析样式名称/属性与 markdown 语义的匹配度
+    # 返回: {paragraph: {h1: "Heading 1", p: "Normal", ...},
+    #        inline: {bold: "Strong Char", code: "Code Char", ...}}
+    pass
+
+# tool 4: 核心渲染
+def docx_render(md_ast: list, template_path: str, style_mapping: dict, output_path: str) -> str:
+    """执行渲染（纯机械操作，无智能判断）"""
+    # 用 python-docx 打开模板，遍历 md_ast
+    # 对每个元素: 查 style_mapping → 应用对应的段落/字符样式
+    # 不设任何 run.bold/italic 属性，只设 run.style
+    # 返回: 输出文件路径
+    pass
+
+# tool 5: 验证
+def docx_validate(docx_path: str, md_ast: list) -> dict:
+    """验证输出 DOCX 的完整性和样式正确性"""
+    # 检查: 内容完整性、样式应用是否正确、占位符残留
+    pass
+
+# tool 6: 模板样式可视化预览
+def template_preview(template_path: str) -> str:
+    """渲染一个"样式示例"文档，展示模板中每个样式的实际效果"""
+    # 生成一个 DOCX 或 HTML 预览，让用户/LLM 直观看到每个样式长什么样
+    # 这对于 LLM 做映射决策非常重要
+    pass
+```
+
+### Agent 工作流
+
+```
+用户: "把这份 report.md 套上公司的 docx 模板生成报告"
+
+Agent 内部推理链:
+
+Step 1 - 理解模板
+  template_analyze("template.docx")
+  → 得到: [{name: "Heading 1", font: "Microsoft YaHei", size: 22, bold: true},
+           {name: "Heading 2", font: "Microsoft YaHei", size: 16, bold: true},
+           {name: "Normal", font: "Microsoft YaHei", size: 11},
+           {name: "Quote Char", type: "character", color: "666666", italic: true},
+           ...]
+
+Step 2 - 理解内容
+  md_parse("report.md")
+  → 得到: [{type: "heading", level: 1, text: "第一章", ...},
+           {type: "paragraph", text: "这是**重点**内容", spans: [{text: "重点", type: "bold"}]},
+           ...]
+
+Step 3 - 推理映射方案
+  LLM 思考:
+  "模板里有 Heading 1-3，markdown 有 H1-H3，直接映射。等等，模板的 Heading 1 是微软雅黑 22pt，
+  看起来是正式的文档标题风格，适合映射。模板的 Quote Char 是斜体灰色字符样式，可以用来做引用
+  块的正文... 代码块模板里没有专门的 Code Block 段落样式，但有一个叫 'Code' 的字符样式，
+  可以建一个段落加这个字符样式..."
+
+  生成 style_mapping:
+  {
+    paragraph: {
+      h1: "Heading 1", h2: "Heading 2", h3: "Heading 3",
+      paragraph: "Normal", blockquote: "Quote Body",
+      code_block: "Normal",       # 段落用 Normal，靠字符样式区分
+      bullet_list: "List Bullet",
+      ordered_list: "List Number"
+    },
+    inline: {
+      bold: "Strong Char",
+      italic: "Emphasis Char",
+      code: "Code Char",
+      link: "Hyperlink Char",
+      strikethrough: "Strikethrough Char"
+    },
+    code_block_char: "Code"        # 代码块内全段用这个字符样式
+  }
+
+Step 4 - 执行渲染
+  docx_render(md_ast, "template.docx", style_mapping, "output.docx")
+  → "output.docx"
+
+Step 5 - 验证
+  docx_validate("output.docx", md_ast)
+  → {complete: true, style_accuracy: 0.95, issues: [...]}
+
+Step 6 - 呈现给用户
+  "已生成 output.docx。用了模板的 Heading 1-3 做标题层级，
+  代码块用 Normal 段落 + Code 字符样式保持格式一致。
+  唯一需要注意的是表格样式映射为 Table Grid，若需要自定义表头颜色可以调整映射。"
+```
+
+### 优势
+
+- **完全透明** — LLM 的每一步映射决策都可读、可干预
+- **可适应任意模板** — LLM 基于模板的实际样式内容决策，不依赖预配置
+- **可处理边缘情况** — 遇到奇怪格式时，LLM 能推理出最佳处理方式
+- **逐步验证** — 每步可中断、可调整
+
+### 劣势
+
+- **多轮工具调用** — 完整流程大约 5-7 轮，token 消耗大
+- **延迟** — 每轮 LLM 推理 + 工具执行，总耗时 30 秒+
+- **LLM 可能犯错** — 映射决策质量取决于模型能力
+
+---
+
+## 方案 B：智能单步模式（务实版）
+
+工具简化为**一个高层次的 "智能渲染器"**，LLM 只做关键的决策输入。
+
+```
+skill 提供: docx_render_intelligent(md_path, template_path, output_path, user_hints)
+```
+
+内部实现：
+1. 自动解析模板（python-docx）
+2. 自动解析 MD（mistune）
+3. LLM 调用（内部）："根据这些模板样式和 Markdown 结构，生成最优映射"
+4. 执行渲染（python-docx）
+5. 返回结果 + 映射说明
+
+**Agent 视角：**
+```
+用户: "把 report.md 套模板生成报告"
+Agent: 调用 docx_render_intelligent("report.md", "template.docx", "report.docx")
+       → {"status": "ok", "path": "report.docx", "mapping_used": {...}, "issues": []}
+       "已完成。模板映射详情：..."
+```
+
+### 优势
+
+- **一次调用** — 快速、token 省
+- **LLM 在内部使用** — 利用大模型的智能但不暴露复杂度
+
+### 劣势
+
+- **不透明** — Agent 看不到内部映射过程，难以干预
+- **LLM 调用在工具内部** — 工具成了一个"黑盒"，失去了 Agent 编排的灵活度
+- **调试困难** — 映射错了不容易修正，得修工具代码
+
+---
+
+## 方案 C：两阶段模式 ⭐（推荐）
+
+结合 A 和 B 的优点，分两阶段：
+
+**阶段 1 — 设计（LLM 密集型）**
+```
+Agent: template_analyze() → 理解样式体系
+Agent: md_parse() → 理解内容结构
+Agent: LLM 推理 → 生成 style_mapping（可让用户确认）
+```
+**阶段 2 — 执行（工具密集型）**
+```
+Agent: docx_render(md_ast, template, mapping, output) → 一次生成
+Agent: docx_validate() → 质量检查
+```
+
+```
+用户: "把 report.md 套模板生成报告"
+
+Agent:
+  styles = template_analyze("template.docx")
+  md_ast = md_parse("report.md")
+  mapping = style_mapping_suggest(styles, md_ast)
+  # 可选：展示给用户确认
+  result = docx_render(md_ast, "template.docx", mapping, "report.docx")
+  report = docx_validate("report.docx", md_ast)
+  → 呈现结果
+```
+
+---
+
+## Hermes Skill 具体实现
+
+作为 Hermes skill，结构应该是：
+
+```
+~/.hermes/skills/report-engine/
+├── SKILL.md                    # 技能描述 + 使用指引
+├── scripts/
+│   ├── template_analyze.py     # tool 1: 模板分析
+│   ├── md_parse.py             # tool 2: MD 解析
+│   ├── docx_render.py          # tool 3: 核心渲染
+│   ├── docx_validate.py        # tool 4: 验证
+│   └── docx_preview.py         # tool 5: 样式预览
+├── references/
+│   ├── style-mapping-guide.md  # 映射策略说明（LLM 参考）
+│   └── template-guide.md       # 模板制作指引
+└── templates/
+    └── default-reference.docx   # 内置默认模板
+```
+
+### SKILL.md 核心内容
+
+```markdown
+---
+name: report-engine
+description: "将 Markdown 文档通过 DOCX 模板渲染为格式化文档。提供模板分析、样式映射、渲染和验证工具。Agent 应通过工具组合完成转换，LLM 负责映射决策，工具负责执行。"
+version: 1.0.0
+author: nemo
+license: MIT
+metadata:
+  hermes:
+    tags: [docx, template, report, rendering, office]
+    related_skills: []
+---
+
+# Report Engine
+
+## 概述
+
+将 Markdown 内容套入 DOCX 模板，生成风格一致的正式文档。
+**模板是样式权威** — 所有内容样式由模板定义，StyleMapping 表决定映射关系。
+
+## 核心哲学
+
+| 谁 | 负责什么 |
+|----|---------|
+| **LLM (Agent)** | 理解模板样式体系、理解 MD 结构、推理映射方案、处理边缘情况 |
+| **工具 (Scripts)** | 模板分析、MD 解析、DOCX 渲染、质量验证 |
+
+## 工具使用指南
+
+### 1. template_analyze(template_path)
+
+读取 DOCX 模板，返回完整的样式目录。
+
+**返回结构：**
+```json
+{
+  "paragraph_styles": [
+    {"name": "Heading 1", "font": {"name": "...", "size": 22, "bold": true}, ...}
+  ],
+  "character_styles": [
+    {"name": "Strong Char", "font": {"bold": true, "color": "000000"}, ...}
+  ],
+  "table_styles": ["Table Grid", "Light Shading"],
+  "page_setup": {"width": 595, "height": 842, "margin_top": 72, ...},
+  "numbering": [
+    {"name": "ListBullet", "format": "bullet", "symbol": "●"},
+    {"name": "ListNumber", "format": "decimal", "start": 1}
+  ]
+}
+```
+
+### 2. md_parse(md_path)
+
+解析 Markdown 为结构化 AST。
+
+### 3. docx_render(md_ast, template_path, style_mapping, output_path)
+
+执行渲染。关键约束：
+- **段落**：`paragraph.style = doc.styles[mapping["paragraph"][type]]`
+- **Run**：`run.style = doc.styles[mapping["inline"][format]]`
+- **绝不直接设** `run.bold`、`run.italic`、`run.font.name` 等属性
+- 模板的样式定义是唯一来源
+
+### 4. docx_validate(docx_path, md_ast)
+
+验证输出质量。
+
+### 5. docx_preview(template_path)
+
+生成一个"样式示例文档"，让 LLM 直观看到每种样式的效果。
+```
+
+### Agent 调用示例（终端里看到的）
+
+```
+用户: "把这篇 report.md 套公司模板转成 DOCX"
+
+Agent 执行流程:
+  ╰─ 分析模板 ...
+  ╰─ 解析 Markdown ...
+  ╰─ 推理样式映射 ...
+      → H1 → Heading 1 (微软雅黑 22pt 粗体)
+      → H2 → Heading 2 (微软雅黑 16pt 粗体)
+      → **粗体** → Strong Char
+      → `代码` → Code Char
+  ╰─ 渲染 DOCX ...
+  ╰─ 验证输出 ...
+  ╰─ 完成
+
+已生成 /Users/nemo/report.docx
+映射方案:
+  ─────────────────────────────────
+  标题1 → Heading 1 (模板定义: 雅黑 22pt)
+  标题2 → Heading 2 (模板定义: 雅黑 16pt)
+  正文  → Normal (模板定义: 雅黑 10.5pt)
+  粗体  → Strong Char (模板定义: 粗体+主题色)
+  引用  → Quote Body 段落样式 + Quote Char 字符样式
+  代码  → Normal段落 + Code Char (Consolas 9pt)
+  ─────────────────────────────────
+  所有样式均从模板继承，内容不带硬编码格式。
+```
+
+---
+
+## 与 Kīlo 的兼容
+
+Kīlo 等 agent CLI 也遵循类似的 tool-calling 范式。核心设计不变：
+- 提供可被 LLM 调用的工具函数
+- 工具函数是纯机械操作（无 AI 决策）
+- LLM 负责编排和决策
+
+如果 Kīlo 支持 MCP（Model Context Protocol），也可以把工具包装成 MCP server：
+
+```python
+# mcp_server.py
+@tool
+def render_docx(md_path: str, template_path: str, style_mapping: dict = None) -> str:
+    """Render markdown to DOCX using template styles."""
+    ...
+```
+
+---
+
+## 我推荐的做法
+
+**两阶段模式（方案 C）**，理由：
+
+1. LLM 做它擅长的事（理解、推理、映射）→ 阶段 1
+2. 工具做它擅长的事（快速机械执行）→ 阶段 2
+3. 用户可以干预映射方案（在阶段 1 结束后确认）
+4. 对比纯工具模式（方案 A）：少 3-5 轮调用，快很多
+5. 对比黑盒模式（方案 B）：映射决策透明，可调整
+
+**优先级：**
+1. 先写 `template_analyze.py` 和 `docx_render.py` 两个核心脚本（纯机械逻辑）
+2. 再写 `SKILL.md`，重点写 LLM 做映射决策的指引
+3. 最后写 `style_mapping_suggest` 作为可选辅助（LLM-in-the-loop optimization）

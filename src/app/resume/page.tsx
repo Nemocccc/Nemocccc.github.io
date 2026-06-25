@@ -34,7 +34,7 @@ export default function ResumePage() {
         <div className="rounded-xl border border-border/50 overflow-hidden bg-card/30">
           <iframe
             src="/resume/resume.pdf"
-            className="w-full h-[80vh] border-none"
+            className="w-full min-h-[60vh] sm:h-[80vh] border-none"
             title="Resume PDF"
           />
         </div>
