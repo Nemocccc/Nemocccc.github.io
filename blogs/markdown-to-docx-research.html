@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="zh"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" href="/_next/static/media/797e433ab948586e-s.p.0r6juujl39pe6.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/feb57b2dc8f29018-s.p.3qy4m29-cg3o4.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="stylesheet" href="/_next/static/chunks/233p45nuh4m5b.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/chunks/3mi_koyhkiqud.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/chunks/1p3suf_njwawp.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/2nkm9os0ru77b.js"/><script src="/_next/static/chunks/0ne7ingwf68tr.js" async=""></script><script src="/_next/static/chunks/3nngod-hej9xj.js" async=""></script><script src="/_next/static/chunks/turbopack-2x29guilj5b3y.js" async=""></script><script src="/_next/static/chunks/1xh5_hh-4xv03.js" async=""></script><script src="/_next/static/chunks/18071siihbhhu.js" async=""></script><script src="/_next/static/chunks/3zo6056xuvsb1.js" async=""></script><script src="/_next/static/chunks/2c9lkvph-ta0n.js" async=""></script><script src="/_next/static/chunks/3jf8q_9-ia3no.js" async=""></script><script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="next-size-adjust" content=""/><title>Nemo — Personal Space</title><meta name="description" content="chasing dreams | 全栈开发者 · RAG &amp; RL 爱好者"/><meta name="author" content="Nemo"/><meta name="keywords" content="Nemo,个人网站,博客,全栈开发,RAG,强化学习"/><meta property="og:title" content="Nemo — Personal Space"/><meta property="og:description" content="chasing dreams | 全栈开发者 · RAG &amp; RL 爱好者"/><meta property="og:locale" content="zh_CN"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Nemo — Personal Space"/><meta name="twitter:description" content="chasing dreams | 全栈开发者 · RAG &amp; RL 爱好者"/><link rel="icon" href="/favicon.ico?favicon.2os6yout_mfjj.ico" sizes="640x640" type="image/x-icon"/><link rel="icon" href="/Image/favicon.ico"/><script src="/_next/static/chunks/0cz1d0mv5g_q7.js" noModule=""></script></head><body class="geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable noto_sans_sc_2bb252ae-module__TC8U_W__variable antialiased"><div hidden=""><!--$--><!--/$--></div><script>((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","system",null,["light","dark"],null,true,true)</script><div class="min-h-screen flex flex-col"><header class="sticky top-0 z-50 w-full glass backdrop-blur-md border-b border-border/50"><div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between"><a class="text-xl font-bold gradient-text hover:opacity-80 transition-opacity shrink-0" href="/">Nemo</a><nav class="hidden sm:flex items-center gap-1"><a class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-muted/50" href="/">首页</a><a class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-muted/50" href="/blogs">博客</a><a class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-muted/50" href="/resume">简历</a></nav><div class="hidden sm:flex items-center gap-2"><button class="
+        relative px-3 py-1.5 rounded-full text-sm font-medium
+        transition-all duration-300
+        hover:bg-muted/80 active:scale-95
+        text-muted-foreground hover:text-foreground
+        border border-border/50
+      " aria-label="Switch to English">EN</button><div class="w-9 h-9"></div></div><div class="flex sm:hidden items-center gap-2"><div class="w-9 h-9"></div><button class="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all" aria-label="菜单"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-5 h-5" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></header><main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12"><a class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6 sm:mb-8 group" href="/blogs"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left w-4 h-4 group-hover:-translate-x-0.5 transition-transform" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>返回博客列表</a><header class="mb-8 sm:mb-10"><h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-tight mb-4">将 Markdown 套入 DOCX 模板的实现方案调研</h1><div class="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground mb-4"><span class="flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2026年6月10日</span><span class="flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>10<!-- --> 分钟阅读</span></div><div class="flex flex-wrap gap-2"><a class="px-2.5 py-1 rounded-full text-xs bg-muted/50 text-muted-foreground hover:text-accent hover:bg-accent/5 border border-border/30 transition-colors" href="/blogs?tag=tools">#<!-- -->tools</a><a class="px-2.5 py-1 rounded-full text-xs bg-muted/50 text-muted-foreground hover:text-accent hover:bg-accent/5 border border-border/30 transition-colors" href="/blogs?tag=productivity">#<!-- -->productivity</a></div></header><article class="markdown-body"><h1 id="将-markdown-套入-docx-模板的实现方案调研"><a href="#将-markdown-套入-docx-模板的实现方案调研">将 Markdown 套入 DOCX 模板的实现方案调研</a></h1>
+<blockquote>
+<p>背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是<strong>唯一样式权威</strong>（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模板字符样式，而非直接设置 Run 属性。</p>
+</blockquote>
+<hr/>
+<h2 id="一现有生态盘点"><a href="#一现有生态盘点">一、现有生态盘点</a></h2>
+<h3 id="11-pandoc--reference-doc--最成熟的现有方案"><a href="#11-pandoc--reference-doc--最成熟的现有方案">1.1 Pandoc + reference-doc — 最成熟的现有方案</a></h3>
+<pre><code>pandoc input.md -o output.docx --reference-doc=template.docx
+</code></pre>
+<p><strong>原理</strong>：pandoc 从 <code>reference.docx</code> 复制样式定义（段落样式、字符样式、表格样式、页面设置），应用到生成的 DOCX 上。</p>
+<p><strong>能力矩阵：</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>特性</th><th>支持度</th><th>说明</th></tr></thead><tbody><tr><td>段落样式继承</td><td>✅</td><td>Heading 1~6, Normal, Quote 等按名称匹配</td></tr><tr><td>页面设置继承</td><td>✅</td><td>纸张大小、边距、页眉页脚等</td></tr><tr><td>表格样式</td><td>⚠️ 有限</td><td>默认只认 <code>Table</code> 样式名；2025年后有改进但仍有坑</td></tr><tr><td><strong>字符样式映射</strong></td><td>❌</td><td><code>**粗体**</code> 默认转 <code>run.bold=True</code>，<strong>不</strong>使用字符样式</td></tr><tr><td><strong>自定义样式名</strong></td><td>❌</td><td>硬编码映射（Heading→Heading 1，Bold→run.bold），无法配置</td></tr><tr><td><strong>章节槽位/占位符</strong></td><td>❌</td><td>没有内容到模板特定位置注入的能力</td></tr></tbody></table>
+<p><strong>关键限制</strong>：pandoc 的 inline 格式渲染是<strong>属性级别的</strong>（<code>run.bold=True</code>），不走字符样式。要让 <code>**text**</code> → <code>run.style = &#x27;Strong Char&#x27;</code>，需要 Lua filter 拦截 AST，手动写 OpenXML。而且不支持模板中的自定义段落样式名映射。</p>
+<p><strong>Lua filter 拐杖方案：</strong></p>
+<pre><code class="hljs language-lua"><span class="hljs-comment">-- 拦截 Strong 元素，强制转为带有字符样式的 Span</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Strong</span><span class="hljs-params">(elems)</span></span>
+  <span class="hljs-comment">-- 需要注入 OpenXML 的 run properties，极其复杂</span>
+  <span class="hljs-keyword">return</span> pandoc.Span(elems, {custom_style = <span class="hljs-string">&quot;Strong Char&quot;</span>})
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>不推荐——pandoc 的 Lua API 对 docx 字符样式的控制非常有限，且不同版本行为不一致。</p>
+<h3 id="12-docxtplpython-docx-template-模板引擎方案"><a href="#12-docxtplpython-docx-template-模板引擎方案">1.2 docxtpl（python-docx-template）— 模板引擎方案</a></h3>
+<pre><code>docxtpl 的思路：DOCX 里有 {{ variable }}，渲染时填入数据
+</code></pre>
+<p><strong>适合场景</strong>：数据驱动的报告（如：{{ customer_name }}，{% for row in table %}），<strong>不是 Markdown→DOCX</strong>。</p>
+<p><strong>与需求差距</strong>：</p>
+<ul>
+<li>需要人手工在 Word 里插入 Jinja2 标签</li>
+<li>不能直接吃 Markdown 文件</li>
+<li>格式标记需要预处理为 RichText 对象</li>
+<li>不解决&quot;模板是唯一样式权威&quot;问题</li>
+</ul>
+<h3 id="13-python-docx--mistune--纯手工方案prd-现状"><a href="#13-python-docx--mistune--纯手工方案prd-现状">1.3 python-docx + mistune — 纯手工方案（PRD 现状）</a></h3>
+<pre><code>Markdown → mistune(解析) → ReportModel → python-docx(渲染) → DOCX
+</code></pre>
+<p><strong>优势</strong>：完全可控，StyleMapping 随心定义
+<strong>劣势</strong>：要处理所有边缘情况（嵌套列表、表格内格式、图片、公式等）</p>
+<hr/>
+<h2 id="二核心架构选择三种路线"><a href="#二核心架构选择三种路线">二、核心架构选择（三种路线）</a></h2>
+<h3 id="路线-apandoc-centric薄封装"><a href="#路线-apandoc-centric薄封装">路线 A：Pandoc-centric（薄封装）</a></h3>
+<pre><code>Markdown → pandoc(解析+基础DOCX) → python-docx(后处理: 重写样式) → 最终DOCX
+</code></pre>
+<p><strong>流程：</strong></p>
+<ol>
+<li><code>pandoc input.md -o temp.docx --reference-doc=template.docx</code>（先用模板出初稿）</li>
+<li>python-docx 打开 temp.docx，遍历所有段落和 run</li>
+<li>对每个元素：查 StyleMapping 表，重新应用模板样式</li>
+</ol>
+<p><strong>优点：</strong></p>
+<ul>
+<li>利用 pandoc 的鲁棒解析能力（表格、代码块、公式、图片等）</li>
+<li>自己只需写&quot;样式后处理&quot;层，代码量最小</li>
+<li>pandoc 处理了 95% 的 content→layout 转换</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>两遍扫描，速度慢</li>
+<li>pandoc 可能在输出中用了内联格式（run.bold=true），后处理要反过来&quot;还原&quot;成字符样式</li>
+<li>依赖 pandoc 二进制（版本兼容性）</li>
+<li>pandoc 对一些 Markdown 方言的处理可能不符合预期</li>
+</ul>
+<p><strong>适用规模</strong>：Phase 1 MVP 快速验证、不需要高度定制的场景</p>
+<h3 id="路线-b纯-python-docx全控制--prd-推荐路线"><a href="#路线-b纯-python-docx全控制--prd-推荐路线">路线 B：纯 python-docx（全控制 — PRD 推荐路线）</a></h3>
+<pre><code>Markdown → mistune/markdown-it → ReportModel → python-docx(渲染器+样式映射器) → DOCX
+</code></pre>
+<p><strong>渲染器核心逻辑：</strong></p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DocxRenderer</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, template_path: <span class="hljs-built_in">str</span>, style_mapping: StyleMapping</span>):
+        <span class="hljs-variable language_">self</span>.doc = Document(template_path)  <span class="hljs-comment"># 以模板为基础</span>
+        <span class="hljs-variable language_">self</span>.style_mapping = style_mapping
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">render_paragraph</span>(<span class="hljs-params">self, block: ParagraphBlock</span>):
+        p = <span class="hljs-variable language_">self</span>.doc.add_paragraph()
+        <span class="hljs-comment"># 段落样式：由模板决定</span>
+        p.style = <span class="hljs-variable language_">self</span>.doc.styles[block.<span class="hljs-built_in">type</span>]  <span class="hljs-comment"># Heading1, Normal, ListBullet...</span>
+        <span class="hljs-keyword">for</span> span <span class="hljs-keyword">in</span> block.spans:
+            run = p.add_run(span.text)
+            <span class="hljs-comment"># 字符样式：查 StyleMapping 表</span>
+            char_style = <span class="hljs-variable language_">self</span>.style_mapping.get(span.<span class="hljs-built_in">format</span>)
+            <span class="hljs-keyword">if</span> char_style:
+                run.style = <span class="hljs-variable language_">self</span>.doc.styles[char_style]  <span class="hljs-comment"># 关键：用样式名，不设属性</span>
+</code></pre>
+<p><strong>关键设计点：</strong></p>
+<ul>
+<li><strong>不在 Run 上设 bold/italic/font 属性</strong>，统一用 <code>run.style = doc.styles[name]</code></li>
+<li>模板的样式定义是唯一来源</li>
+<li>StyleMapping 表是 Markdown 格式标记 → 模板字符样式名称的映射</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>一次遍历，架构简洁</li>
+<li>完全控制样式映射逻辑</li>
+<li>不依赖外部二进制</li>
+<li>StyleMapping 可以动态配置（YAML）</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>需要自己处理 Markdown 的所有边缘情况</li>
+<li>markdown-it/mistune 的 AST 到 DOCX 的映射成本较高</li>
+</ul>
+<h3 id="路线-c混合pandoc-的嘴--python-docx-的胃"><a href="#路线-c混合pandoc-的嘴--python-docx-的胃">路线 C：混合（pandoc 的嘴 + python-docx 的胃）</a></h3>
+<pre><code>Markdown → pandoc(解析为JSON AST) → Python(AST→ReportModel) → python-docx(渲染) → DOCX
+</code></pre>
+<pre><code class="hljs language-bash">pandoc input.md -t json | python3 render.py --template template.docx &gt; output.docx
+</code></pre>
+<p><strong>优点：</strong></p>
+<ul>
+<li>得到 pandoc 级别的解析质量（表格、公式、脚注、交叉引用全处理）</li>
+<li>渲染部分自己控制</li>
+<li><code>-t json</code> 是 pandoc 的标准输出，格式稳定</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>仍然依赖 pandoc 二进制</li>
+<li>AST→ReportModel 的转换有一定复杂度</li>
+<li>pandoc AST 的结构和 python-docx 的段落模型差异较大</li>
+</ul>
+<hr/>
+<h2 id="三stylemapping-表的设计"><a href="#三stylemapping-表的设计">三、StyleMapping 表的设计</a></h2>
+<p>这是项目核心创新点。建议设计为 YAML 配置文件，与模板分离。</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># style-mapping.yaml</span>
+<span class="hljs-attr">paragraph:</span>
+  <span class="hljs-attr">heading1:</span> <span class="hljs-string">&quot;Heading 1&quot;</span>           <span class="hljs-comment"># Markdown # → 模板中的 &quot;Heading 1&quot; 样式</span>
+  <span class="hljs-attr">heading2:</span> <span class="hljs-string">&quot;Heading 2&quot;</span>
+  <span class="hljs-attr">heading3:</span> <span class="hljs-string">&quot;Heading 3&quot;</span>
+  <span class="hljs-attr">paragraph:</span> <span class="hljs-string">&quot;Normal&quot;</span>             <span class="hljs-comment"># 普通段落</span>
+  <span class="hljs-attr">blockquote:</span> <span class="hljs-string">&quot;Quote&quot;</span>             <span class="hljs-comment"># 引用块</span>
+  <span class="hljs-attr">code_block:</span> <span class="hljs-string">&quot;Code&quot;</span>              <span class="hljs-comment"># 代码块</span>
+  <span class="hljs-attr">bullet_list:</span> <span class="hljs-string">&quot;List Bullet&quot;</span>      <span class="hljs-comment"># 无序列表</span>
+  <span class="hljs-attr">ordered_list:</span> <span class="hljs-string">&quot;List Number&quot;</span>     <span class="hljs-comment"># 有序列表</span>
+  <span class="hljs-attr">table_header:</span> <span class="hljs-string">&quot;Table Header&quot;</span>
+  <span class="hljs-attr">table_cell:</span> <span class="hljs-string">&quot;Table Cell&quot;</span>
+
+<span class="hljs-attr">inline:</span>
+  <span class="hljs-attr">bold:</span> <span class="hljs-string">&quot;Strong Char&quot;</span>             <span class="hljs-comment"># **粗体** → 字符样式</span>
+  <span class="hljs-attr">italic:</span> <span class="hljs-string">&quot;Emphasis Char&quot;</span>         <span class="hljs-comment"># *斜体* → 字符样式</span>
+  <span class="hljs-attr">code:</span> <span class="hljs-string">&quot;Code Char&quot;</span>               <span class="hljs-comment"># `行内代码` → 字符样式</span>
+  <span class="hljs-attr">strikethrough:</span> <span class="hljs-string">&quot;Strikethrough Char&quot;</span>
+  <span class="hljs-attr">underline:</span> <span class="hljs-string">&quot;Underline Char&quot;</span>
+  <span class="hljs-attr">link:</span> <span class="hljs-string">&quot;Hyperlink Char&quot;</span>
+  <span class="hljs-attr">subscript:</span> <span class="hljs-string">&quot;Subscript Char&quot;</span>
+  <span class="hljs-attr">superscript:</span> <span class="hljs-string">&quot;Superscript Char&quot;</span>
+
+<span class="hljs-attr">fallback:</span>
+  <span class="hljs-attr">paragraph:</span> <span class="hljs-string">&quot;Normal&quot;</span>             <span class="hljs-comment"># 找不到映射时用的默认样式</span>
+  <span class="hljs-attr">inline:</span> <span class="hljs-string">&quot;Default Paragraph Font&quot;</span>
+</code></pre>
+<p><strong>渲染器行为：</strong></p>
+<pre><code>输入: &quot;这是**粗体**和*斜体*&quot;
+    ↓ mistune 解析
+AST: [文本(&quot;这是&quot;), Strong(&quot;粗体&quot;), 文本(&quot;和&quot;), Emph(&quot;斜体&quot;)]
+    ↓ 查 StyleMapping
+    ↓ 
+输出段落: 段落样式 &quot;Normal&quot;
+  run1: 文本 &quot;这是&quot;       → 无字符样式（继承段落样式）
+  run2: 文本 &quot;粗体&quot;       → run.style = doc.styles[&quot;Strong Char&quot;]
+  run3: 文本 &quot;和&quot;         → 无字符样式
+  run4: 文本 &quot;斜体&quot;       → run.style = doc.styles[&quot;Emphasis Char&quot;]
+</code></pre>
+<p><strong>优点</strong>：用户换模板只需改 <code>style-mapping.yaml</code>，不需要改代码。不同模板可以有不同的样式名。</p>
+<hr/>
+<h2 id="四cli-友好化设计"><a href="#四cli-友好化设计">四、CLI 友好化设计</a></h2>
+<h3 id="41-unix-哲学风格"><a href="#41-unix-哲学风格">4.1 Unix 哲学风格</a></h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># 基本用法</span>
+md2docx report.md --template company-template.docx -o report.docx
+
+<span class="hljs-comment"># 管道模式</span>
+<span class="hljs-built_in">cat</span> report.md | md2docx --template company-template.docx &gt; report.docx
+
+<span class="hljs-comment"># 指定样式映射</span>
+md2docx report.md --template t.docx -m style-mapping.yaml -o report.docx
+
+<span class="hljs-comment"># 验证模式（不生成，只检查模板兼容性）</span>
+md2docx report.md --template t.docx --validate
+
+<span class="hljs-comment"># 列出模板中可用的样式</span>
+md2docx --template t.docx --list-styles
+
+<span class="hljs-comment"># 生成默认 style-mapping.yaml（基于模板自动推断）</span>
+md2docx --template t.docx --init-mapping
+</code></pre>
+<h3 id="42-tui-补全友好"><a href="#42-tui-补全友好">4.2 TUI 补全友好</a></h3>
+<ul>
+<li><code>--bash-completion</code> 输出 shell 补全脚本</li>
+<li><code>md2docx &lt;Tab&gt;</code> 自动补全 <code>.md</code> 文件</li>
+<li><code>--template &lt;Tab&gt;</code> 扫描 <code>~/.config/md2docx/templates/</code> 目录</li>
+</ul>
+<h3 id="43-退出码和-stderr-协议"><a href="#43-退出码和-stderr-协议">4.3 退出码和 stderr 协议</a></h3>
+<pre><code>退出码: 0=成功, 1=解析错误, 2=模板错误, 3=映射缺失
+stderr: 纯文本状态（适合终端查看）
+stdout: 二进制 DOCX（适合管道）
+</code></pre>
+<hr/>
+<h2 id="五gui-友好化设计"><a href="#五gui-友好化设计">五、GUI 友好化设计</a></h2>
+<h3 id="51-web-uiphase-3-方向"><a href="#51-web-uiphase-3-方向">5.1 Web UI（Phase 3 方向）</a></h3>
+<pre><code>FastAPI + Jinja2/React 前端
+</code></pre>
+<p>核心页面：</p>
+<ol>
+<li><strong>上传模板</strong>：上传 .docx，自动分析样式目录+预览</li>
+<li><strong>编辑映射</strong>：下拉选择 Markdown 格式→模板样式，可视化</li>
+<li><strong>上传/粘贴 Markdown</strong>：实时预览渲染效果（docx→PDF or HTML 预览）</li>
+<li><strong>下载</strong>：一键下载最终 DOCX</li>
+</ol>
+<h3 id="52-更轻量的-gui-方案"><a href="#52-更轻量的-gui-方案">5.2 更轻量的 GUI 方案</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>方案</th><th>适合场景</th><th>技术栈</th></tr></thead><tbody><tr><td><strong>Gradio</strong></td><td>内部工具、快速原型</td><td>Python 纯</td></tr><tr><td><strong>Textual</strong></td><td>终端内 TUI（无需浏览器）</td><td>Python 纯</td></tr><tr><td><strong>Streamlit</strong></td><td>数据工作者快速展示</td><td>Python 纯</td></tr><tr><td><strong>Electron</strong></td><td>独立桌面应用</td><td>太重，不推荐</td></tr><tr><td><strong>Typora 插件</strong></td><td>如果用户用 Typora 写 MD</td><td>与编辑器集成</td></tr></tbody></table>
+<p><strong>Gradio 最快：</strong></p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> gradio <span class="hljs-keyword">as</span> gr
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">render</span>(<span class="hljs-params">md_text, template_file</span>):
+    <span class="hljs-keyword">with</span> tempfile.NamedTemporaryFile() <span class="hljs-keyword">as</span> f:
+        result = engine.render(md_text, template_file.name)
+        <span class="hljs-keyword">return</span> result.path
+
+gr.Interface(
+    fn=render,
+    inputs=[gr.Textbox(label=<span class="hljs-string">&quot;Markdown&quot;</span>), gr.File(label=<span class="hljs-string">&quot;模板 .docx&quot;</span>)],
+    outputs=gr.File(label=<span class="hljs-string">&quot;输出 .docx&quot;</span>),
+).launch()
+</code></pre>
+<h3 id="53-cli--gui-复用同一核心"><a href="#53-cli--gui-复用同一核心">5.3 CLI + GUI 复用同一核心</a></h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># core/engine.py — 纯逻辑，无 IO 依赖</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ReportEngine</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">render</span>(<span class="hljs-params">self, md: <span class="hljs-built_in">str</span>, template: TemplateProfile, mapping: StyleMapping</span>) -&gt; DocxOutput: ...
+
+<span class="hljs-comment"># cli/main.py — 终端入口</span>
+<span class="hljs-comment"># web/app.py — Web 入口</span>
+<span class="hljs-comment"># skill/skill.py — Hermes Agent 入口</span>
+</code></pre>
+<hr/>
+<h2 id="六hermes-agent-skill-集成"><a href="#六hermes-agent-skill-集成">六、Hermes Agent Skill 集成</a></h2>
+<h3 id="61-作为终端命令技能"><a href="#61-作为终端命令技能">6.1 作为终端命令技能</a></h3>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># SKILL.md</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">report-engine</span>
+<span class="hljs-attr">description:</span> <span class="hljs-string">将</span> <span class="hljs-string">Markdown</span> <span class="hljs-string">渲染为带模板样式的</span> <span class="hljs-string">DOCX</span> <span class="hljs-string">文档</span>
+<span class="hljs-attr">commands:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">md2docx</span> <span class="hljs-string">report.md</span> <span class="hljs-string">-t</span> <span class="hljs-string">template.docx</span> <span class="hljs-string">-o</span> <span class="hljs-string">output.docx</span>
+</code></pre>
+<p>Agent 调用方式：</p>
+<pre><code>用户: &quot;把这份 report.md 套用公司模板生成 DOCX&quot;
+→ Agent 执行: md2docx report.md --template ~/templates/company.docx -o report.docx
+→ 返回文件路径给用户
+</code></pre>
+<h3 id="62-作为-agent-内部函数"><a href="#62-作为-agent-内部函数">6.2 作为 Agent 内部函数</a></h3>
+<p>Skill 里提供 Python API，Agent 在 execute_code 中直接调用：</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> report_engine <span class="hljs-keyword">import</span> render_docx
+path = render_docx(<span class="hljs-string">&quot;report.md&quot;</span>, template=<span class="hljs-string">&quot;company.docx&quot;</span>, mapping=<span class="hljs-string">&quot;style-mapping.yaml&quot;</span>)
+</code></pre>
+<hr/>
+<h2 id="七实现路线建议"><a href="#七实现路线建议">七、实现路线建议</a></h2>
+<h3 id="phase-1验证概念路线-apandoc-centric"><a href="#phase-1验证概念路线-apandoc-centric">Phase 1（验证概念）：路线 A（Pandoc-centric）</a></h3>
+<pre><code class="hljs language-bash">pandoc input.md -o temp.docx --reference-doc=template.docx
+python3 -c <span class="hljs-string">&quot;
+from docx import Document
+doc = Document(&#x27;temp.docx&#x27;)
+# 遍历所有段落，对每个 run 应用模板的字符样式
+for p in doc.paragraphs:
+    for run in p.runs:
+        if run.bold:
+            run.bold = None  # 清除属性
+            run.style = doc.styles[&#x27;Strong Char&#x27;]
+doc.save(&#x27;output.docx&#x27;)
+&quot;</span>
+</code></pre>
+<p>优点：半天就能跑通完整链路，验证&quot;模板洗掉所有样式&quot;的概念。</p>
+<h3 id="phase-2完整实现路线-b纯-python-docx"><a href="#phase-2完整实现路线-b纯-python-docx">Phase 2（完整实现）：路线 B（纯 python-docx）</a></h3>
+<p>转向纯 python-docx 路线，原因：</p>
+<ul>
+<li>不依赖 pandoc 版本</li>
+<li>真正的单次遍历</li>
+<li>StyleMapping 表成为一等公民</li>
+<li>可以精细控制渲染质量</li>
+</ul>
+<h3 id="phase-3生态-cli--gui--skill-三件套"><a href="#phase-3生态-cli--gui--skill-三件套">Phase 3（生态）: CLI + GUI + Skill 三件套</a></h3>
+<p>复用同一 <code>core/engine.py</code>，封装三个入口：</p>
+<ul>
+<li><code>cli/main.py</code> — click/argparse CLI</li>
+<li><code>web/app.py</code> — FastAPI + Gradio</li>
+<li><code>skill/SKILL.md</code> — Hermes Agent 技能描述</li>
+</ul>
+<hr/>
+<h2 id="八需要避免的坑"><a href="#八需要避免的坑">八、需要避免的坑</a></h2>
+<ol>
+<li><strong>不要同时设 run.style 和 run.bold</strong> — python-docx 会合并行为不可预测，务必二选一</li>
+<li><strong>模板分析器必须提取完整样式目录</strong> — 包括 numbering definitions（列表编号）、character styles（字符样式）、table styles（表格样式）</li>
+<li><strong>No-template 路径不需要</strong> — 内置一个默认模板（如 pandoc 的 reference.docx）</li>
+<li><strong>链接和公式可能是例外</strong> — OpenXML 的 hyperlink 需要特殊处理，公式（OMML）不支持样式覆盖</li>
+<li><strong>嵌套格式</strong>（<code>***粗斜体***</code>）— 需要定义复合映射，或者直接叠加字符样式（python-docx 不支持 run 上叠加多个字符样式，需要创建复合字符样式）</li>
+<li><strong>跨平台</strong> — python-docx 在 macOS/Linux/Windows 行为一致，但字体渲染不同</li>
+</ol>
+<hr/>
+<h2 id="九参考项目"><a href="#九参考项目">九、参考项目</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>项目</th><th>地址</th><th>借鉴点</th></tr></thead><tbody><tr><td><strong>pandoc</strong></td><td>pandoc.org</td><td>解析器质量和参考文档系统</td></tr><tr><td><strong>python-docx-template</strong></td><td>github.com/elapouya/python-docx-template</td><td>DOCX 模板的 Subdoc 机制</td></tr><tr><td><strong>mistune</strong></td><td>github.com/lepture/mistune</td><td>Python Markdown 解析器（速度最快）</td></tr><tr><td><strong>markdown-it-py</strong></td><td>github.com/executablebooks/markdown-it-py</td><td>插件化 Markdown 解析（兼容 JS 生态）</td></tr><tr><td><strong>WeasyPrint</strong></td><td>weasyprint.org</td><td>HTML→PDF 的样式继承模型值得借鉴</td></tr><tr><td><strong>Typst</strong></td><td>typst.app</td><td>新一代排版系统，可以作为长期对标</td></tr></tbody></table></article><div class="py-6 text-center text-muted-foreground text-sm">加载评论中...</div></main><footer class="border-t border-border/50 bg-card/30 mt-16"><div class="max-w-5xl mx-auto px-4 py-8"><div class="flex flex-col sm:flex-row items-center justify-between gap-4"><p class="text-sm text-muted-foreground">© 2025 Nemo. All rights reserved.</p><div class="flex items-center gap-3"><a href="https://github.com/Nemocccc" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe w-4 h-4" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg></a><a href="mailto:1774747097@qq.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200" aria-label="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail w-4 h-4" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></a></div></div><div class="mt-4 text-center"><button class="text-xs text-muted-foreground hover:text-foreground transition-colors">友情链接<!-- --> · <!-- -->自己跟自己算不算友情？</button></div><div class="mt-4 flex items-center justify-center gap-1 text-xs text-muted-foreground/60"><span>Built with</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart w-3 h-3 text-accent fill-accent" aria-hidden="true"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path></svg><span>using Next.js &amp; Tailwind</span></div><div class="mt-2 text-center text-xs text-muted-foreground/40"><span id="busuanzi_container_site_pv">👁️ <span id="busuanzi_value_site_pv"></span> visits</span></div></div></footer><button class="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50 p-3 rounded-full bg-accent text-white shadow-lg hover:bg-accent/90 hover:shadow-xl transition-all duration-300 opacity-0 translate-y-4 pointer-events-none" aria-label="回到顶部"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up w-5 h-5" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg></button></div><!--$--><!--/$--><script src="/_next/static/chunks/2nkm9os0ru77b.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[59919,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"ThemeProvider\"]\n3:I[88343,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"I18nProvider\"]\n4:I[68463,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"default\"]\n5:I[57986,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"default\"]\n7:I[3576,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\nb:I[3576,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"ViewportBoundary\"]\nd:I[3576,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"MetadataBoundary\"]\nf:I[60199,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"default\",1]\n:HL[\"/_next/static/chunks/233p45nuh4m5b.css\",\"style\"]\n:HL[\"/_next/static/chunks/3mi_koyhkiqud.css\",\"style\"]\n:HL[\"/_next/static/chunks/1p3suf_njwawp.css\",\"style\"]\n:HL[\"/_next/static/media/797e433ab948586e-s.p.0r6juujl39pe6.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/feb57b2dc8f29018-s.p.3qy4m29-cg3o4.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"c\":[\"\",\"blogs\",\"markdown-to-docx-research\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"blogs\",{\"children\":[[\"slug\",\"markdown-to-docx-research\",\"d\",null],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",16],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/233p45nuh4m5b.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/3mi_koyhkiqud.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"2\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/1p3suf_njwawp.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/18071siihbhhu.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"zh\",\"suppressHydrationWarning\":true,\"children\":[\"$\",\"body\",null,{\"className\":\"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable noto_sans_sc_2bb252ae-module__TC8U_W__variable antialiased\",\"children\":[[\"$\",\"$L2\",null,{\"children\":[\"$\",\"$L3\",null,{\"children\":[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}],[\"$\",\"script\",null,{\"async\":true,\"src\":\"//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js\"}]]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",[[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/3zo6056xuvsb1.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/2c9lkvph-ta0n.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-2\",{\"src\":\"/_next/static/chunks/3jf8q_9-ia3no.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,null]},null,false,\"$@a\"]},null,false,\"$@a\"]},null,false,null],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$Lb\",null,{\"children\":\"$Lc\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Ld\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Le\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$f\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/233p45nuh4m5b.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/3mi_koyhkiqud.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"2\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/1p3suf_njwawp.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]]],\"S\":true,\"h\":null,\"s\":\"$undefined\",\"l\":\"$undefined\",\"p\":\"$undefined\",\"d\":\"$undefined\",\"b\":\"7aCzreAMfD93h2z-OaCiG\"}\n"])</script><script>self.__next_f.push([1,"10:[]\na:\"$W10\"\n"])</script><script>self.__next_f.push([1,"11:I[22210,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\",\"/_next/static/chunks/3zo6056xuvsb1.js\",\"/_next/static/chunks/2c9lkvph-ta0n.js\",\"/_next/static/chunks/3jf8q_9-ia3no.js\"],\"default\"]\n12:T33a8,"])</script><script>self.__next_f.push([1,"\n# 将 Markdown 套入 DOCX 模板的实现方案调研\n\n\u003e 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是**唯一样式权威**（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模板字符样式，而非直接设置 Run 属性。\n\n---\n\n## 一、现有生态盘点\n\n### 1.1 Pandoc + reference-doc — 最成熟的现有方案\n\n```\npandoc input.md -o output.docx --reference-doc=template.docx\n```\n\n**原理**：pandoc 从 `reference.docx` 复制样式定义（段落样式、字符样式、表格样式、页面设置），应用到生成的 DOCX 上。\n\n**能力矩阵：**\n\n| 特性 | 支持度 | 说明 |\n|------|--------|------|\n| 段落样式继承 | ✅ | Heading 1~6, Normal, Quote 等按名称匹配 |\n| 页面设置继承 | ✅ | 纸张大小、边距、页眉页脚等 |\n| 表格样式 | ⚠️ 有限 | 默认只认 `Table` 样式名；2025年后有改进但仍有坑 |\n| **字符样式映射** | ❌ | `**粗体**` 默认转 `run.bold=True`，**不**使用字符样式 |\n| **自定义样式名** | ❌ | 硬编码映射（Heading→Heading 1，Bold→run.bold），无法配置 |\n| **章节槽位/占位符** | ❌ | 没有内容到模板特定位置注入的能力 |\n\n**关键限制**：pandoc 的 inline 格式渲染是**属性级别的**（`run.bold=True`），不走字符样式。要让 `**text**` → `run.style = 'Strong Char'`，需要 Lua filter 拦截 AST，手动写 OpenXML。而且不支持模板中的自定义段落样式名映射。\n\n**Lua filter 拐杖方案：**\n```lua\n-- 拦截 Strong 元素，强制转为带有字符样式的 Span\nfunction Strong(elems)\n  -- 需要注入 OpenXML 的 run properties，极其复杂\n  return pandoc.Span(elems, {custom_style = \"Strong Char\"})\nend\n```\n不推荐——pandoc 的 Lua API 对 docx 字符样式的控制非常有限，且不同版本行为不一致。\n\n### 1.2 docxtpl（python-docx-template）— 模板引擎方案\n\n```\ndocxtpl 的思路：DOCX 里有 {{ variable }}，渲染时填入数据\n```\n\n**适合场景**：数据驱动的报告（如：{{ customer_name }}，{% for row in table %}），**不是 Markdown→DOCX**。\n\n**与需求差距**：\n- 需要人手工在 Word 里插入 Jinja2 标签\n- 不能直接吃 Markdown 文件\n- 格式标记需要预处理为 RichText 对象\n- 不解决\"模板是唯一样式权威\"问题\n\n### 1.3 python-docx + mistune — 纯手工方案（PRD 现状）\n\n```\nMarkdown → mistune(解析) → ReportModel → python-docx(渲染) → DOCX\n```\n\n**优势**：完全可控，StyleMapping 随心定义\n**劣势**：要处理所有边缘情况（嵌套列表、表格内格式、图片、公式等）\n\n---\n\n## 二、核心架构选择（三种路线）\n\n### 路线 A：Pandoc-centric（薄封装）\n\n```\nMarkdown → pandoc(解析+基础DOCX) → python-docx(后处理: 重写样式) → 最终DOCX\n```\n\n**流程：**\n1. `pandoc input.md -o temp.docx --reference-doc=template.docx`（先用模板出初稿）\n2. python-docx 打开 temp.docx，遍历所有段落和 run\n3. 对每个元素：查 StyleMapping 表，重新应用模板样式\n\n**优点：**\n- 利用 pandoc 的鲁棒解析能力（表格、代码块、公式、图片等）\n- 自己只需写\"样式后处理\"层，代码量最小\n- pandoc 处理了 95% 的 content→layout 转换\n\n**缺点：**\n- 两遍扫描，速度慢\n- pandoc 可能在输出中用了内联格式（run.bold=true），后处理要反过来\"还原\"成字符样式\n- 依赖 pandoc 二进制（版本兼容性）\n- pandoc 对一些 Markdown 方言的处理可能不符合预期\n\n**适用规模**：Phase 1 MVP 快速验证、不需要高度定制的场景\n\n### 路线 B：纯 python-docx（全控制 — PRD 推荐路线）\n\n```\nMarkdown → mistune/markdown-it → ReportModel → python-docx(渲染器+样式映射器) → DOCX\n```\n\n**渲染器核心逻辑：**\n```python\nclass DocxRenderer:\n    def __init__(self, template_path: str, style_mapping: StyleMapping):\n        self.doc = Document(template_path)  # 以模板为基础\n        self.style_mapping = style_mapping\n\n    def render_paragraph(self, block: ParagraphBlock):\n        p = self.doc.add_paragraph()\n        # 段落样式：由模板决定\n        p.style = self.doc.styles[block.type]  # Heading1, Normal, ListBullet...\n        for span in block.spans:\n            run = p.add_run(span.text)\n            # 字符样式：查 StyleMapping 表\n            char_style = self.style_mapping.get(span.format)\n            if char_style:\n                run.style = self.doc.styles[char_style]  # 关键：用样式名，不设属性\n```\n\n**关键设计点：**\n- **不在 Run 上设 bold/italic/font 属性**，统一用 `run.style = doc.styles[name]`\n- 模板的样式定义是唯一来源\n- StyleMapping 表是 Markdown 格式标记 → 模板字符样式名称的映射\n\n**优点：**\n- 一次遍历，架构简洁\n- 完全控制样式映射逻辑\n- 不依赖外部二进制\n- StyleMapping 可以动态配置（YAML）\n\n**缺点：**\n- 需要自己处理 Markdown 的所有边缘情况\n- markdown-it/mistune 的 AST 到 DOCX 的映射成本较高\n\n### 路线 C：混合（pandoc 的嘴 + python-docx 的胃）\n\n```\nMarkdown → pandoc(解析为JSON AST) → Python(AST→ReportModel) → python-docx(渲染) → DOCX\n```\n\n```bash\npandoc input.md -t json | python3 render.py --template template.docx \u003e output.docx\n```\n\n**优点：**\n- 得到 pandoc 级别的解析质量（表格、公式、脚注、交叉引用全处理）\n- 渲染部分自己控制\n- `-t json` 是 pandoc 的标准输出，格式稳定\n\n**缺点：**\n- 仍然依赖 pandoc 二进制\n- AST→ReportModel 的转换有一定复杂度\n- pandoc AST 的结构和 python-docx 的段落模型差异较大\n\n---\n\n## 三、StyleMapping 表的设计\n\n这是项目核心创新点。建议设计为 YAML 配置文件，与模板分离。\n\n```yaml\n# style-mapping.yaml\nparagraph:\n  heading1: \"Heading 1\"           # Markdown # → 模板中的 \"Heading 1\" 样式\n  heading2: \"Heading 2\"\n  heading3: \"Heading 3\"\n  paragraph: \"Normal\"             # 普通段落\n  blockquote: \"Quote\"             # 引用块\n  code_block: \"Code\"              # 代码块\n  bullet_list: \"List Bullet\"      # 无序列表\n  ordered_list: \"List Number\"     # 有序列表\n  table_header: \"Table Header\"\n  table_cell: \"Table Cell\"\n\ninline:\n  bold: \"Strong Char\"             # **粗体** → 字符样式\n  italic: \"Emphasis Char\"         # *斜体* → 字符样式\n  code: \"Code Char\"               # `行内代码` → 字符样式\n  strikethrough: \"Strikethrough Char\"\n  underline: \"Underline Char\"\n  link: \"Hyperlink Char\"\n  subscript: \"Subscript Char\"\n  superscript: \"Superscript Char\"\n\nfallback:\n  paragraph: \"Normal\"             # 找不到映射时用的默认样式\n  inline: \"Default Paragraph Font\"\n```\n\n**渲染器行为：**\n```\n输入: \"这是**粗体**和*斜体*\"\n    ↓ mistune 解析\nAST: [文本(\"这是\"), Strong(\"粗体\"), 文本(\"和\"), Emph(\"斜体\")]\n    ↓ 查 StyleMapping\n    ↓ \n输出段落: 段落样式 \"Normal\"\n  run1: 文本 \"这是\"       → 无字符样式（继承段落样式）\n  run2: 文本 \"粗体\"       → run.style = doc.styles[\"Strong Char\"]\n  run3: 文本 \"和\"         → 无字符样式\n  run4: 文本 \"斜体\"       → run.style = doc.styles[\"Emphasis Char\"]\n```\n\n**优点**：用户换模板只需改 `style-mapping.yaml`，不需要改代码。不同模板可以有不同的样式名。\n\n---\n\n## 四、CLI 友好化设计\n\n### 4.1 Unix 哲学风格\n\n```bash\n# 基本用法\nmd2docx report.md --template company-template.docx -o report.docx\n\n# 管道模式\ncat report.md | md2docx --template company-template.docx \u003e report.docx\n\n# 指定样式映射\nmd2docx report.md --template t.docx -m style-mapping.yaml -o report.docx\n\n# 验证模式（不生成，只检查模板兼容性）\nmd2docx report.md --template t.docx --validate\n\n# 列出模板中可用的样式\nmd2docx --template t.docx --list-styles\n\n# 生成默认 style-mapping.yaml（基于模板自动推断）\nmd2docx --template t.docx --init-mapping\n```\n\n### 4.2 TUI 补全友好\n\n- `--bash-completion` 输出 shell 补全脚本\n- `md2docx \u003cTab\u003e` 自动补全 `.md` 文件\n- `--template \u003cTab\u003e` 扫描 `~/.config/md2docx/templates/` 目录\n\n### 4.3 退出码和 stderr 协议\n\n```\n退出码: 0=成功, 1=解析错误, 2=模板错误, 3=映射缺失\nstderr: 纯文本状态（适合终端查看）\nstdout: 二进制 DOCX（适合管道）\n```\n\n---\n\n## 五、GUI 友好化设计\n\n### 5.1 Web UI（Phase 3 方向）\n\n```\nFastAPI + Jinja2/React 前端\n```\n\n核心页面：\n1. **上传模板**：上传 .docx，自动分析样式目录+预览\n2. **编辑映射**：下拉选择 Markdown 格式→模板样式，可视化\n3. **上传/粘贴 Markdown**：实时预览渲染效果（docx→PDF or HTML 预览）\n4. **下载**：一键下载最终 DOCX\n\n### 5.2 更轻量的 GUI 方案\n\n| 方案 | 适合场景 | 技术栈 |\n|------|---------|--------|\n| **Gradio** | 内部工具、快速原型 | Python 纯 |\n| **Textual** | 终端内 TUI（无需浏览器） | Python 纯 |\n| **Streamlit** | 数据工作者快速展示 | Python 纯 |\n| **Electron** | 独立桌面应用 | 太重，不推荐 |\n| **Typora 插件** | 如果用户用 Typora 写 MD | 与编辑器集成 |\n\n**Gradio 最快：**\n```python\nimport gradio as gr\n\ndef render(md_text, template_file):\n    with tempfile.NamedTemporaryFile() as f:\n        result = engine.render(md_text, template_file.name)\n        return result.path\n\ngr.Interface(\n    fn=render,\n    inputs=[gr.Textbox(label=\"Markdown\"), gr.File(label=\"模板 .docx\")],\n    outputs=gr.File(label=\"输出 .docx\"),\n).launch()\n```\n\n### 5.3 CLI + GUI 复用同一核心\n\n```python\n# core/engine.py — 纯逻辑，无 IO 依赖\nclass ReportEngine:\n    def render(self, md: str, template: TemplateProfile, mapping: StyleMapping) -\u003e DocxOutput: ...\n\n# cli/main.py — 终端入口\n# web/app.py — Web 入口\n# skill/skill.py — Hermes Agent 入口\n```\n\n---\n\n## 六、Hermes Agent Skill 集成\n\n### 6.1 作为终端命令技能\n\n```yaml\n# SKILL.md\nname: report-engine\ndescription: 将 Markdown 渲染为带模板样式的 DOCX 文档\ncommands:\n  - md2docx report.md -t template.docx -o output.docx\n```\n\nAgent 调用方式：\n```\n用户: \"把这份 report.md 套用公司模板生成 DOCX\"\n→ Agent 执行: md2docx report.md --template ~/templates/company.docx -o report.docx\n→ 返回文件路径给用户\n```\n\n### 6.2 作为 Agent 内部函数\n\nSkill 里提供 Python API，Agent 在 execute_code 中直接调用：\n```python\nfrom report_engine import render_docx\npath = render_docx(\"report.md\", template=\"company.docx\", mapping=\"style-mapping.yaml\")\n```\n\n---\n\n## 七、实现路线建议\n\n### Phase 1（验证概念）：路线 A（Pandoc-centric）\n\n```bash\npandoc input.md -o temp.docx --reference-doc=template.docx\npython3 -c \"\nfrom docx import Document\ndoc = Document('temp.docx')\n# 遍历所有段落，对每个 run 应用模板的字符样式\nfor p in doc.paragraphs:\n    for run in p.runs:\n        if run.bold:\n            run.bold = None  # 清除属性\n            run.style = doc.styles['Strong Char']\ndoc.save('output.docx')\n\"\n```\n\n优点：半天就能跑通完整链路，验证\"模板洗掉所有样式\"的概念。\n\n### Phase 2（完整实现）：路线 B（纯 python-docx）\n\n转向纯 python-docx 路线，原因：\n- 不依赖 pandoc 版本\n- 真正的单次遍历\n- StyleMapping 表成为一等公民\n- 可以精细控制渲染质量\n\n### Phase 3（生态）: CLI + GUI + Skill 三件套\n\n复用同一 `core/engine.py`，封装三个入口：\n- `cli/main.py` — click/argparse CLI\n- `web/app.py` — FastAPI + Gradio\n- `skill/SKILL.md` — Hermes Agent 技能描述\n\n---\n\n## 八、需要避免的坑\n\n1. **不要同时设 run.style 和 run.bold** — python-docx 会合并行为不可预测，务必二选一\n2. **模板分析器必须提取完整样式目录** — 包括 numbering definitions（列表编号）、character styles（字符样式）、table styles（表格样式）\n3. **No-template 路径不需要** — 内置一个默认模板（如 pandoc 的 reference.docx）\n4. **链接和公式可能是例外** — OpenXML 的 hyperlink 需要特殊处理，公式（OMML）不支持样式覆盖\n5. **嵌套格式**（`***粗斜体***`）— 需要定义复合映射，或者直接叠加字符样式（python-docx 不支持 run 上叠加多个字符样式，需要创建复合字符样式）\n6. **跨平台** — python-docx 在 macOS/Linux/Windows 行为一致，但字体渲染不同\n\n---\n\n## 九、参考项目\n\n| 项目 | 地址 | 借鉴点 |\n|------|------|--------|\n| **pandoc** | pandoc.org | 解析器质量和参考文档系统 |\n| **python-docx-template** | github.com/elapouya/python-docx-template | DOCX 模板的 Subdoc 机制 |\n| **mistune** | github.com/lepture/mistune | Python Markdown 解析器（速度最快） |\n| **markdown-it-py** | github.com/executablebooks/markdown-it-py | 插件化 Markdown 解析（兼容 JS 生态） |\n| **WeasyPrint** | weasyprint.org | HTML→PDF 的样式继承模型值得借鉴 |\n| **Typst** | typst.app | 新一代排版系统，可以作为长期对标 |\n"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$L11\",null,{\"post\":{\"slug\":\"markdown-to-docx-research\",\"title\":\"将 Markdown 套入 DOCX 模板的实现方案调研\",\"date\":\"2026-06-10T00:00:00.000Z\",\"tags\":[\"tools\",\"productivity\"],\"category\":\"tech\",\"description\":\"\u003e 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是唯一样式权威（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模...\",\"content\":\"$12\"}}]\n"])</script><script>self.__next_f.push([1,"c:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"13:I[23227,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"IconMark\"]\n9:null\ne:[[\"$\",\"title\",\"0\",{\"children\":\"Nemo — Personal Space\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"chasing dreams | 全栈开发者 · RAG \u0026 RL 爱好者\"}],[\"$\",\"meta\",\"2\",{\"name\":\"author\",\"content\":\"Nemo\"}],[\"$\",\"meta\",\"3\",{\"name\":\"keywords\",\"content\":\"Nemo,个人网站,博客,全栈开发,RAG,强化学习\"}],[\"$\",\"meta\",\"4\",{\"property\":\"og:title\",\"content\":\"Nemo — Personal Space\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:description\",\"content\":\"chasing dreams | 全栈开发者 · RAG \u0026 RL 爱好者\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:locale\",\"content\":\"zh_CN\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"$\",\"meta\",\"8\",{\"name\":\"twitter:card\",\"content\":\"summary\"}],[\"$\",\"meta\",\"9\",{\"name\":\"twitter:title\",\"content\":\"Nemo — Personal Space\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:description\",\"content\":\"chasing dreams | 全栈开发者 · RAG \u0026 RL 爱好者\"}],[\"$\",\"link\",\"11\",{\"rel\":\"icon\",\"href\":\"/favicon.ico?favicon.2os6yout_mfjj.ico\",\"sizes\":\"640x640\",\"type\":\"image/x-icon\"}],[\"$\",\"link\",\"12\",{\"rel\":\"icon\",\"href\":\"/Image/favicon.ico\"}],[\"$\",\"$L13\",\"13\",{}]]\n"])</script></body></html>

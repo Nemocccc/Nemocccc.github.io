@@ -1,0 +1,431 @@
+<!DOCTYPE html><html lang="zh"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" href="/_next/static/media/797e433ab948586e-s.p.0r6juujl39pe6.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/feb57b2dc8f29018-s.p.3qy4m29-cg3o4.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="stylesheet" href="/_next/static/chunks/233p45nuh4m5b.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/chunks/3mi_koyhkiqud.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/chunks/1p3suf_njwawp.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/2nkm9os0ru77b.js"/><script src="/_next/static/chunks/0ne7ingwf68tr.js" async=""></script><script src="/_next/static/chunks/3nngod-hej9xj.js" async=""></script><script src="/_next/static/chunks/turbopack-2x29guilj5b3y.js" async=""></script><script src="/_next/static/chunks/1xh5_hh-4xv03.js" async=""></script><script src="/_next/static/chunks/18071siihbhhu.js" async=""></script><script src="/_next/static/chunks/3zo6056xuvsb1.js" async=""></script><script src="/_next/static/chunks/2c9lkvph-ta0n.js" async=""></script><script src="/_next/static/chunks/3jf8q_9-ia3no.js" async=""></script><script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="next-size-adjust" content=""/><title>Nemo — Personal Space</title><meta name="description" content="chasing dreams | 全栈开发者 · RAG &amp; RL 爱好者"/><meta name="author" content="Nemo"/><meta name="keywords" content="Nemo,个人网站,博客,全栈开发,RAG,强化学习"/><meta property="og:title" content="Nemo — Personal Space"/><meta property="og:description" content="chasing dreams | 全栈开发者 · RAG &amp; RL 爱好者"/><meta property="og:locale" content="zh_CN"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Nemo — Personal Space"/><meta name="twitter:description" content="chasing dreams | 全栈开发者 · RAG &amp; RL 爱好者"/><link rel="icon" href="/favicon.ico?favicon.2os6yout_mfjj.ico" sizes="640x640" type="image/x-icon"/><link rel="icon" href="/Image/favicon.ico"/><script src="/_next/static/chunks/0cz1d0mv5g_q7.js" noModule=""></script></head><body class="geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable noto_sans_sc_2bb252ae-module__TC8U_W__variable antialiased"><div hidden=""><!--$--><!--/$--></div><script>((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","system",null,["light","dark"],null,true,true)</script><div class="min-h-screen flex flex-col"><header class="sticky top-0 z-50 w-full glass backdrop-blur-md border-b border-border/50"><div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between"><a class="text-xl font-bold gradient-text hover:opacity-80 transition-opacity shrink-0" href="/">Nemo</a><nav class="hidden sm:flex items-center gap-1"><a class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-muted/50" href="/">首页</a><a class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-muted/50" href="/blogs">博客</a><a class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 text-muted-foreground hover:text-foreground hover:bg-muted/50" href="/resume">简历</a></nav><div class="hidden sm:flex items-center gap-2"><button class="
+        relative px-3 py-1.5 rounded-full text-sm font-medium
+        transition-all duration-300
+        hover:bg-muted/80 active:scale-95
+        text-muted-foreground hover:text-foreground
+        border border-border/50
+      " aria-label="Switch to English">EN</button><div class="w-9 h-9"></div></div><div class="flex sm:hidden items-center gap-2"><div class="w-9 h-9"></div><button class="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all" aria-label="菜单"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-5 h-5" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></header><main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12"><a class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6 sm:mb-8 group" href="/blogs"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left w-4 h-4 group-hover:-translate-x-0.5 transition-transform" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>返回博客列表</a><header class="mb-8 sm:mb-10"><h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-tight mb-4">DeepSeek-V4-Flash 内网 vLLM 部署完全指南</h1><div class="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground mb-4"><span class="flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>2026年6月15日</span><span class="flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>8<!-- --> 分钟阅读</span></div><div class="flex flex-wrap gap-2"><a class="px-2.5 py-1 rounded-full text-xs bg-muted/50 text-muted-foreground hover:text-accent hover:bg-accent/5 border border-border/30 transition-colors" href="/blogs?tag=llm">#<!-- -->llm</a><a class="px-2.5 py-1 rounded-full text-xs bg-muted/50 text-muted-foreground hover:text-accent hover:bg-accent/5 border border-border/30 transition-colors" href="/blogs?tag=deployment">#<!-- -->deployment</a><a class="px-2.5 py-1 rounded-full text-xs bg-muted/50 text-muted-foreground hover:text-accent hover:bg-accent/5 border border-border/30 transition-colors" href="/blogs?tag=vllm">#<!-- -->vllm</a></div></header><article class="markdown-body"><h1 id="deepseek-v4-flash-内网-vllm-部署完全指南"><a href="#deepseek-v4-flash-内网-vllm-部署完全指南">DeepSeek-V4-Flash 内网 vLLM 部署完全指南</a></h1>
+<h2 id="一模型规格"><a href="#一模型规格">一、模型规格</a></h2>
+<p>DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>项目</th><th>值</th></tr></thead><tbody><tr><td>架构</td><td>MoE（Mixture of Experts）</td></tr><tr><td>总参数量</td><td><strong>284B</strong></td></tr><tr><td>激活参数量</td><td><strong>13B</strong>（每次推理只激活 13B，其余在 MoE 专家中稀疏路由）</td></tr><tr><td>专家数</td><td>256 个 routed experts + 1 个 shared expert</td></tr><tr><td>每 token 激活专家数</td><td>6</td></tr><tr><td>上下文长度</td><td><strong>1M tokens</strong>（百万级）</td></tr><tr><td>权重精度</td><td><strong>FP4 + FP8 混合</strong>（原生已量化）</td></tr><tr><td>分片数</td><td>46 个 safetensors 文件</td></tr><tr><td>磁盘总大小</td><td>~159 GB</td></tr><tr><td>架构名称</td><td><code>deepseek_v4</code>（自定义架构，非标准 Llama）</td></tr><tr><td>许可证</td><td>MIT</td></tr></tbody></table>
+<p><strong>配置文件关键字段</strong>（<code>config.json</code>）：</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;deepseek_v4&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;expert_dtype&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;fp4&quot;</span><span class="hljs-punctuation">,</span>           <span class="hljs-comment">// MoE 专家权重是原生的 4-bit</span>
+  <span class="hljs-attr">&quot;quantization_config&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;quant_method&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;fp8&quot;</span><span class="hljs-punctuation">,</span>          <span class="hljs-comment">// 其余权重是 FP8</span>
+    <span class="hljs-attr">&quot;weight_block_size&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">128</span><span class="hljs-punctuation">,</span> <span class="hljs-number">128</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;num_hidden_layers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">43</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;hidden_size&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4096</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;num_attention_heads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">64</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;num_key_value_heads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>       <span class="hljs-comment">// MLA (Multi-head Latent Attention)</span>
+  <span class="hljs-attr">&quot;head_dim&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;n_routed_experts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">256</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;num_experts_per_tok&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;max_position_embeddings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1048576</span>  <span class="hljs-comment">// 1M tokens</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<hr/>
+<h2 id="二这个模型特殊在哪"><a href="#二这个模型特殊在哪">二、这个模型特殊在哪</a></h2>
+<p>和普通模型（Qwen、Llama）比，DeepSeek-V4-Flash 有几个关键差异：</p>
+<h3 id="-模型已经是原生量化的"><a href="#-模型已经是原生量化的">① 模型已经是原生量化的</a></h3>
+<p>大多数开源模型以 FP16/BF16 精度发布，需要你自己做 AWQ/GPTQ 量化才能节约显存。</p>
+<p><strong>但这个模型不一样</strong>——DeepSeek 发布时就已经是 FP4 + FP8 混合精度：</p>
+<ul>
+<li><strong>MoE 专家参数</strong>：FP4（4-bit 浮点）</li>
+<li><strong>其他参数</strong>：FP8（8-bit 浮点）</li>
+</ul>
+<p>这意味着你<strong>不需要</strong>再做额外的量化步骤（不需要 AutoAWQ，不需要 GPTQ）。</p>
+<h3 id="-它是-moe-架构"><a href="#-它是-moe-架构">② 它是 MoE 架构</a></h3>
+<pre><code>输入 token
+    │
+    ▼
+┌──────────┐
+│ Router    │  ← 决定这个 token 应该分配给哪 6 个专家
+│ (门控网络) │
+└────┬─────┘
+     │
+     ▼
+  ┌──┴──┐  ┌──┴──┐  ┌──┴──┐      ┌──┴──┐
+  │专家1│  │专家2│  │专家3│  ...  │专家6│  ← 只激活 6/256 个专家
+  └──┬──┘  └──┬──┘  └──┬──┘      └──┬──┘
+     └────────┴────────┴────────────┘
+                    │
+                    ▼
+              输出合并
+</code></pre>
+<p>核心优势：<strong>总参数量 284B，但每次只激活 13B</strong>。也就是说，它的推理计算量大约相当于一个 13B 的 dense 模型，但模型容量（记忆的知识）相当于 284B。</p>
+<p><strong>对部署的影响</strong>：</p>
+<ul>
+<li>显存占用主要由 284B 总参数决定（虽然计算量小，但所有专家的权重都得加载到显存）</li>
+<li>因为是 FP4/FP8 混合，实际显存约 ~80-100GB（而不是 284B × FP16 的 ~568GB）</li>
+<li>推理速度 ≈ 13B dense 模型</li>
+</ul>
+<h3 id="-它使用-mlamulti-head-latent-attention"><a href="#-它使用-mlamulti-head-latent-attention">③ 它使用 MLA（Multi-head Latent Attention）</a></h3>
+<p>DeepSeek-V4 没有用标准的 Multi-Head Attention，而是用自己的 MLA：</p>
+<ul>
+<li><code>num_key_value_heads = 1</code>（只有一个 KV head）</li>
+<li><code>head_dim = 512</code>（每个 head 的维度很大）</li>
+<li>通过低秩投影（<code>q_lora_rank</code>, <code>o_lora_rank</code>）压缩 KV Cache</li>
+</ul>
+<p><strong>对部署的影响</strong>：MLA 的 KV Cache 比标准 MHA 小得多，这对 1M 长上下文场景非常关键。但 vLLM 需要专门支持这种注意力机制。</p>
+<h3 id="-它还有-csahca-混合注意力架构"><a href="#-它还有-csahca-混合注意力架构">④ 它还有 CSA/HCA 混合注意力架构</a></h3>
+<p>DeepSeek-V4 引入了：</p>
+<ul>
+<li><strong>CSA</strong>（Compressed Sparse Attention）：压缩稀疏注意力</li>
+<li><strong>HCA</strong>（Heavily Compressed Attention）：重度压缩注意力</li>
+</ul>
+<p>在 1M 上下文下，相比标准注意力只需要 27% 的 FLOPs 和 10% 的 KV Cache。</p>
+<hr/>
+<h2 id="三vllm-对-deepseek-v4-的支持现状"><a href="#三vllm-对-deepseek-v4-的支持现状">三、vLLM 对 DeepSeek-V4 的支持现状</a></h2>
+<h3 id="当前状态截至-2026-年-6-月"><a href="#当前状态截至-2026-年-6-月">当前状态（截至 2026 年 6 月）</a></h3>
+<p>vLLM 正在积极开发 DeepSeek-V4 支持，<strong>已有初步支持但尚未完全稳定</strong>：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>功能</th><th>状态</th></tr></thead><tbody><tr><td>基础推理（MegaMoE + FP4 Indexer）</td><td>✅ 已完成（PR #40860）</td></tr><tr><td>FP4 权重加载</td><td>✅ 已完成</td></tr><tr><td>FP8 group quantization kernel</td><td>✅ 已完成</td></tr><tr><td>Norm + Router 融合</td><td>✅ 已完成</td></tr><tr><td>Multi-stream 4 GEMM</td><td>✅ 已完成</td></tr><tr><td>Nvlink all-to-all BF16/FP8</td><td>✅ 已完成</td></tr><tr><td>Fast topk kernel</td><td>❌ 开发中</td></tr><tr><td>Indexer topk + page table fusion</td><td>❌ 开发中</td></tr><tr><td>Pipeline parallelism</td><td>❌ 开发中</td></tr><tr><td>KV cache offloading</td><td>❌ 开发中</td></tr><tr><td>MTP（Multi-Token Prediction）优化</td><td>❌ 开发中</td></tr></tbody></table>
+<h3 id="你需要用哪个版本的-vllm"><a href="#你需要用哪个版本的-vllm">你需要用哪个版本的 vLLM</a></h3>
+<p><strong>建议使用最新版 vLLM（&gt;= v0.11.0 或更新的 nightly）</strong>，或者用官方 Docker 镜像的最新 tag。</p>
+<p>如果官方镜像还不支持，可能需要：</p>
+<ol>
+<li>从 vLLM 源码的 main 分支 build Docker 镜像</li>
+<li>或者使用 DeepSeek 自己提供的推理栈（如果官方 vLLM 还不稳定）</li>
+</ol>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># 从源码构建（包含最新 DeepSeek-V4 支持）</span>
+git <span class="hljs-built_in">clone</span> https://github.com/vllm-project/vllm.git
+<span class="hljs-built_in">cd</span> vllm
+docker build -t vllm-dsv4 .
+docker save vllm-dsv4 -o vllm-dsv4.tar
+</code></pre>
+<hr/>
+<h2 id="四部署流程"><a href="#四部署流程">四、部署流程</a></h2>
+<h3 id="准备工作"><a href="#准备工作">准备工作</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>需要准备的</th><th>说明</th><th>大小预估</th></tr></thead><tbody><tr><td>vLLM Docker 镜像</td><td>需支持 deepseek_v4 架构</td><td>~15GB</td></tr><tr><td>模型文件（46 个分片）</td><td>从 ModelScope 下载</td><td>~159GB</td></tr><tr><td>足够显存的 GPU</td><td>见下方显存估算</td><td>—</td></tr></tbody></table>
+<h3 id="显存估算"><a href="#显存估算">显存估算</a></h3>
+<pre><code>DeepSeek-V4-Flash 284B params, FP4+FP8 mixed (~0.5-1 byte/param avg)
+
+模型权重 ≈ 159GB（磁盘大小就是权重大小）
+KV Cache（1M 上下文）≈ MLA 压缩后约 10-30GB
+中间激活 + 开销 ≈ 5-10GB
+
+总显存需求 ≈ 180-200GB（1M 上下文）
+              ≈ 80-100GB（32K 上下文）
+
+推荐配置：
+  · 8 × A100 80GB（1M 上下文）
+  · 2 × A100 80GB（32K 上下文）
+  · 4 × RTX 6000 48GB（32K 上下文）
+</code></pre>
+<h3 id="具体步骤"><a href="#具体步骤">具体步骤</a></h3>
+<p><strong>有网环境</strong>：</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># 1. 下载模型</span>
+pip install modelscope
+python3 -c <span class="hljs-string">&quot;
+from modelscope import snapshot_download
+snapshot_download(&#x27;deepseek-ai/DeepSeek-V4-Flash&#x27;, local_dir=&#x27;./DeepSeek-V4-Flash&#x27;)
+&quot;</span>
+<span class="hljs-comment"># 下载后得到 46 个分片文件</span>
+
+<span class="hljs-comment"># 2. 准备 vLLM 镜像（建议用最新版，或从源码 build）</span>
+<span class="hljs-comment"># 方案 A：用官方最新</span>
+docker pull vllm/vllm-openai:latest
+docker save vllm/vllm-openai:latest -o vllm.tar
+
+<span class="hljs-comment"># 方案 B：如果官方版不支持，从 main 分支 build</span>
+git <span class="hljs-built_in">clone</span> https://github.com/vllm-project/vllm.git
+<span class="hljs-built_in">cd</span> vllm
+docker build -t vllm-dsv4 .
+docker save vllm-dsv4 -o vllm-dsv4.tar
+
+<span class="hljs-comment"># 3. 把镜像 + 模型传到内网</span>
+</code></pre>
+<p><strong>内网环境</strong>：</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># 4. 导入镜像</span>
+docker load &lt; vllm-dsv4.tar
+
+<span class="hljs-comment"># 5. 启动 vLLM 服务</span>
+docker run -d \
+  --gpus all \
+  --network host \
+  --shm-size 64g \
+  -v /data/DeepSeek-V4-Flash:/model \
+  --name dsv4-service \
+  vllm-dsv4:latest \
+  --model /model \
+  --served-model-name deepseek-v4-flash \
+  --tensor-parallel-size 8 \        <span class="hljs-comment"># 用 8 张 GPU</span>
+  --max-model-len 32768 \            <span class="hljs-comment"># 先用 32K 上下文测试</span>
+  --gpu-memory-utilization 0.9 \
+  --port 8000 \
+  --trust-remote-code
+
+<span class="hljs-comment"># 6. 验证</span>
+curl http://localhost:8000/v1/chat/completions \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{&quot;model&quot;: &quot;deepseek-v4-flash&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;你好&quot;}]}&#x27;</span>
+</code></pre>
+<h3 id="关键参数说明"><a href="#关键参数说明">关键参数说明</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>参数</th><th>建议值</th><th>说明</th></tr></thead><tbody><tr><td><code>--tensor-parallel-size</code></td><td>GPU 数量</td><td>张量并行，每张卡分摊一部分专家和注意力计算</td></tr><tr><td><code>--max-model-len</code></td><td>32768（调试）→ 1048576（生产）</td><td>上下文越长，KV Cache 越占显存</td></tr><tr><td><code>--gpu-memory-utilization</code></td><td>0.9</td><td>留 10% 给中间计算</td></tr><tr><td><code>--shm-size</code></td><td>64g 或更高</td><td>MoE 的 all-to-all 通信需要大量共享内存</td></tr><tr><td><code>--trust-remote-code</code></td><td>必须加</td><td>DeepSeek-V4 的 config 里有自定义代码</td></tr></tbody></table>
+<hr/>
+<h2 id="五显存不足怎么办"><a href="#五显存不足怎么办">五、显存不足怎么办？</a></h2>
+<h3 id="moe-模型的特殊性"><a href="#moe-模型的特殊性">MoE 模型的特殊性</a></h3>
+<p>DeepSeek-V4-Flash 284B 权重全部要加载到显存。vLLM 用 <code>--tensor-parallel-size</code> 把权重切到多张卡上。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>GPU 配置</th><th>能否跑 32K 上下文</th><th>能否跑 1M 上下文</th></tr></thead><tbody><tr><td>1 × A100 80GB</td><td>❌ 显存不够</td><td>❌</td></tr><tr><td>4 × A100 80GB</td><td>✅ 可以</td><td>❌</td></tr><tr><td>8 × A100 80GB</td><td>✅</td><td>✅ 勉强</td></tr><tr><td>8 × H100 80GB</td><td>✅</td><td>✅ 较好</td></tr></tbody></table>
+<h3 id="实在不够怎么办"><a href="#实在不够怎么办">实在不够怎么办？</a></h3>
+<ol>
+<li><strong>减短 max-model-len</strong>：上下文减半，KV Cache 减半</li>
+<li><strong>增加 tensor-parallel-size</strong>：用更多小显存卡分摊</li>
+<li><strong>pipeline-parallel-size</strong>：多机流水线并行，适合多台 4-GPU 服务器</li>
+<li><strong>等 vLLM 的 KV cache offloading 功能完成</strong>（路线图中）：把不常用的 KV Cache offload 到 CPU 内存</li>
+</ol>
+<hr/>
+<h2 id="六和普通模型部署的关键区别"><a href="#六和普通模型部署的关键区别">六、和普通模型部署的关键区别</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>普通模型（Qwen/Llama）</th><th>DeepSeek-V4-Flash</th></tr></thead><tbody><tr><td>是否需要量化</td><td>需要（AWQ/GPTQ）</td><td><strong>不需要</strong>，已是 FP4+FP8</td></tr><tr><td>架构</td><td>Dense Transformer</td><td>MoE + MLA + CSA/HCA</td></tr><tr><td>vLLM 支持</td><td>稳定</td><td>开发中，需最新版</td></tr><tr><td>总参/激活参</td><td>相同</td><td>284B / 13B（巨大差异）</td></tr><tr><td>显存瓶颈</td><td>计算量</td><td>模型权重加载（所有专家都要加载）</td></tr><tr><td>推理速度</td><td>与总参数成正比</td><td>与激活参数成正比（≈13B 模型速度）</td></tr><tr><td>上下文能力</td><td>通常 128K</td><td>原生 1M</td></tr></tbody></table>
+<hr/>
+<h2 id="七参考链接"><a href="#七参考链接">七、参考链接</a></h2>
+<ul>
+<li>DeepSeek-V4 技术报告: <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf">https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf</a></li>
+<li>HuggingFace 模型页: <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash">https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash</a></li>
+<li>ModelScope 地址: <a href="https://modelscope.cn/models/deepseek-ai/DeepSeek-V4-Flash">https://modelscope.cn/models/deepseek-ai/DeepSeek-V4-Flash</a></li>
+<li>vLLM DeepSeek-V4 Roadmap: <a href="https://github.com/vllm-project/vllm/issues/40902">https://github.com/vllm-project/vllm/issues/40902</a></li>
+<li>vLLM GitHub: <a href="https://github.com/vllm-project/vllm">https://github.com/vllm-project/vllm</a></li>
+</ul></article><div class="py-6 text-center text-muted-foreground text-sm">加载评论中...</div></main><footer class="border-t border-border/50 bg-card/30 mt-16"><div class="max-w-5xl mx-auto px-4 py-8"><div class="flex flex-col sm:flex-row items-center justify-between gap-4"><p class="text-sm text-muted-foreground">© 2025 Nemo. All rights reserved.</p><div class="flex items-center gap-3"><a href="https://github.com/Nemocccc" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe w-4 h-4" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg></a><a href="mailto:1774747097@qq.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200" aria-label="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail w-4 h-4" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></a></div></div><div class="mt-4 text-center"><button class="text-xs text-muted-foreground hover:text-foreground transition-colors">友情链接<!-- --> · <!-- -->自己跟自己算不算友情？</button></div><div class="mt-4 flex items-center justify-center gap-1 text-xs text-muted-foreground/60"><span>Built with</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart w-3 h-3 text-accent fill-accent" aria-hidden="true"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path></svg><span>using Next.js &amp; Tailwind</span></div><div class="mt-2 text-center text-xs text-muted-foreground/40"><span id="busuanzi_container_site_pv">👁️ <span id="busuanzi_value_site_pv"></span> visits</span></div></div></footer><button class="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50 p-3 rounded-full bg-accent text-white shadow-lg hover:bg-accent/90 hover:shadow-xl transition-all duration-300 opacity-0 translate-y-4 pointer-events-none" aria-label="回到顶部"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up w-5 h-5" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg></button></div><!--$--><!--/$--><script src="/_next/static/chunks/2nkm9os0ru77b.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[59919,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"ThemeProvider\"]\n3:I[88343,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"I18nProvider\"]\n4:I[68463,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"default\"]\n5:I[57986,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"default\"]\n7:I[3576,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"OutletBoundary\"]\n8:\"$Sreact.suspense\"\nb:I[3576,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"ViewportBoundary\"]\nd:I[3576,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"MetadataBoundary\"]\nf:I[60199,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"default\",1]\n:HL[\"/_next/static/chunks/233p45nuh4m5b.css\",\"style\"]\n:HL[\"/_next/static/chunks/3mi_koyhkiqud.css\",\"style\"]\n:HL[\"/_next/static/chunks/1p3suf_njwawp.css\",\"style\"]\n:HL[\"/_next/static/media/797e433ab948586e-s.p.0r6juujl39pe6.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/feb57b2dc8f29018-s.p.3qy4m29-cg3o4.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"c\":[\"\",\"blogs\",\"deepseek-vllm-deploy\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"blogs\",{\"children\":[[\"slug\",\"deepseek-vllm-deploy\",\"d\",null],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",16],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/233p45nuh4m5b.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/3mi_koyhkiqud.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"2\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/1p3suf_njwawp.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/18071siihbhhu.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"zh\",\"suppressHydrationWarning\":true,\"children\":[\"$\",\"body\",null,{\"className\":\"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable noto_sans_sc_2bb252ae-module__TC8U_W__variable antialiased\",\"children\":[[\"$\",\"$L2\",null,{\"children\":[\"$\",\"$L3\",null,{\"children\":[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}],[\"$\",\"script\",null,{\"async\":true,\"src\":\"//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js\"}]]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L4\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L5\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L6\",[[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/3zo6056xuvsb1.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/2c9lkvph-ta0n.js\",\"async\":true,\"nonce\":\"$undefined\"}],[\"$\",\"script\",\"script-2\",{\"src\":\"/_next/static/chunks/3jf8q_9-ia3no.js\",\"async\":true,\"nonce\":\"$undefined\"}]],[\"$\",\"$L7\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@9\"}]}]]}],{},null,false,null]},null,false,\"$@a\"]},null,false,\"$@a\"]},null,false,null],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$Lb\",null,{\"children\":\"$Lc\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Ld\",null,{\"children\":[\"$\",\"$8\",null,{\"name\":\"Next.Metadata\",\"children\":\"$Le\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$f\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/233p45nuh4m5b.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"1\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/3mi_koyhkiqud.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}],[\"$\",\"link\",\"2\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/1p3suf_njwawp.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]]],\"S\":true,\"h\":null,\"s\":\"$undefined\",\"l\":\"$undefined\",\"p\":\"$undefined\",\"d\":\"$undefined\",\"b\":\"7aCzreAMfD93h2z-OaCiG\"}\n"])</script><script>self.__next_f.push([1,"10:[]\na:\"$W10\"\n"])</script><script>self.__next_f.push([1,"11:I[22210,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\",\"/_next/static/chunks/3zo6056xuvsb1.js\",\"/_next/static/chunks/2c9lkvph-ta0n.js\",\"/_next/static/chunks/3jf8q_9-ia3no.js\"],\"default\"]\n12:T25c6,"])</script><script>self.__next_f.push([1,"\n# DeepSeek-V4-Flash 内网 vLLM 部署完全指南\n\n## 一、模型规格\n\nDeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：\n\n| 项目 | 值 |\n|------|-----|\n| 架构 | MoE（Mixture of Experts） |\n| 总参数量 | **284B** |\n| 激活参数量 | **13B**（每次推理只激活 13B，其余在 MoE 专家中稀疏路由） |\n| 专家数 | 256 个 routed experts + 1 个 shared expert |\n| 每 token 激活专家数 | 6 |\n| 上下文长度 | **1M tokens**（百万级） |\n| 权重精度 | **FP4 + FP8 混合**（原生已量化） |\n| 分片数 | 46 个 safetensors 文件 |\n| 磁盘总大小 | ~159 GB |\n| 架构名称 | `deepseek_v4`（自定义架构，非标准 Llama） |\n| 许可证 | MIT |\n\n**配置文件关键字段**（`config.json`）：\n\n```json\n{\n  \"model_type\": \"deepseek_v4\",\n  \"expert_dtype\": \"fp4\",           // MoE 专家权重是原生的 4-bit\n  \"quantization_config\": {\n    \"quant_method\": \"fp8\",          // 其余权重是 FP8\n    \"weight_block_size\": [128, 128]\n  },\n  \"num_hidden_layers\": 43,\n  \"hidden_size\": 4096,\n  \"num_attention_heads\": 64,\n  \"num_key_value_heads\": 1,       // MLA (Multi-head Latent Attention)\n  \"head_dim\": 512,\n  \"n_routed_experts\": 256,\n  \"num_experts_per_tok\": 6,\n  \"max_position_embeddings\": 1048576  // 1M tokens\n}\n```\n\n---\n\n## 二、这个模型特殊在哪\n\n和普通模型（Qwen、Llama）比，DeepSeek-V4-Flash 有几个关键差异：\n\n### ① 模型已经是原生量化的\n\n大多数开源模型以 FP16/BF16 精度发布，需要你自己做 AWQ/GPTQ 量化才能节约显存。\n\n**但这个模型不一样**——DeepSeek 发布时就已经是 FP4 + FP8 混合精度：\n- **MoE 专家参数**：FP4（4-bit 浮点）\n- **其他参数**：FP8（8-bit 浮点）\n\n这意味着你**不需要**再做额外的量化步骤（不需要 AutoAWQ，不需要 GPTQ）。\n\n### ② 它是 MoE 架构\n\n```\n输入 token\n    │\n    ▼\n┌──────────┐\n│ Router    │  ← 决定这个 token 应该分配给哪 6 个专家\n│ (门控网络) │\n└────┬─────┘\n     │\n     ▼\n  ┌──┴──┐  ┌──┴──┐  ┌──┴──┐      ┌──┴──┐\n  │专家1│  │专家2│  │专家3│  ...  │专家6│  ← 只激活 6/256 个专家\n  └──┬──┘  └──┬──┘  └──┬──┘      └──┬──┘\n     └────────┴────────┴────────────┘\n                    │\n                    ▼\n              输出合并\n```\n\n核心优势：**总参数量 284B，但每次只激活 13B**。也就是说，它的推理计算量大约相当于一个 13B 的 dense 模型，但模型容量（记忆的知识）相当于 284B。\n\n**对部署的影响**：\n- 显存占用主要由 284B 总参数决定（虽然计算量小，但所有专家的权重都得加载到显存）\n- 因为是 FP4/FP8 混合，实际显存约 ~80-100GB（而不是 284B × FP16 的 ~568GB）\n- 推理速度 ≈ 13B dense 模型\n\n### ③ 它使用 MLA（Multi-head Latent Attention）\n\nDeepSeek-V4 没有用标准的 Multi-Head Attention，而是用自己的 MLA：\n- `num_key_value_heads = 1`（只有一个 KV head）\n- `head_dim = 512`（每个 head 的维度很大）\n- 通过低秩投影（`q_lora_rank`, `o_lora_rank`）压缩 KV Cache\n\n**对部署的影响**：MLA 的 KV Cache 比标准 MHA 小得多，这对 1M 长上下文场景非常关键。但 vLLM 需要专门支持这种注意力机制。\n\n### ④ 它还有 CSA/HCA 混合注意力架构\n\nDeepSeek-V4 引入了：\n- **CSA**（Compressed Sparse Attention）：压缩稀疏注意力\n- **HCA**（Heavily Compressed Attention）：重度压缩注意力\n\n在 1M 上下文下，相比标准注意力只需要 27% 的 FLOPs 和 10% 的 KV Cache。\n\n---\n\n## 三、vLLM 对 DeepSeek-V4 的支持现状\n\n### 当前状态（截至 2026 年 6 月）\n\nvLLM 正在积极开发 DeepSeek-V4 支持，**已有初步支持但尚未完全稳定**：\n\n| 功能 | 状态 |\n|------|------|\n| 基础推理（MegaMoE + FP4 Indexer） | ✅ 已完成（PR #40860） |\n| FP4 权重加载 | ✅ 已完成 |\n| FP8 group quantization kernel | ✅ 已完成 |\n| Norm + Router 融合 | ✅ 已完成 |\n| Multi-stream 4 GEMM | ✅ 已完成 |\n| Nvlink all-to-all BF16/FP8 | ✅ 已完成 |\n| Fast topk kernel | ❌ 开发中 |\n| Indexer topk + page table fusion | ❌ 开发中 |\n| Pipeline parallelism | ❌ 开发中 |\n| KV cache offloading | ❌ 开发中 |\n| MTP（Multi-Token Prediction）优化 | ❌ 开发中 |\n\n### 你需要用哪个版本的 vLLM\n\n**建议使用最新版 vLLM（\u003e= v0.11.0 或更新的 nightly）**，或者用官方 Docker 镜像的最新 tag。\n\n如果官方镜像还不支持，可能需要：\n1. 从 vLLM 源码的 main 分支 build Docker 镜像\n2. 或者使用 DeepSeek 自己提供的推理栈（如果官方 vLLM 还不稳定）\n\n```bash\n# 从源码构建（包含最新 DeepSeek-V4 支持）\ngit clone https://github.com/vllm-project/vllm.git\ncd vllm\ndocker build -t vllm-dsv4 .\ndocker save vllm-dsv4 -o vllm-dsv4.tar\n```\n\n---\n\n## 四、部署流程\n\n### 准备工作\n\n| 需要准备的 | 说明 | 大小预估 |\n|-----------|------|---------|\n| vLLM Docker 镜像 | 需支持 deepseek_v4 架构 | ~15GB |\n| 模型文件（46 个分片） | 从 ModelScope 下载 | ~159GB |\n| 足够显存的 GPU | 见下方显存估算 | — |\n\n### 显存估算\n\n```\nDeepSeek-V4-Flash 284B params, FP4+FP8 mixed (~0.5-1 byte/param avg)\n\n模型权重 ≈ 159GB（磁盘大小就是权重大小）\nKV Cache（1M 上下文）≈ MLA 压缩后约 10-30GB\n中间激活 + 开销 ≈ 5-10GB\n\n总显存需求 ≈ 180-200GB（1M 上下文）\n              ≈ 80-100GB（32K 上下文）\n\n推荐配置：\n  · 8 × A100 80GB（1M 上下文）\n  · 2 × A100 80GB（32K 上下文）\n  · 4 × RTX 6000 48GB（32K 上下文）\n```\n\n### 具体步骤\n\n**有网环境**：\n\n```bash\n# 1. 下载模型\npip install modelscope\npython3 -c \"\nfrom modelscope import snapshot_download\nsnapshot_download('deepseek-ai/DeepSeek-V4-Flash', local_dir='./DeepSeek-V4-Flash')\n\"\n# 下载后得到 46 个分片文件\n\n# 2. 准备 vLLM 镜像（建议用最新版，或从源码 build）\n# 方案 A：用官方最新\ndocker pull vllm/vllm-openai:latest\ndocker save vllm/vllm-openai:latest -o vllm.tar\n\n# 方案 B：如果官方版不支持，从 main 分支 build\ngit clone https://github.com/vllm-project/vllm.git\ncd vllm\ndocker build -t vllm-dsv4 .\ndocker save vllm-dsv4 -o vllm-dsv4.tar\n\n# 3. 把镜像 + 模型传到内网\n```\n\n**内网环境**：\n\n```bash\n# 4. 导入镜像\ndocker load \u003c vllm-dsv4.tar\n\n# 5. 启动 vLLM 服务\ndocker run -d \\\n  --gpus all \\\n  --network host \\\n  --shm-size 64g \\\n  -v /data/DeepSeek-V4-Flash:/model \\\n  --name dsv4-service \\\n  vllm-dsv4:latest \\\n  --model /model \\\n  --served-model-name deepseek-v4-flash \\\n  --tensor-parallel-size 8 \\        # 用 8 张 GPU\n  --max-model-len 32768 \\            # 先用 32K 上下文测试\n  --gpu-memory-utilization 0.9 \\\n  --port 8000 \\\n  --trust-remote-code\n\n# 6. 验证\ncurl http://localhost:8000/v1/chat/completions \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"model\": \"deepseek-v4-flash\", \"messages\": [{\"role\": \"user\", \"content\": \"你好\"}]}'\n```\n\n### 关键参数说明\n\n| 参数 | 建议值 | 说明 |\n|------|--------|------|\n| `--tensor-parallel-size` | GPU 数量 | 张量并行，每张卡分摊一部分专家和注意力计算 |\n| `--max-model-len` | 32768（调试）→ 1048576（生产） | 上下文越长，KV Cache 越占显存 |\n| `--gpu-memory-utilization` | 0.9 | 留 10% 给中间计算 |\n| `--shm-size` | 64g 或更高 | MoE 的 all-to-all 通信需要大量共享内存 |\n| `--trust-remote-code` | 必须加 | DeepSeek-V4 的 config 里有自定义代码 |\n\n---\n\n## 五、显存不足怎么办？\n\n### MoE 模型的特殊性\n\nDeepSeek-V4-Flash 284B 权重全部要加载到显存。vLLM 用 `--tensor-parallel-size` 把权重切到多张卡上。\n\n| GPU 配置 | 能否跑 32K 上下文 | 能否跑 1M 上下文 |\n|----------|-----------------|-----------------|\n| 1 × A100 80GB | ❌ 显存不够 | ❌ |\n| 4 × A100 80GB | ✅ 可以 | ❌ |\n| 8 × A100 80GB | ✅ | ✅ 勉强 |\n| 8 × H100 80GB | ✅ | ✅ 较好 |\n\n### 实在不够怎么办？\n\n1. **减短 max-model-len**：上下文减半，KV Cache 减半\n2. **增加 tensor-parallel-size**：用更多小显存卡分摊\n3. **pipeline-parallel-size**：多机流水线并行，适合多台 4-GPU 服务器\n4. **等 vLLM 的 KV cache offloading 功能完成**（路线图中）：把不常用的 KV Cache offload 到 CPU 内存\n\n---\n\n## 六、和普通模型部署的关键区别\n\n| | 普通模型（Qwen/Llama） | DeepSeek-V4-Flash |\n|--|----------------------|-------------------|\n| 是否需要量化 | 需要（AWQ/GPTQ） | **不需要**，已是 FP4+FP8 |\n| 架构 | Dense Transformer | MoE + MLA + CSA/HCA |\n| vLLM 支持 | 稳定 | 开发中，需最新版 |\n| 总参/激活参 | 相同 | 284B / 13B（巨大差异） |\n| 显存瓶颈 | 计算量 | 模型权重加载（所有专家都要加载） |\n| 推理速度 | 与总参数成正比 | 与激活参数成正比（≈13B 模型速度） |\n| 上下文能力 | 通常 128K | 原生 1M |\n\n---\n\n## 七、参考链接\n\n- DeepSeek-V4 技术报告: https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf\n- HuggingFace 模型页: https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash\n- ModelScope 地址: https://modelscope.cn/models/deepseek-ai/DeepSeek-V4-Flash\n- vLLM DeepSeek-V4 Roadmap: https://github.com/vllm-project/vllm/issues/40902\n- vLLM GitHub: https://github.com/vllm-project/vllm\n"])</script><script>self.__next_f.push([1,"6:[\"$\",\"$L11\",null,{\"post\":{\"slug\":\"deepseek-vllm-deploy\",\"title\":\"DeepSeek-V4-Flash 内网 vLLM 部署完全指南\",\"date\":\"2026-06-15T00:00:00.000Z\",\"tags\":[\"llm\",\"deployment\",\"vllm\"],\"category\":\"ai\",\"description\":\"DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：\",\"content\":\"$12\"}}]\n"])</script><script>self.__next_f.push([1,"c:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"13:I[23227,[\"/_next/static/chunks/1xh5_hh-4xv03.js\",\"/_next/static/chunks/18071siihbhhu.js\"],\"IconMark\"]\n9:null\ne:[[\"$\",\"title\",\"0\",{\"children\":\"Nemo — Personal Space\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"chasing dreams | 全栈开发者 · RAG \u0026 RL 爱好者\"}],[\"$\",\"meta\",\"2\",{\"name\":\"author\",\"content\":\"Nemo\"}],[\"$\",\"meta\",\"3\",{\"name\":\"keywords\",\"content\":\"Nemo,个人网站,博客,全栈开发,RAG,强化学习\"}],[\"$\",\"meta\",\"4\",{\"property\":\"og:title\",\"content\":\"Nemo — Personal Space\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:description\",\"content\":\"chasing dreams | 全栈开发者 · RAG \u0026 RL 爱好者\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:locale\",\"content\":\"zh_CN\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"$\",\"meta\",\"8\",{\"name\":\"twitter:card\",\"content\":\"summary\"}],[\"$\",\"meta\",\"9\",{\"name\":\"twitter:title\",\"content\":\"Nemo — Personal Space\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:description\",\"content\":\"chasing dreams | 全栈开发者 · RAG \u0026 RL 爱好者\"}],[\"$\",\"link\",\"11\",{\"rel\":\"icon\",\"href\":\"/favicon.ico?favicon.2os6yout_mfjj.ico\",\"sizes\":\"640x640\",\"type\":\"image/x-icon\"}],[\"$\",\"link\",\"12\",{\"rel\":\"icon\",\"href\":\"/Image/favicon.ico\"}],[\"$\",\"$L13\",\"13\",{}]]\n"])</script></body></html>
