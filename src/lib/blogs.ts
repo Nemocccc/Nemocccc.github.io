@@ -23,7 +23,7 @@ export function getAllPosts(): BlogPost[] {
     const raw = fs.readFileSync(path.join(contentDir, file), "utf-8");
     const { data, content } = matter(raw);
     return {
-      slug: file.replace(/\.md$/, ""),
+      slug: data.slug || file.replace(/\.md$/, ""),
       title: data.title || file.replace(/\.md$/, ""),
       date: data.date ? new Date(data.date).toISOString() : new Date().toISOString(),
       tags: data.tags || [],

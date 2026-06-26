@@ -1,5 +1,6 @@
 ---
 title: "Subagent 化 Skill 优化方法论"
+slug: subagent-skill-optimization
 date: 2026-06-24
 tags: ["ai-agents", "llm"]
 category: ai

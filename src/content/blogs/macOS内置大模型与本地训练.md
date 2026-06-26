@@ -1,5 +1,6 @@
 ---
 title: "macOS 内置大模型与本地 AI 训练"
+slug: macos-local-llm-training
 date: 2026-06-10
 tags: ["llm", "macos", "local-training"]
 category: ai

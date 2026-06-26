@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["learning"]
 category: ai
 description: "- Probability approximation"
-slug: deep_reinforcement_learning
+slug: deep-rl
 ---
 
 - #### Monte Carlo

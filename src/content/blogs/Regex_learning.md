@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["regex", "learning"]
 category: tech
 description: "学习、受启发于deerchao的教程"
-slug: Regex_learning
+slug: regex-learning
 ---
 
 ### ***Regex***

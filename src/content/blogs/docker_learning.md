@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["docker", "learning"]
 category: devops
 description: "- > windows desktop version"
-slug: docker_learning
+slug: docker-learning
 ---
 
 ## ***docker***

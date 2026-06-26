@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["cmake", "learning"]
 category: tech
 description: "cmake is a system independent automatic construct tool."
-slug: Cmake_learn_by_doing
+slug: cmake-learn-by-doing
 ---
 
 ### cmake-learn-by-doing

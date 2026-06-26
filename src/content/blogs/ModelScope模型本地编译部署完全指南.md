@@ -1,5 +1,6 @@
 ---
 title: "ModelScope 权重分片 → 内网 vLLM 部署完整流程"
+slug: modelscope-vllm-deploy
 date: 2026-06-15
 tags: ["llm", "deployment", "modelscope"]
 category: ai

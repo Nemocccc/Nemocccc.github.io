@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["make", "learning"]
 category: devops
 description: "for C/C++, u define commands in ``Makefile``, like ``Dockerfile``"
-slug: make_learning
+slug: makefile-learning
 ---
 
 ### make

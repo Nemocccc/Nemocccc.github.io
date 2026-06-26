@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["learning"]
 category: tech
 description: "- compiler: translate the code from source language to target language."
-slug: fundamentals_of_compiling_learning
+slug: compiler-fundamentals
 ---
 
 ### Introduction

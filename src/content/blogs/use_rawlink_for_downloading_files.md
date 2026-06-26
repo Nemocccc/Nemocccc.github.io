@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["tech"]
 category: tech
 description: "download files via markdown is not allowed on github, but u can:"
-slug: use_rawlink_for_downloading_files
+slug: rawlink-download
 ---
 
 download files via markdown is not allowed on github, but u can:

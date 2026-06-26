@@ -1,5 +1,6 @@
 ---
 title: "vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研报告"
+slug: vllm-prefix-caching
 date: 2026-06-16
 tags: ["llm", "deployment", "vllm"]
 category: ai

@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["linux", "shell"]
 category: tech
 description: "***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a816"
-slug: linux_shell
+slug: linux-shell
 ---
 
 ***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a8166aa)***

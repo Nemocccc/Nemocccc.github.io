@@ -1,5 +1,6 @@
 ---
 title: "Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换"
+slug: agent-skill-md-to-docx
 date: 2026-06-10
 tags: ["ai-agents", "llm"]
 category: tech

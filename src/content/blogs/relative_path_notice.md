@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["tech"]
 category: tech
 description: "current_path = os.getcwd()"
-slug: relative_path_notice
+slug: relative-path-python
 ---
 
 ### The relative path is relative to the compiled directory of the instruction, not relative to the file itself

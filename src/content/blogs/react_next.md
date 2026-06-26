@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["react"]
 category: frontend
 description: "feature of next.js, by 'use client' at the top of a file"
-slug: react_next
+slug: react-nextjs
 ---
 
 #### server side rendering(SSR) and client side rendering(CSR)

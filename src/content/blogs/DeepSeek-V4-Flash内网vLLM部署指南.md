@@ -1,5 +1,6 @@
 ---
 title: "DeepSeek-V4-Flash 内网 vLLM 部署完全指南"
+slug: deepseek-vllm-deploy
 date: 2026-06-15
 tags: ["llm", "deployment", "vllm"]
 category: ai

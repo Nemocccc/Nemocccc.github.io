@@ -1,5 +1,6 @@
 ---
 title: "将 Markdown 套入 DOCX 模板的实现方案调研"
+slug: markdown-to-docx-research
 date: 2026-06-10
 tags: ["tools", "productivity"]
 category: tech

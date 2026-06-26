@@ -1,5 +1,6 @@
 ---
 title: "消融实验 (Ablation Study)"
+slug: ablation-study
 date: 2026-06-13
 tags: ["deep-learning", "ml-theory"]
 category: ai

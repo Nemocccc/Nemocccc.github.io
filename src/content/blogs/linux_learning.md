@@ -4,7 +4,7 @@ date: 2026-06-25
 tags: ["linux", "learning"]
 category: tech
 description: "1. - WSL Features  :"
-slug: linux_learning
+slug: linux-learning
 ---
 
 1. - **WSL Features ** :
