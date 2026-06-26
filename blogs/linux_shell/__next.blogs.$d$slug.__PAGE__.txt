@@ -375,7 +375,7 @@ echo $? #if no foobar in sd.sh, it would be 1, if not, it would be 0.
 
 
 shell script practice : [shell脚本一天一练-day1_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1ih4y1Y7nh/?spm_id_from=333.788&vd_source=8a614553fd42ac4044499e810a8166aa)
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"linux_shell","title":"Linux Shell","date":"2026-06-25T00:00:00.000Z","tags":["linux","shell"],"category":"tech","description":"***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a816","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"aqw18B5kF7Szm8y_FlI2S"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"linux_shell","title":"Linux Shell","date":"2026-06-25T00:00:00.000Z","tags":["linux","shell"],"category":"tech","description":"***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a816","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mnGxQEJyUoTO4uRk8aKhf"}
 4:["$","script","script-0",{"src":"/_next/static/chunks/3zo6056xuvsb1.js","async":true}]
 5:["$","script","script-1",{"src":"/_next/static/chunks/2c9lkvph-ta0n.js","async":true}]
 6:["$","script","script-2",{"src":"/_next/static/chunks/3jf8q_9-ia3no.js","async":true}]

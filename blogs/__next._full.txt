@@ -5,7 +5,7 @@
 5:I[57986,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"default"]
 6:"$Sreact.suspense"
 7:I[84439,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js","/_next/static/chunks/2h_2mq1uhpalj.js","/_next/static/chunks/0r38jwpvhbrmp.js"],"default"]
-1e:I[60199,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"default",1]
+1d:I[60199,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"default",1]
 :HL["/_next/static/chunks/233p45nuh4m5b.css","style"]
 :HL["/_next/static/chunks/3mi_koyhkiqud.css","style"]
 :HL["/_next/static/chunks/1p3suf_njwawp.css","style"]
@@ -2114,171 +2114,7 @@ SKILL.md 顶层只写：
    按模型实际窗口设定四档阈值
    超出时自动 subagent 化或 checkpoint
 ```
-10:T3b40,
-<div align="center">
-<h1>📚 技术博客精选</h1>
-<p><code>2026-06-24 18:49</code> · <code>共 43 篇精选</code></p>
-</div>
-
----
-
-## 🏗️ 架构与设计 / Architecture & Design
-
-📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating-data-ingestion-systems-at-meta-scale/)** `Meta Engineering`
-> *Meta 数据摄入系统迁移实战——从单体管道到分布式数据湖的演进路线，如何处理 PB 级数据迁移的兼容性和回滚。*
-
-📄 **[SilverTorch: Index as Model — A New Retrieval Paradigm for Recommendation Systems](https://engineering.fb.com/2026/05/26/ml-applications/silvertorch-index-as-model-new-retrieval-paradigm-recommendation-systems/)** `Meta Engineering`
-> *Meta 推荐系统新范式 Index as Model——将检索组件统一为单一模型，替代传统多阶段级联架构，性能提升显著。*
-
-📄 **[Modernizing the Facebook Groups Search to Unlock the Power of Community Knowledge](https://engineering.fb.com/2026/04/21/ml-applications/modernizing-the-facebook-groups-search-to-unlock-the-power-of-community-knowledge/)** `Meta Engineering`
-> *FB Groups 搜索现代化改造——从 Elasticsearch 到向量检索+语义理解的混合架构升级，搜索相关度提升显著。*
-
-📄 **[Data Projects: Managing Data Assets at Netflix Scale](https://netflixtechblog.com/data-projects-managing-data-assets-at-netflix-scale-7ca25888591e?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
-> *Netflix 数据资产管理体系——从数据发现、血缘追踪到访问控制，如何在超大规模下保障数据治理。*
-
-📄 **[VMAF v1: Good Is Not Good Enough](https://netflixtechblog.com/vmaf-v1-good-is-not-good-enough-60d7e4244ea8?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
-> *Netflix VMAF v1 视频质量评估升级——为什么原有的 VMAF 不够好，新版本引入了哪些感知质量指标改进。*
-
-📄 **[Introducing the Cloudflare One stack: agent-powered deployment](https://blog.cloudflare.com/cloudflare-one-stack/)** `Cloudflare Blog`
-> *Cloudflare One 零信任网络架构新方案——用 Agent 驱动的自动化部署替代手动策略配置，SASE 落地实践。*
-
-📄 **[From Silos to Service Topology: Why Netflix Built a Real-Time Service Map](https://netflixtechblog.com/from-silos-to-service-topology-why-netflix-built-a-real-time-service-map-0165ba13a7bc?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
-> *Netflix 实时服务拓扑图构建之路——从孤立监控到全链路服务依赖可视化，微服务可观测性的最佳实践。*
-
-📄 **[The Evolution of Cassandra Data Movement at Netflix](https://netflixtechblog.com/the-evolution-of-cassandra-data-movement-at-netflix-6e13329c80a1?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
-> *Netflix Cassandra 数据迁移架构演进——从手动搬迁到自动化数据流动，Cassandra 运维的实战经验。*
-
-📄 **[How Netflix Simplified Batch Compute with Kueue](https://netflixtechblog.com/how-netflix-simplified-batch-compute-with-kueue-87860682629c?source=rss----2615bd06b42e---4)** `Netflix TechBlog`
-> *Netflix 用 Kueue 简化批处理计算——K8s 原生批处理调度器在大规模 ML 训练场景的实践。*
-
-📄 **[Align your architecture backlog with Tech Roadmap Prioritization (TRP)](https://aws.amazon.com/blogs/architecture/align-your-architecture-backlog-with-tech-roadmap-prioritization-trp/)** `AWS Architecture Blog`
-> *AWS TRP 方法论——如何用技术路线图优先级对齐架构 backlog，避免架构债务无限累积。*
-
-📄 **[Maintainability sensors for coding agents](https://martinfowler.com/articles/sensors-for-coding-agents.html)** `Martin Fowler`
-> *Martin Fowler 提出面向编码 Agent 的可维护性传感器——当 AI 写代码成为常态，如何量化代码的可维护性。*
-
-📄 **[Three Bold Predictions for Distributed Systems in 2026](https://www.axoniq.io/blog/three-bold-predictions-for-distributed-systems-in-2026)** `Axoniq Blog`
-> *分布式系统三大预测：边缘原生服务、AI 驱动编排、更强一致性模型——挑战当前微服务主流范式。*
-
-📄 **[Distributed Systems Patterns Every Backend Engineer Must Know in 2026](https://devstarsj.github.io/2026/03/26/distributed-systems-patterns-guide-2026/)** `DevStars`
-> *2026 后端工程师必知的分布式系统模式大全——一致性哈希、Saga、CQRS、事件溯源，附代码示例和架构对比。*
-
----
-
-## 🔧 编程语言 / Languages & Runtimes
-
-📄 **[Bliki: Vibe Coding](https://martinfowler.com/bliki/VibeCoding.html)** `Martin Fowler`
-> *Martin Fowler 定义 Vibe Coding——用 LLM Prompt 构建应用的新范式，及其对软件工程质量的影响。*
-
-📄 **[The VibeSec Reckoning](https://martinfowler.com/articles/vibesec-reckoning.html)** `Martin Fowler`
-> *Vibe Coding 时代的安全危机——当代码由 AI 生成时，安全漏洞以新形态涌现，开发者如何应对。*
-
-📄 **[If context is king, architecture is the castle​​​​‌﻿‍﻿​‍​‍‌‍﻿﻿‌﻿​‍‌‍‍‌‌‍‌﻿‌‍‍‌‌‍﻿‍​‍​‍​﻿‍‍​‍​‍‌﻿​﻿‌‍​‌‌‍﻿‍‌‍‍‌‌﻿‌​‌﻿‍‌​‍﻿‍‌‍‍‌‌‍﻿﻿​‍​‍​‍﻿​​‍​‍‌‍‍​‌﻿​‍‌‍‌‌‌‍‌‍​‍​‍​﻿‍‍​‍​‍‌‍‍​‌﻿‌​‌﻿‌​‌﻿​​‌﻿​﻿​﻿‍‍​‍﻿﻿​‍﻿﻿‌‍​﻿‌‍﻿‌‌﻿​﻿​‍﻿‍‌﻿​﻿‌﻿‌​‌‍​‌‌‍​﻿‌‍‍﻿‌‍﻿﻿‌﻿‌‍‌‍‌‌‌﻿​‍‌‍‌‍‌‍﻿​‌‍﻿﻿‌﻿‌﻿​‍﻿‍‌‍​﻿‌‍﻿﻿​‍﻿﻿‌‍‍‌‌‍﻿‍‌﻿‌​‌‍‌‌‌‍﻿‍‌﻿‌​​‍﻿﻿‌‍‌‌‌‍‌​‌‍‍‌‌﻿‌​​‍﻿﻿‌‍﻿‌‌‍﻿﻿‌‍‌​‌‍‌‌​﻿﻿‌‌﻿​​‌﻿​‍‌‍‌‌‌﻿​﻿‌‍‌‌‌‍﻿‍‌﻿‌​‌‍​‌‌﻿‌​‌‍‍‌‌‍﻿﻿‌‍﻿‍​﻿‍﻿‌‍‍‌‌‍‌​​﻿﻿‌‌‍​﻿​﻿​‍​﻿​﻿‌‍​﻿​﻿​​​﻿‍‌‌‍​‍​﻿​‍​‍﻿‌​﻿‌​​﻿​‌​﻿​﻿‌‍‌​​‍﻿‌​﻿‌​‌‍​‌​﻿‌﻿​﻿​​​‍﻿‌​﻿‍‌‌‍​‌‌‍​‍‌‍​﻿​‍﻿‌‌‍‌‌​﻿‌​​﻿​﻿‌‍‌​​﻿​‌‌‍​‍​﻿‌﻿​﻿​​​﻿‌‍‌‍‌‍​﻿‌‍​﻿‌﻿​﻿‍﻿‌﻿‌​‌﻿‍‌‌﻿​​‌‍‌‌​﻿﻿‌‌‍​‍‌‍﻿​‌‍﻿﻿‌‍‌﻿‌‌​​‌‍﻿﻿‌﻿​﻿‌﻿‌​​﻿‍﻿‌﻿​​‌‍​‌‌﻿‌​‌‍‍​​﻿﻿‌‌﻿‌​‌‍‍‌‌﻿‌​‌‍﻿​‌‍‌‌​﻿﻿﻿‌‍​‍‌‍​‌‌﻿​﻿‌‍‌‌‌‌‌‌‌﻿​‍‌‍﻿​​﻿﻿‌‌‍‍​‌﻿‌​‌﻿‌​‌﻿​​‌﻿​﻿​‍‌‌​﻿​﻿‌​​‌​‍‌‌​﻿​‍‌​‌‍​‍‌‌​﻿​‍‌​‌‍‌‍​﻿‌‍﻿‌‌﻿​﻿​‍﻿‍‌﻿​﻿‌﻿‌​‌‍​‌‌‍​﻿‌‍‍﻿‌‍﻿﻿‌﻿‌‍‌‍](https://stackoverflow.blog/2026/06/16/if-context-is-king-architecture-is-the-castle/)** `Stack Overflow Blog`
-> *Stack Overflow 对话 Apollo GraphQL CEO——AI Agent 时代的 API 架构设计，上下文管理与图查询的演进。*
-
-📄 **[Three more static code analysis sensors](https://martinfowler.com/articles/sensors-for-coding-agents.html#StaticCodeAnalysisDependencyRules)** `Martin Fowler`
-> *Birgitta Böckeler 深入三种静态代码分析传感器——依赖规则、架构边界、代码标准，在 AI 辅助编码时代的应用。*
-
-📄 **[Maintainability sensors for coding agents](https://martinfowler.com/articles/sensors-for-coding-agents.html)** `Martin Fowler`
-> *Martin Fowler 提出面向编码 Agent 的可维护性传感器——当 AI 写代码成为常态，如何量化代码的可维护性。*
-
-📄 **[Fragments: May 14](https://martinfowler.com/fragments/2026-05-14.html)** `Martin Fowler`
-> *Martin Fowler 参加 The Orchard Retreat 的思考——大型机现代化改造的技术和人文视角。*
-
-📄 **[Rhombus Language 1.0](https://racket-lang.org/)** `Racket Blog`
-> *Rhombus 语言 1.0 正式发布——基于 Racket 的教学级语言，兼具 Lisp 表达力与静态类型安全。*
-
-📄 **[Swift Package Index joins Apple](https://swiftpackageindex.com/)** `Swift Package Index`
-> *Swift Package Index 被 Apple 收购——Swift 生态的包管理将迎来官方深度整合。*
-
----
-
-## ☁️ 基础架构 / Infrastructure & DevOps
-
-📄 **["Fix" MacBook Neo Cursor Lag: Record 1 Pixel of the Screen Every 10 Seconds](https://gist.github.com/retroplasma/ec21767d0a8380c7ea9c2fbee1c7d6bf)** `HN / GitHub Gist`
-> *大神级调试——MacBook Neo 光标延迟的 root cause 是 GPU 电源管理策略，1 像素采样法修复方案脑洞大开。*
-
-📄 **[We're making Bunny DNS free: because a faster internet won't build itself](https://bunny.net/blog/were-making-bunny-dns-free/)** `Bunny.net / HN`
-> *Bunny DNS 宣布免费——声称目标是加速全球互联网，对开发者来说是一个性价比极高的新选择。*
-
-📄 **[How Meta Is Strengthening End-to-End Encrypted Backups](https://engineering.fb.com/2026/05/01/security/meta-strengthening-end-to-end-encrypted-backups/)** `Meta Engineering`
-> *Meta 端到端加密备份方案深度解析——HSM-based Backup Key Vault 架构设计，密钥管理与灾备策略。*
-
----
-
-## ⚡ 开源项目 / Open Source
-
-📄 **[Qwen-AgentWorld: Language World Models for General Agents](https://arxiv.org/abs/2606.24597)** `ArXiv / HN`
-> *Qwen AgentWorld——用语言模型构建通用 Agent 的世界模型，通义千问团队最新研究。*
-
-📄 **[DiffusionBench: Towards Holistic Evaluation of Generative Diffusion Transformers](https://github.com/End2End-Diffusion/diffusion-bench)** `GitHub / HN`
-> *Diffusion 模型全面评测基准 DiffusionBench——覆盖图像、视频、3D 生成的质量评估。*
-
-📄 **[Raspberry Pi Pico W as USB Wi-Fi Adapter](https://gitlab.com/baiyibai/pico-usb-wifi)** `GitLab / HN`
-> *树莓派 Pico W 变身 USB Wi-Fi 适配器——硬件黑客的巧妙方案，成本仅几美元。*
-
-📄 **[FUTO Swipe – A new swipe typing model](https://futo.tech/)** `FUTO`
-> *FUTO 开源的全新滑行输入模型——性能媲美 Gboard 但完全本地运行，隐私至上的输入法方案。*
-
----
-
-## 💡 工程文化 / Engineering Culture
-
-📄 **[How good can you be at Codenames without knowing any words?](https://danluu.com/codenames/)** `Dan Luu`
-> *Dan Luu 又一篇数据驱动的有趣分析——在不认识任何单词的情况下玩 Codenames 能有多强，顺便探讨了信息论。*
-
-📄 **[Vulnerability reports are not special anymore](https://words.filippo.io/vuln-reports/)** `Filippo Valsorda / HN`
-> *Filippo Valsorda 反思安全行业——漏洞报告已不再特殊，自动化工具正在改变安全研究的本质。*
-
-📄 **[Meta Pauses Employee-Tracking Program Following Internal Data Leak](https://www.wired.com/story/meta-pauses-employee-tracking-program-following-internal-security-breach/)** `Wired / HN`
-> *Meta 暂停员工追踪项目——数据泄露事件背后的工程文化反思。*
-
----
-
-## 📝 中文深度 / 中文技术
-
-📄 **[美团发布原生多模态 LongCat-Next：当视觉和语音成为AI的母语](https://tech.meituan.com/2026/04/02/LongCat-Next.html)** `美团技术团队`
-> *LongCat-Next 原生多模态模型深度解析——从架构设计到训练策略，看多模态 AI 如何从拼接走向原生。*
-
-📄 **[LongCat-Flash-Prover：AI 攻克数学定理证明，不仅要“算得对”，更要“证得严”](https://tech.meituan.com/2026/04/07/LongCat-Flash-Prover.html)** `美团技术团队`
-> *美团把 AI 定理证明从猜答案推进到严格证明阶段，Flash-Prover 对形式化验证领域有重要启发。*
-
-📄 **[用Agent评测思路管理AI Coding —— 31万行代码AI重构的实践](https://tech.meituan.com/2026/05/07/Agent-AI-Coding.html)** `美团技术团队`
-> *31万行代码 AI 重构的一线报告——用 Agent 评测体系管了整个重构流程，方法论可复制。*
-
-📄 **[美团 LongCat 开源 General 365：树立推理评测新标尺](https://tech.meituan.com/2026/05/15/LongCat-General-365.html)** `美团技术团队`
-> *LongCat General 365 推理评测集填补了中文 LLM 推理能力标准化测试的空白，数据和方法完全开源。*
-
-📄 **[从高拟真到真可用，LongCat-Video-Avatar 1.5 正式开源](https://tech.meituan.com/2026/05/25/LongCat-Video-Avatar-1.5.html)** `美团技术团队`
-> *视频数字人从能看能用跨越——LongCat-Video-Avatar 1.5 口型同步和表情自然度明显突破。*
-
-📄 **[ACL 2026美团论文精选：从能力评测到推理优化，构建生成新范式](https://tech.meituan.com/2026/06/05/ACL-2026.html)** `美团技术团队`
-> *ACL 2026 美团入选论文合集覆盖评测、推理优化、生成范式三个方向，学术与实践相结合。*
-
-📄 **[从月球漫步到赛博都市，WBench 测出了世界模型的边界](https://tech.meituan.com/2026/06/12/LongCat-WBench.html)** `美团技术团队`
-> *世界模型评测基准 WBench——用月球漫步和赛博都市等场景测试世界模型的物理理解边界。*
-
-📄 **[美团海报生成 AIGC 技术创新与实践](https://tech.meituan.com/2026/06/18/AIGC-poster.html)** `美团技术团队`
-> *AIGC 海报生成在美团落地全记录——从模型选型到工程优化，电商场景 AI 设计实操经验。*
-
-📄 **[LARYBench 发布：定义具身动作表征 ImageNet，首次度量从人类视频学习的泛化表征](https://tech.meituan.com/2026/04/27/LongCat-LARYBench.html)** `美团技术团队`
-> *LARYBench 定义具身动作表征的 ImageNet——首次度量从人类视频学习的泛化表征。*
-
-📄 **[多Agent协作框架与系统架构综述 2025-2026](https://www.daoyuly.cn/2026/2026-04-01-multi-agent-frameworks-architecture-survey/)** `DaoYu`
-> *多 Agent 协作框架全面综述——对比 AutoGen、CrewAI、LangGraph 等框架的架构差异和选型建议。*
-
-📄 **[2026技术迭代新风向：系统开发与运维迈入智能融合新阶段](https://cloud.tencent.com/developer/article/2671852)** `Tencent Cloud`
-> *腾讯云视角的 2026 运维趋势——云原生深度普及、AI 智能运维、轻量化架构全面升级。*
-
-📄 **[2026 后端架构新风向！模块化单体强势出圈](https://www.toutiao.com/article/7641524040481489427/)** `Toutiao`
-> *模块化单体架构卷土重来——别再盲目堆砌微服务，这篇分析了何时该选单体、何时该拆。*
-
----
-
-<div align="center">
-<p><code>数据来源：RSS 29/29 个源 · 抓取 260 篇文章</code> · 补全网搜索 8 篇</p>
-</div>
-11:T1c09,
+10:T1c09,
 # vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研报告
 
 ## 一、基础：Transformer 推理的两个阶段
@@ -2434,7 +2270,7 @@ vLLM 的 prefix caching 只能复用 prompt 开头的公共前缀。但实际场
 - LMCache GitHub：https://github.com/LMCache/LMCache
 - LMCache 论文：Yihua Cheng et al. "LMCache: An Efficient KV Cache Layer for Enterprise-Scale LLM Inference", arXiv:2510.09665
 - CacheBlend 论文：Jiayi Yao et al. "CacheBlend: Fast Large Language Model Serving for RAG with Cached Knowledge Fusion", EuroSys 2025
-12:T25c6,
+11:T25c6,
 # DeepSeek-V4-Flash 内网 vLLM 部署完全指南
 
 ## 一、模型规格
@@ -2715,7 +2551,7 @@ DeepSeek-V4-Flash 284B 权重全部要加载到显存。vLLM 用 `--tensor-paral
 - ModelScope 地址: https://modelscope.cn/models/deepseek-ai/DeepSeek-V4-Flash
 - vLLM DeepSeek-V4 Roadmap: https://github.com/vllm-project/vllm/issues/40902
 - vLLM GitHub: https://github.com/vllm-project/vllm
-13:T250e,
+12:T250e,
 # ModelScope 权重分片 → 内网 vLLM 部署完整流程
 
 ## 一、核心链路
@@ -3022,7 +2858,7 @@ A：直接把分片文件所在目录路径传给 `--model` 参数，vLLM 会自
 
 **Q：为什么 shm-size 设 32GB？**
 A：vLLM 的多进程通信（tokenizer、调度器、GPU worker 之间）需要共享内存。不够会报 `bus error`。
-14:T20e2,
+13:T20e2,
 # 智能体开发基础知识与模型量化指南
 
 ## 一、大模型量化 — 常见后缀/格式全解
@@ -3200,7 +3036,7 @@ A: 单 Agent 自己规划+执行+检查。多 Agent 将规划/执行/检查分�
 ### 参考文章
 - LLM Quantization Explained (VRLA Tech): https://vrlatech.com/llm-quantization-explained-int4-int8-fp8-awq-and-gptq-in-2026/
 - LLM Quantization Guide (ResumeLens): https://www.resumelens.org/blog/ai/llm-quantization-guide
-15:T3c33,
+14:T3c33,
 # Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换
 
 ## 核心思想
@@ -3610,7 +3446,7 @@ def render_docx(md_path: str, template_path: str, style_mapping: dict = None) ->
 1. 先写 `template_analyze.py` 和 `docx_render.py` 两个核心脚本（纯机械逻辑）
 2. 再写 `SKILL.md`，重点写 LLM 做映射决策的指引
 3. 最后写 `style_mapping_suggest` 作为可选辅助（LLM-in-the-loop optimization）
-16:T33a8,
+15:T33a8,
 # 将 Markdown 套入 DOCX 模板的实现方案调研
 
 > 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是**唯一样式权威**（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模板字符样式，而非直接设置 Run 属性。
@@ -3996,7 +3832,7 @@ doc.save('output.docx')
 | **markdown-it-py** | github.com/executablebooks/markdown-it-py | 插件化 Markdown 解析（兼容 JS 生态） |
 | **WeasyPrint** | weasyprint.org | HTML→PDF 的样式继承模型值得借鉴 |
 | **Typst** | typst.app | 新一代排版系统，可以作为长期对标 |
-17:T144a,
+16:T144a,
 # macOS 内置大模型与本地 AI 训练
 
 > 关键词：apfel、Apple Intelligence、FoundationModels、MLX、本地微调、蒸馏
@@ -4186,7 +4022,7 @@ Step 3: 对比 Teacher vs Student
   ↓
 实战：用蒸馏后的模型替换你 RAG 系统中的 LLM，对比效果
 ```
-18:T119b,
+17:T119b,
 # 如何从开源项目中学习：以 OpenViking 为例
 
 > 2026 年，代码本身越来越不值钱，值钱的是设计决策背后的 tradeoff 意识。
@@ -4307,20 +4143,20 @@ L0 = 摘要抽象，L1 = 概览，L2 = 全文。Progressive loading 模式——
 - [OpenViking 架构文档](https://docs.openviking.ai/en/concepts/01-architecture)
 - [OpenViking Storage Architecture](https://docs.openviking.ai/en/concepts/05-storage)
 - [DeepWiki: OpenViking](https://deepwiki.com/volcengine/OpenViking)
-0:{"P":null,"c":["","blogs"],"q":"","i":false,"f":[[["",{"children":["blogs",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/233p45nuh4m5b.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/chunks/3mi_koyhkiqud.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","2",{"rel":"stylesheet","href":"/_next/static/chunks/1p3suf_njwawp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/1xh5_hh-4xv03.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/18071siihbhhu.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"zh","suppressHydrationWarning":true,"children":["$","body",null,{"className":"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable noto_sans_sc_2bb252ae-module__TC8U_W__variable antialiased","children":[["$","$L2",null,{"children":["$","$L3",null,{"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}],["$","script",null,{"async":true,"src":"//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"}]]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$6",null,{"fallback":["$","div",null,{"className":"min-h-screen flex items-center justify-center","children":["$","div",null,{"className":"w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"}]}],"children":["$","$L7",null,{"posts":[{"slug":"Cmake_learn_by_doing","title":"compile the source files in the src directory into a static link library","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"cmake is a system independent automatic construct tool.","content":"$8"},{"slug":"Cmake_learning","title":"Cmake Learning","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"> *sudo apt install Cmake*","content":"$9"},{"slug":"Regex_learning","title":"Regex","date":"2026-06-25T00:00:00.000Z","tags":["regex","learning"],"category":"tech","description":"学习、受启发于deerchao的教程","content":"$a"},{"slug":"deep_reinforcement_learning","title":"Deep Reinforcement Learning","date":"2026-06-25T00:00:00.000Z","tags":["learning"],"category":"ai","description":"- Probability approximation","content":"$b"},{"slug":"docker_learning","title":"docker学习笔记","date":"2026-06-25T00:00:00.000Z","tags":["docker","learning"],"category":"devops","description":"- > windows desktop version","content":"$c"},{"slug":"fundamentals_of_compiling_learning","title":"Introduction","date":"2026-06-25T00:00:00.000Z","tags":["learning"],"category":"tech","description":"- compiler: translate the code from source language to target language.","content":"\n### Introduction\n\n##### language processor\n\n- compiler: translate the code from source language to target language.\n- interpreter: Perform operations in the source language directly from the input\n- **example**: java processor:\n  source language -> translator -> middle program -> virtual machine\n                                                                                  input /                              \\ output\n- a language process system:\n  source language -> pre-processor -> pre-processed program  -> compiler -> target assembler -> assembler -> relocatable machine code -> linker(resolves external memory addresses)&loader(execute all executable target files in memory) <- library files & relocatable files,     and finally generate target machine code from linker and loader."},{"slug":"linux_learning","title":"Linux Learning","date":"2026-06-25T00:00:00.000Z","tags":["linux","learning"],"category":"tech","description":"1. - WSL Features  :","content":"\n1. - **WSL Features ** :\n\n     -WSL creates a `/home/<username>` directory by default, and the user is usually set as the owner of this directory. This means that within the `/home/<username>` directory and its subdirectories, you can create files and directories freely.\n\n     - If you are trying to create files or directories in other locations, such as'/' root or other non-personal directories, then 'sudo' permissions may be required.\n\n     and usually, `~` refer to the dir `/home/<username>`, they are the same. you can also see `/home/others`, but `~` always be your home, execute `pwd` to see.\n\n     use `su - <username>` to change user."},{"slug":"linux_shell","title":"Linux Shell","date":"2026-06-25T00:00:00.000Z","tags":["linux","shell"],"category":"tech","description":"***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a816","content":"$d"},{"slug":"make_learning","title":"...other commands","date":"2026-06-25T00:00:00.000Z","tags":["make","learning"],"category":"devops","description":"for C/C++, u define commands in ``Makefile``, like ``Dockerfile``","content":"$e"},{"slug":"react_next","title":"server side rendering(SSR) and client side rendering(CSR)","date":"2026-06-25T00:00:00.000Z","tags":["react"],"category":"frontend","description":"feature of next.js, by 'use client' at the top of a file","content":"\n#### server side rendering(SSR) and client side rendering(CSR)\n\nfeature of next.js, by 'use client' at the top of a file\n\nSSR: the content of website will be rendered on server side and send the processed html files to client side, which can users have a faster experience.\n\nCSR: the content of website will not pre-render on server side,  instead, an html file with some js files will be sent to client side and rendered by browser, thus users can feel a little slow.\n\n"},{"slug":"relative_path_notice","title":"The relative path is relative to the compiled directory of the instruction, not relative to the file itself","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"tech","description":"current_path = os.getcwd()","content":"\n### The relative path is relative to the compiled directory of the instruction, not relative to the file itself\n\nfor example:\n\n```\ndir\n\t|\n\t+ dir1\n\t\t|\n\t\t+ relative.py\n```\n\nand in relative.py\n\n```python\nimport os \n\ncurrent_path = os.getcwd()\n\nprint(current_path)\n```\n\nexecute relative.py, the output will be:\n\n```bash\nE:\\dir\n```\n\nand this is your working directory:\n\n![relative_path](./picture/relative_path.png)\n\n"},{"slug":"use_rawlink_for_downloading_files","title":"Use Rawlink For Downloading Files","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"tech","description":"download files via markdown is not allowed on github, but u can:","content":"\ndownload files via markdown is not allowed on github, but u can:\n\n```markdown\n[Download .zip file](https://raw.githubusercontent.com/your-username/your-repo/main/yourfile.zip)\n```\n\n"},{"slug":"Subagent-Skill优化方法论","title":"Subagent 化 Skill 优化方法论","date":"2026-06-24T00:00:00.000Z","tags":["ai-agents","llm"],"category":"ai","description":"当 Skill 的步骤链变长时，单 Agent 架构会遇到一个根本性问题：上下文污染（context pollution）。","content":"$f"},{"slug":"TechBlogHunter-1849","title":"Techbloghunter 1849","date":"2026-06-24T00:00:00.000Z","tags":["tech-news","curated"],"category":"tech","description":"📄 **[Migrating Data Ingestion Systems at Meta Scale](https://engineering.fb.com/2026/05/12/data-infrastructure/migrating","content":"$10"},{"slug":"vLLM-Prefix-Caching原理与LMCache调研","title":"vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研报告","date":"2026-06-16T00:00:00.000Z","tags":["llm","deployment","vllm"],"category":"ai","description":"把整个 prompt（system prompt + user query）一次性并行算完，生成每个 token 位置对应的 K 矩阵 和 V 矩阵。计算量 = prompt token 数 × 模型参数量。prompt 越...","content":"$11"},{"slug":"DeepSeek-V4-Flash内网vLLM部署指南","title":"DeepSeek-V4-Flash 内网 vLLM 部署完全指南","date":"2026-06-15T00:00:00.000Z","tags":["llm","deployment","vllm"],"category":"ai","description":"DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：","content":"$12"},{"slug":"ModelScope模型本地编译部署完全指南","title":"ModelScope 权重分片 → 内网 vLLM 部署完整流程","date":"2026-06-15T00:00:00.000Z","tags":["llm","deployment","modelscope"],"category":"ai","description":"从 ModelScope 下载的权重分片，到最后能在内网用 vLLM 提供服务，中间需要经过的环节：","content":"$13"},{"slug":"智能体开发基础与模型量化指南","title":"智能体开发基础知识与模型量化指南","date":"2026-06-13T00:00:00.000Z","tags":["ai-agents","llm"],"category":"ai","description":"默认模型权重用 BF16/FP16（每个参数 2 字节）。70B 模型 BF16 需要 140GB 显存。量化降低精度来压缩体积：","content":"$14"},{"slug":"消融实验-Ablation-Study","title":"消融实验 (Ablation Study)","date":"2026-06-13T00:00:00.000Z","tags":["deep-learning","ml-theory"],"category":"ai","description":"控制变量法——把模型或系统的某个组件切除掉，观察性能下降了多少","content":"\n# 消融实验 (Ablation Study)\n\n## 是什么\n\n控制变量法——把模型/系统的某个组件\"切除\"掉，观察性能下降了多少，从而判断该组件的贡献度。\n\n名字来源于脑科学：医生切除部分脑区，观察哪些功能丧失，推断该区域的作用。\n\n## 基本原理\n\n```\n完整系统 → 性能 95%\n去掉组件 A → 性能 80%  → A 贡献了 15%\n去掉组件 B → 性能 93%  → B 贡献了 2%（可有可无）\n同时去掉 A+B → 性能 70% → A 和 B 有 5% 的交互增益\n```\n\n核心逻辑：不依赖直觉，用实验数据证明每个模块是否真的有用。\n\n## 什么时候需要做\n\n### 1. 论文 / 学术汇报\n审稿人几乎必问：\"你怎么证明你加的每个模块都有用？\"\n消融实验是 ML 论文的标准配置，否则 reviewer 会说\"没有消融 = 没有说服力\"。\n\n### 2. 迭代新特性 / 新模块时\n比如给 RAG 系统加了 reranker + query rewrite，跑一次消融：\n- 去掉 reranker → 指标降了 → 保留\n- 去掉 query rewrite → 指标没变 → 删掉，少维护一个坑\n\n### 3. 模型压缩 / 剪枝时\n移除注意力头、剪掉某些层，看哪些是冗余的，哪些不能动。\n\n### 4. 调试奇怪的现象时\n\"加了 A 效果反而变差了？\" → 单独测 A 的贡献，可能是 A 和已有模块冲突。\n\n## 一个典型例子\n\n做摘要生成系统，三个组件：\n- 实体链接（+3% ROUGE）\n- 关键词提取（+0.5% ROUGE，可以砍掉）\n- 重排序（-1% ROUGE，这个模块负优化）\n\n没有消融，你可能会把所有组件都堆上去，系统变慢变复杂，效果反而没提升。\n\n## 关联概念\n\n- A/B 测试（消融是在固定模型上切组件，A/B 是比较两个不同版本）\n- 敏感性分析（消融看组件的贡献度，敏感性看参数变化的影响）\n"},{"slug":"AgentSkill设计-Llm驱动转换","title":"Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换","date":"2026-06-10T00:00:00.000Z","tags":["ai-agents","llm"],"category":"tech","description":"给大模型造一套手艺工具——将 Markdown 套入 DOCX 模板","content":"$15"},{"slug":"Markdown套Docx模板实现方案","title":"将 Markdown 套入 DOCX 模板的实现方案调研","date":"2026-06-10T00:00:00.000Z","tags":["tools","productivity"],"category":"tech","description":"> 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是唯一样式权威（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模...","content":"$16"},{"slug":"macOS内置大模型与本地训练","title":"macOS 内置大模型与本地 AI 训练","date":"2026-06-10T00:00:00.000Z","tags":["llm","macos","local-training"],"category":"ai","description":"> 关键词：apfel、Apple Intelligence、FoundationModels、MLX、本地微调、蒸馏","content":"$17"},{"slug":"如何从开源项目中学习","title":"如何从开源项目中学习：以 OpenViking 为例","date":"2026-06-10T00:00:00.000Z","tags":["open-source","learning"],"category":"ai","description":"> 2026 年，代码本身越来越不值钱，值钱的是设计决策背后的 tradeoff 意识。","content":"$18"}],"tags":["ai-agents","cmake","curated","deep-learning","deployment","docker","learning","linux","llm","local-training","macos","make","ml-theory","modelscope","open-source","productivity","react","regex","shell","tech","tech-news","tools","vllm"]}]}],["$L19","$L1a"],"$L1b"]}],{},null,false,null]},null,false,"$@1c"]},null,false,null],"$L1d",false]],"m":"$undefined","G":["$1e",["$L1f","$L20","$L21"]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"aqw18B5kF7Szm8y_FlI2S"}
-22:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"OutletBoundary"]
-25:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"ViewportBoundary"]
-27:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"MetadataBoundary"]
-19:["$","script","script-0",{"src":"/_next/static/chunks/2h_2mq1uhpalj.js","async":true,"nonce":"$undefined"}]
-1a:["$","script","script-1",{"src":"/_next/static/chunks/0r38jwpvhbrmp.js","async":true,"nonce":"$undefined"}]
-1b:["$","$L22",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@23"}]}]
-24:[]
-1c:"$W24"
-1d:["$","$1","h",{"children":[null,["$","$L25",null,{"children":"$L26"}],["$","div",null,{"hidden":true,"children":["$","$L27",null,{"children":["$","$6",null,{"name":"Next.Metadata","children":"$L28"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
-1f:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/233p45nuh4m5b.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
-20:["$","link","1",{"rel":"stylesheet","href":"/_next/static/chunks/3mi_koyhkiqud.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
-21:["$","link","2",{"rel":"stylesheet","href":"/_next/static/chunks/1p3suf_njwawp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
-26:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
-29:I[23227,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"IconMark"]
-23:null
-28:[["$","title","0",{"children":"Nemo — Personal Space"}],["$","meta","1",{"name":"description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","meta","2",{"name":"author","content":"Nemo"}],["$","meta","3",{"name":"keywords","content":"Nemo,个人网站,博客,全栈开发,RAG,强化学习"}],["$","meta","4",{"property":"og:title","content":"Nemo — Personal Space"}],["$","meta","5",{"property":"og:description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","meta","6",{"property":"og:locale","content":"zh_CN"}],["$","meta","7",{"property":"og:type","content":"website"}],["$","meta","8",{"name":"twitter:card","content":"summary"}],["$","meta","9",{"name":"twitter:title","content":"Nemo — Personal Space"}],["$","meta","10",{"name":"twitter:description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","link","11",{"rel":"icon","href":"/favicon.ico?favicon.2os6yout_mfjj.ico","sizes":"640x640","type":"image/x-icon"}],["$","link","12",{"rel":"icon","href":"/Image/favicon.ico"}],["$","$L29","13",{}]]
+0:{"P":null,"c":["","blogs"],"q":"","i":false,"f":[[["",{"children":["blogs",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/233p45nuh4m5b.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/chunks/3mi_koyhkiqud.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","2",{"rel":"stylesheet","href":"/_next/static/chunks/1p3suf_njwawp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/1xh5_hh-4xv03.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/18071siihbhhu.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"zh","suppressHydrationWarning":true,"children":["$","body",null,{"className":"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable noto_sans_sc_2bb252ae-module__TC8U_W__variable antialiased","children":[["$","$L2",null,{"children":["$","$L3",null,{"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}],["$","script",null,{"async":true,"src":"//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"}]]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$6",null,{"fallback":["$","div",null,{"className":"min-h-screen flex items-center justify-center","children":["$","div",null,{"className":"w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"}]}],"children":["$","$L7",null,{"posts":[{"slug":"Cmake_learn_by_doing","title":"compile the source files in the src directory into a static link library","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"cmake is a system independent automatic construct tool.","content":"$8"},{"slug":"Cmake_learning","title":"Cmake Learning","date":"2026-06-25T00:00:00.000Z","tags":["cmake","learning"],"category":"tech","description":"> *sudo apt install Cmake*","content":"$9"},{"slug":"Regex_learning","title":"Regex","date":"2026-06-25T00:00:00.000Z","tags":["regex","learning"],"category":"tech","description":"学习、受启发于deerchao的教程","content":"$a"},{"slug":"deep_reinforcement_learning","title":"Deep Reinforcement Learning","date":"2026-06-25T00:00:00.000Z","tags":["learning"],"category":"ai","description":"- Probability approximation","content":"$b"},{"slug":"docker_learning","title":"docker学习笔记","date":"2026-06-25T00:00:00.000Z","tags":["docker","learning"],"category":"devops","description":"- > windows desktop version","content":"$c"},{"slug":"fundamentals_of_compiling_learning","title":"Introduction","date":"2026-06-25T00:00:00.000Z","tags":["learning"],"category":"tech","description":"- compiler: translate the code from source language to target language.","content":"\n### Introduction\n\n##### language processor\n\n- compiler: translate the code from source language to target language.\n- interpreter: Perform operations in the source language directly from the input\n- **example**: java processor:\n  source language -> translator -> middle program -> virtual machine\n                                                                                  input /                              \\ output\n- a language process system:\n  source language -> pre-processor -> pre-processed program  -> compiler -> target assembler -> assembler -> relocatable machine code -> linker(resolves external memory addresses)&loader(execute all executable target files in memory) <- library files & relocatable files,     and finally generate target machine code from linker and loader."},{"slug":"linux_learning","title":"Linux Learning","date":"2026-06-25T00:00:00.000Z","tags":["linux","learning"],"category":"tech","description":"1. - WSL Features  :","content":"\n1. - **WSL Features ** :\n\n     -WSL creates a `/home/<username>` directory by default, and the user is usually set as the owner of this directory. This means that within the `/home/<username>` directory and its subdirectories, you can create files and directories freely.\n\n     - If you are trying to create files or directories in other locations, such as'/' root or other non-personal directories, then 'sudo' permissions may be required.\n\n     and usually, `~` refer to the dir `/home/<username>`, they are the same. you can also see `/home/others`, but `~` always be your home, execute `pwd` to see.\n\n     use `su - <username>` to change user."},{"slug":"linux_shell","title":"Linux Shell","date":"2026-06-25T00:00:00.000Z","tags":["linux","shell"],"category":"tech","description":"***[2.shell工具和脚本_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1XN4y187zp/?p=3&vd_source=8a614553fd42ac4044499e810a816","content":"$d"},{"slug":"make_learning","title":"...other commands","date":"2026-06-25T00:00:00.000Z","tags":["make","learning"],"category":"devops","description":"for C/C++, u define commands in ``Makefile``, like ``Dockerfile``","content":"$e"},{"slug":"react_next","title":"server side rendering(SSR) and client side rendering(CSR)","date":"2026-06-25T00:00:00.000Z","tags":["react"],"category":"frontend","description":"feature of next.js, by 'use client' at the top of a file","content":"\n#### server side rendering(SSR) and client side rendering(CSR)\n\nfeature of next.js, by 'use client' at the top of a file\n\nSSR: the content of website will be rendered on server side and send the processed html files to client side, which can users have a faster experience.\n\nCSR: the content of website will not pre-render on server side,  instead, an html file with some js files will be sent to client side and rendered by browser, thus users can feel a little slow.\n\n"},{"slug":"relative_path_notice","title":"The relative path is relative to the compiled directory of the instruction, not relative to the file itself","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"tech","description":"current_path = os.getcwd()","content":"\n### The relative path is relative to the compiled directory of the instruction, not relative to the file itself\n\nfor example:\n\n```\ndir\n\t|\n\t+ dir1\n\t\t|\n\t\t+ relative.py\n```\n\nand in relative.py\n\n```python\nimport os \n\ncurrent_path = os.getcwd()\n\nprint(current_path)\n```\n\nexecute relative.py, the output will be:\n\n```bash\nE:\\dir\n```\n\nand this is your working directory:\n\n![relative_path](./picture/relative_path.png)\n\n"},{"slug":"use_rawlink_for_downloading_files","title":"Use Rawlink For Downloading Files","date":"2026-06-25T00:00:00.000Z","tags":["tech"],"category":"tech","description":"download files via markdown is not allowed on github, but u can:","content":"\ndownload files via markdown is not allowed on github, but u can:\n\n```markdown\n[Download .zip file](https://raw.githubusercontent.com/your-username/your-repo/main/yourfile.zip)\n```\n\n"},{"slug":"Subagent-Skill优化方法论","title":"Subagent 化 Skill 优化方法论","date":"2026-06-24T00:00:00.000Z","tags":["ai-agents","llm"],"category":"ai","description":"当 Skill 的步骤链变长时，单 Agent 架构会遇到一个根本性问题：上下文污染（context pollution）。","content":"$f"},{"slug":"vLLM-Prefix-Caching原理与LMCache调研","title":"vLLM Prefix Caching (`--enable-prefix-caching`) 原理与 LMCache 调研报告","date":"2026-06-16T00:00:00.000Z","tags":["llm","deployment","vllm"],"category":"ai","description":"把整个 prompt（system prompt + user query）一次性并行算完，生成每个 token 位置对应的 K 矩阵 和 V 矩阵。计算量 = prompt token 数 × 模型参数量。prompt 越...","content":"$10"},{"slug":"DeepSeek-V4-Flash内网vLLM部署指南","title":"DeepSeek-V4-Flash 内网 vLLM 部署完全指南","date":"2026-06-15T00:00:00.000Z","tags":["llm","deployment","vllm"],"category":"ai","description":"DeepSeek-V4-Flash 是你从 ModelScope 下载的模型，核心参数：","content":"$11"},{"slug":"ModelScope模型本地编译部署完全指南","title":"ModelScope 权重分片 → 内网 vLLM 部署完整流程","date":"2026-06-15T00:00:00.000Z","tags":["llm","deployment","modelscope"],"category":"ai","description":"从 ModelScope 下载的权重分片，到最后能在内网用 vLLM 提供服务，中间需要经过的环节：","content":"$12"},{"slug":"智能体开发基础与模型量化指南","title":"智能体开发基础知识与模型量化指南","date":"2026-06-13T00:00:00.000Z","tags":["ai-agents","llm"],"category":"ai","description":"默认模型权重用 BF16/FP16（每个参数 2 字节）。70B 模型 BF16 需要 140GB 显存。量化降低精度来压缩体积：","content":"$13"},{"slug":"消融实验-Ablation-Study","title":"消融实验 (Ablation Study)","date":"2026-06-13T00:00:00.000Z","tags":["deep-learning","ml-theory"],"category":"ai","description":"控制变量法——把模型或系统的某个组件切除掉，观察性能下降了多少","content":"\n# 消融实验 (Ablation Study)\n\n## 是什么\n\n控制变量法——把模型/系统的某个组件\"切除\"掉，观察性能下降了多少，从而判断该组件的贡献度。\n\n名字来源于脑科学：医生切除部分脑区，观察哪些功能丧失，推断该区域的作用。\n\n## 基本原理\n\n```\n完整系统 → 性能 95%\n去掉组件 A → 性能 80%  → A 贡献了 15%\n去掉组件 B → 性能 93%  → B 贡献了 2%（可有可无）\n同时去掉 A+B → 性能 70% → A 和 B 有 5% 的交互增益\n```\n\n核心逻辑：不依赖直觉，用实验数据证明每个模块是否真的有用。\n\n## 什么时候需要做\n\n### 1. 论文 / 学术汇报\n审稿人几乎必问：\"你怎么证明你加的每个模块都有用？\"\n消融实验是 ML 论文的标准配置，否则 reviewer 会说\"没有消融 = 没有说服力\"。\n\n### 2. 迭代新特性 / 新模块时\n比如给 RAG 系统加了 reranker + query rewrite，跑一次消融：\n- 去掉 reranker → 指标降了 → 保留\n- 去掉 query rewrite → 指标没变 → 删掉，少维护一个坑\n\n### 3. 模型压缩 / 剪枝时\n移除注意力头、剪掉某些层，看哪些是冗余的，哪些不能动。\n\n### 4. 调试奇怪的现象时\n\"加了 A 效果反而变差了？\" → 单独测 A 的贡献，可能是 A 和已有模块冲突。\n\n## 一个典型例子\n\n做摘要生成系统，三个组件：\n- 实体链接（+3% ROUGE）\n- 关键词提取（+0.5% ROUGE，可以砍掉）\n- 重排序（-1% ROUGE，这个模块负优化）\n\n没有消融，你可能会把所有组件都堆上去，系统变慢变复杂，效果反而没提升。\n\n## 关联概念\n\n- A/B 测试（消融是在固定模型上切组件，A/B 是比较两个不同版本）\n- 敏感性分析（消融看组件的贡献度，敏感性看参数变化的影响）\n"},{"slug":"AgentSkill设计-Llm驱动转换","title":"Agent Skill 设计方案：LLM 驱动的 Markdown→DOCX 转换","date":"2026-06-10T00:00:00.000Z","tags":["ai-agents","llm"],"category":"tech","description":"给大模型造一套手艺工具——将 Markdown 套入 DOCX 模板","content":"$14"},{"slug":"Markdown套Docx模板实现方案","title":"将 Markdown 套入 DOCX 模板的实现方案调研","date":"2026-06-10T00:00:00.000Z","tags":["tools","productivity"],"category":"tech","description":"> 背景：报告生成引擎项目需要将 Markdown 内容渲染为 DOCX，要求模板是唯一样式权威（template washes all styles），内容中的格式标记（粗体/斜体/代码）通过 StyleMapping 表映射为模...","content":"$15"},{"slug":"macOS内置大模型与本地训练","title":"macOS 内置大模型与本地 AI 训练","date":"2026-06-10T00:00:00.000Z","tags":["llm","macos","local-training"],"category":"ai","description":"> 关键词：apfel、Apple Intelligence、FoundationModels、MLX、本地微调、蒸馏","content":"$16"},{"slug":"如何从开源项目中学习","title":"如何从开源项目中学习：以 OpenViking 为例","date":"2026-06-10T00:00:00.000Z","tags":["open-source","learning"],"category":"ai","description":"> 2026 年，代码本身越来越不值钱，值钱的是设计决策背后的 tradeoff 意识。","content":"$17"}],"tags":["ai-agents","cmake","deep-learning","deployment","docker","learning","linux","llm","local-training","macos","make","ml-theory","modelscope","open-source","productivity","react","regex","shell","tech","tools","vllm"]}]}],["$L18","$L19"],"$L1a"]}],{},null,false,null]},null,false,"$@1b"]},null,false,null],"$L1c",false]],"m":"$undefined","G":["$1d",["$L1e","$L1f","$L20"]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"mnGxQEJyUoTO4uRk8aKhf"}
+21:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"OutletBoundary"]
+24:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"ViewportBoundary"]
+26:I[3576,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"MetadataBoundary"]
+18:["$","script","script-0",{"src":"/_next/static/chunks/2h_2mq1uhpalj.js","async":true,"nonce":"$undefined"}]
+19:["$","script","script-1",{"src":"/_next/static/chunks/0r38jwpvhbrmp.js","async":true,"nonce":"$undefined"}]
+1a:["$","$L21",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@22"}]}]
+23:[]
+1b:"$W23"
+1c:["$","$1","h",{"children":[null,["$","$L24",null,{"children":"$L25"}],["$","div",null,{"hidden":true,"children":["$","$L26",null,{"children":["$","$6",null,{"name":"Next.Metadata","children":"$L27"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+1e:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/233p45nuh4m5b.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+1f:["$","link","1",{"rel":"stylesheet","href":"/_next/static/chunks/3mi_koyhkiqud.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+20:["$","link","2",{"rel":"stylesheet","href":"/_next/static/chunks/1p3suf_njwawp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+25:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+28:I[23227,["/_next/static/chunks/1xh5_hh-4xv03.js","/_next/static/chunks/18071siihbhhu.js"],"IconMark"]
+22:null
+27:[["$","title","0",{"children":"Nemo — Personal Space"}],["$","meta","1",{"name":"description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","meta","2",{"name":"author","content":"Nemo"}],["$","meta","3",{"name":"keywords","content":"Nemo,个人网站,博客,全栈开发,RAG,强化学习"}],["$","meta","4",{"property":"og:title","content":"Nemo — Personal Space"}],["$","meta","5",{"property":"og:description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","meta","6",{"property":"og:locale","content":"zh_CN"}],["$","meta","7",{"property":"og:type","content":"website"}],["$","meta","8",{"name":"twitter:card","content":"summary"}],["$","meta","9",{"name":"twitter:title","content":"Nemo — Personal Space"}],["$","meta","10",{"name":"twitter:description","content":"chasing dreams | 全栈开发者 · RAG & RL 爱好者"}],["$","link","11",{"rel":"icon","href":"/favicon.ico?favicon.2os6yout_mfjj.ico","sizes":"640x640","type":"image/x-icon"}],["$","link","12",{"rel":"icon","href":"/Image/favicon.ico"}],["$","$L28","13",{}]]

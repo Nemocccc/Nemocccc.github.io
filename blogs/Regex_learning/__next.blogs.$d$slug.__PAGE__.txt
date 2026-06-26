@@ -208,7 +208,7 @@ example:
 
 ![other grammar](./picture/regex_other_grammar.png)
 
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"Regex_learning","title":"Regex","date":"2026-06-25T00:00:00.000Z","tags":["regex","learning"],"category":"tech","description":"学习、受启发于deerchao的教程","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"aqw18B5kF7Szm8y_FlI2S"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"post":{"slug":"Regex_learning","title":"Regex","date":"2026-06-25T00:00:00.000Z","tags":["regex","learning"],"category":"tech","description":"学习、受启发于deerchao的教程","content":"$3"}}],["$L4","$L5","$L6"],"$L7"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"mnGxQEJyUoTO4uRk8aKhf"}
 4:["$","script","script-0",{"src":"/_next/static/chunks/3zo6056xuvsb1.js","async":true}]
 5:["$","script","script-1",{"src":"/_next/static/chunks/2c9lkvph-ta0n.js","async":true}]
 6:["$","script","script-2",{"src":"/_next/static/chunks/3jf8q_9-ia3no.js","async":true}]
